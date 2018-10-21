@@ -2,4 +2,4 @@
 Authors:
   * Pengliang Zhang
   * Bohua Cao 100971104
-  * Kevin Li 101042813
+  * Kevin Li 101042813 (also called _adularezenz_)
