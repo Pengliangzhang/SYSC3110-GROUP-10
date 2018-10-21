@@ -1,3 +1,6 @@
 # SYSC3110-GROUP-10
-Author: Pengliang Zhang
-        Bohua Cao 100971104
+Authors:
+  * Pengliang Zhang
+  * Bohua Cao 
+  * Kevin Li 101042813 (also called _adularezenz_)
+  * Xinrui Li 101018938
