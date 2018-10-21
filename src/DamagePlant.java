@@ -12,12 +12,17 @@ public class DamagePlant extends Plant
 		this.damage = damage;
 		this.damageTick = damageTick;
 	}
-	
+	/**
+	 * @return return the range that the plant is able to attack
+	 */
 	public int getRange()
 	{
 		return this.range;
 	}
 	
+	/**
+	 * 
+	 */
 	public int getDamage()
 	{
 		return this.damage;

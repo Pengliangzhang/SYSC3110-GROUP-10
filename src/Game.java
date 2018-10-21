@@ -1,26 +1,48 @@
-import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Game
 {
-    private Place[][] map;
-    private int tickNumber, sun, totalZombies;
-    private ArrayList<Zombie> ZinR1;
-    private ArrayList<Plant> 
-
-    private Game() 
-    {
-        map = new Place[1][10];
+	private int tickNumber, sun, totalZombies;
+    
+    /**
+     * 
+     */
+	private Game()
+	{   
         sun = 0;
         totalZombies = 10; // might be changed
         tick = 0;
-        splashScreen();
-    }
-
-    private void splashScreen()
-	{
-		// taketurn(); // begin the turn
+		titleScreen();
 	}
-
+	
+	private void titleScreen()
+	{
+		System.out.println("Welcome to SYSC3110 Group 10's PvZ, Console Vers.");
+		
+		Scanner console = new Scanner(System.in);
+		boolean goodInput = false;
+		String input = "";
+		while (!goodInput)
+		{
+			System.out.println("Enter \"play\" to play, and \"exit\" to quit.");
+			input = console.nextLine();
+			if (input.equals("play") || input.equals("exit"))
+			{
+				goodInput = true;
+				console.close();
+			}
+		}
+		
+		if (input.equals("play"))
+		{
+			taketurn();
+		}
+		else if (input.equals("exit"))
+		{
+			System.exit(0);
+		}
+    }
+    
     private taketurn() 
     {
         tick += 10; // increase the sun
@@ -44,8 +66,11 @@ public class Game
             taketurn();
         }
     }
-
-    public static void main(String[] args)
+    
+    /**
+     * 
+     */
+	public static void main(String[] args)
 	{
 
     }
