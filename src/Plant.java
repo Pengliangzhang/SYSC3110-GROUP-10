@@ -5,7 +5,7 @@
  * @author Kevin
  * @version October 21, 2018
  */
-public class Plant
+public class Plant extends Entity
 {
 	private int health;
 	
@@ -13,8 +13,9 @@ public class Plant
 	 * 
 	 * @param health The plant's health
 	 */
-	protected Plant(int health)
+	protected Plant(int x, int y, int health)
 	{
+		super (x, y);
 		this.health = health;
 	}
 	

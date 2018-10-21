@@ -5,9 +5,9 @@ public class DamagePlant extends Plant
 	
 	private int damage, damageTick;
 	
-	protected DamagePlant(int health, int range, int damage, int damageTick)
+	protected DamagePlant(int x, int y, int health, int range, int damage, int damageTick)
 	{
-		super(health);
+		super(x, y, health);
 		this.range = range;
 		this.damage = damage;
 		this.damageTick = damageTick;
