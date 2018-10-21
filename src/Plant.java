@@ -2,7 +2,7 @@
 /**
  * Represents plants.
  * 
- * @author Kevin
+ * @author Kevin Li
  * @version October 21, 2018
  */
 public class Plant extends Entity
