@@ -12,12 +12,17 @@ public class DamagePlant extends Plant
 		this.damage = damage;
 		this.damageTick = damageTick;
 	}
-	
+	/**
+	 * @return return the range between the plant and zombie
+	 */
 	public int getRange()
 	{
 		return this.range;
 	}
 	
+	/**
+	 * 
+	 */
 	public int getDamage()
 	{
 		return this.damage;
