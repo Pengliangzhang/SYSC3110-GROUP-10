@@ -1,27 +1,72 @@
 
+/**
+ * Represents zombies.
+ * 
+ * @author Kevin Li
+ * @version October 21, 2018
+ */
 public class Zombie
 {
-	private int damage, health, speed;
+	private int damage, health, moveSpeed, attackSpeed;
 	
-	protected Zombie(int damage, int health, int speed)
+	/**
+	 * Constructor for all zombies.
+	 * 
+	 * @param damage Damage per attack
+	 * @param health Health
+	 * @param moveSpeed Ticks required to move 1 space forward
+	 * @param attackSpeed Ticks between attacks
+	 */
+	protected Zombie(int damage, int health, int moveSpeed, int attackSpeed)
 	{
 		this.damage = damage;
 		this.health = health;
-		this.speed = speed;
+		this.moveSpeed = moveSpeed;
+		this.attackSpeed = attackSpeed;
 	}
 	
+	/**
+	 * 
+	 * @return this zombie's damage per attack
+	 */
 	public int getDamage()
 	{
 		return this.damage;
 	}
 	
+	/**
+	 * 
+	 * @return this zombie's current health
+	 */
 	public int getHealth()
 	{
 		return this.health;
 	}
 	
-	public int getSpeed()
+	/**
+	 * 
+	 * @return how many ticks it takes for this zombie to move 1 space forward
+	 */
+	public int getMoveSpeed()
 	{
-		return this.speed;
+		return this.moveSpeed;
+	}
+	
+	/**
+	 * 
+	 * @return how many ticks it takes for this zombie to attack again
+	 */
+	public int getAttackSpeed()
+	{
+		return this.attackSpeed;
+	}
+	
+	/**
+	 * 
+	 * @param amount How much the health is reduced by
+	 */
+	public void takeDamage(int amount)
+	{
+		this.health -= amount;
 	}
 }
