@@ -1,7 +1,8 @@
 
 public class Game
 {
-    
+    private ArrayList<Zombie> Zombie = new ArrayList();
+
 	private int tickNumber, sun, totalZombies;
     
     /**
@@ -18,7 +19,16 @@ public class Game
 	private void splashScreen()
 	{
 		
-	}
+    }
+    
+    /**
+     * @
+     */
+    public void changePosition(){
+        for (Zombie zombie : Zombie) {
+            zombie.
+        }
+    }
     
     /**
      * 
