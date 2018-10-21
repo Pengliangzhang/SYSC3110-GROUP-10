@@ -9,12 +9,17 @@ public class SunPlant extends Plant
 		this.sun = sun;
 		this.sunTick = sunTick;
 	}
-	
+	/**
+	 * @return 
+	 */
 	public int getSun()
 	{
 		return this.sun;
 	}
 	
+	/**
+	 * @return 
+	 */
 	public int getSunTick()
 	{
 		return this.sunTick;
