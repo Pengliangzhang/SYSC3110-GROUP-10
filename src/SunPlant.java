@@ -1,3 +1,9 @@
+/**
+ *  construct sun plant.
+ * 
+ * @author bohua Cao
+ * @version October 21, 2018
+ */
 
 public class SunPlant extends Plant
 {

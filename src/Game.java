@@ -3,7 +3,10 @@ import java.util.Scanner;
 public class Game
 {
 	private int tickNumber, sun, totalZombies;
-	
+    
+    /**
+     * 
+     */
 	private Game()
 	{
 		titleScreen();
@@ -36,7 +39,10 @@ public class Game
 			System.exit(0);
 		}
 	}
-	
+    
+    /**
+     * 
+     */
 	public static void main(String[] args)
 	{
 		
