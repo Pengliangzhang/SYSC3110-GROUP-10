@@ -1,3 +1,9 @@
+/**
+ *  construct sun flower.
+ * 
+ * @author bohua Cao
+ * @version October 21, 2018
+ */
 
 public class Sunflower extends SunPlant
 {
