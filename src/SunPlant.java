@@ -15,8 +15,10 @@ public class SunPlant extends Plant
 		this.sun = sun;
 		this.sunTick = sunTick;
 	}
+	
 	/**
-	 * @return 
+	 * 
+	 * @return how much sun this plant creates
 	 */
 	public int getSun()
 	{
@@ -24,7 +26,8 @@ public class SunPlant extends Plant
 	}
 	
 	/**
-	 * @return 
+	 * 
+	 * @return how many ticks between sun production
 	 */
 	public int getSunTick()
 	{
