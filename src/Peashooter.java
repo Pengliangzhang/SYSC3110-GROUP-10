@@ -1,8 +1,8 @@
 
 public class Peashooter extends DamagePlant
 {
-	public Peashooter()
+	public Peashooter(int x, int y)
 	{
-		super(100, 10, 25, 2);
+		super(x, y, 100, 10, 25, 2);
 	}
 }

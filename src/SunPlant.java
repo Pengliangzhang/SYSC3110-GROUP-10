@@ -3,9 +3,9 @@ public class SunPlant extends Plant
 {
 	private int sun, sunTick;
 	
-	protected SunPlant(int health, int sun, int sunTick)
+	protected SunPlant(int x, int y, int health, int sun, int sunTick)
 	{
-		super(health);
+		super(x, y, health);
 		this.sun = sun;
 		this.sunTick = sunTick;
 	}
