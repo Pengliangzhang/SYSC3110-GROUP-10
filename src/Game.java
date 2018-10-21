@@ -13,7 +13,10 @@ public class Game
      * 
      */
 	private Game()
-	{
+	{   
+        sun = 0;
+        totalZombies = 10; // might be changed
+        tick = 0;
 		titleScreen();
 	}
 	
@@ -49,20 +52,48 @@ public class Game
 =======
 		if (input.equals("play"))
 		{
-			
+			taketurn();
 		}
 		else if (input.equals("exit"))
 		{
 			System.exit(0);
 		}
+<<<<<<< HEAD
 	}
 >>>>>>> fc217f53adf9b31dc1f370d6f7fd8259714a7307
+=======
+    }
+    
+    private taketurn() 
+    {
+        tick += 10; // increase the sun
+        
+        // Prompt user
+
+        // Plant turn
+
+        // Check winner
+        if (totalZombies == 0) {
+            // Player win
+        }
+
+        // Zombie spawn
+
+        // Zombie turn
+
+        if (0) {
+            // Zombie win
+        } else {
+            taketurn();
+        }
+    }
+>>>>>>> 60faf6bfb38bac26acf7cc46ff503ac2beb91247
     
     /**
      * 
      */
 	public static void main(String[] args)
 	{
-		
-	}
+
+    }
 }
