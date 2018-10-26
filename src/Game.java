@@ -18,9 +18,10 @@ public class Game {
 	}
 	
 	/**
-	 * 
+	 * Title screen, the first thing showed when the game was run 
 	 */
-	private void titleScreen() {
+	private void titleScreen()
+	{
 		System.out.println("Welcome to SYSC3110 Group 10's PvZ, Console Vers.");
 
 		Scanner console = new Scanner(System.in);
@@ -52,9 +53,21 @@ public class Game {
 		}
     }
     
+	/**
+	 * Take one turn, every turn has following step:
+	 * 1. increase the sun
+	 * 2. print the map
+	 * 3. prompt user (drop a plant on the map or do nothing)
+	 * 4. plants' actions (attack the zombie in their line)
+	 * 5. check if user win this game
+	 * 6. zombie spawn
+	 * 7. zombies' actions (attack plants or move on)
+	 * 8. check if user lost this game
+	 */
     private void taketurn() 
     {
-    	sun += 10; // increase the sun
+		// increase the sun
+    	sun += 10; 
         
         // Print the map
 
@@ -125,11 +138,12 @@ public class Game {
 				sun += ((SunPlant)p).getSunTick();
 			}
 		}
+		
         // Check winner
         if (totalZombies == 0) {
             // Player win
         	System.out.println("Player win");
-        	titleScreen();
+        	System.exit(0);
         }
 
         // Zombie spawn
@@ -159,12 +173,18 @@ public class Game {
         if (zombieCrossTheLine()) {
             // Zombie win
         	System.out.println("Zombie win");
+        	System.exit(0);
         } else {
         	tickNumber++;
             taketurn();
         }
     }
     
+    /**
+     * Check whether the zombie(s) cross the whole line
+     * 
+     * @return True if at least one zombie cross the line, false otherwise
+     */
     private boolean zombieCrossTheLine() {
         for (Zombie z : Zombie) {
             if (z.getX() < 0) {
@@ -175,9 +195,27 @@ public class Game {
     }
 
     /**
-	 * @ desc this method will set the position for the sun flowers
-	 * 		  consume 10 sun for each sun flower
-	 * 		  Push sun flower into end of plants list
+     * Check the entity in the map is empty (no plant in this coordinate)
+     * 
+     * @param row The y of the entity 
+     * @param column The x of the entity 
+     * @return True if no plant is in that coordinate, false if this coordinate already has plant or invalid
+     */
+    private boolean isEmpty(int row, int column) {
+        if (row < 0 || row > 4 || column < 0 || column > 8) {
+            return false;
+        }
+        for (Plant p : plants) {
+            if (p.getX() == column && p.getY() == row) {
+                return false;
+            }
+        }
+        return true;
+	}
+	
+	/**
+	 * @desc this method will set the position for the sun flowers, consume 10 sun
+	 *       for each sun flower
 	 * @author BeckZ
 	 * @param x, the x position for the sun flower
 	 * @param y, the y position for the sun flower
@@ -199,7 +237,7 @@ public class Game {
 	}
 
     /**
-     * 
+     * Auto-generate method
      */
 	public static void main(String[] args)
 	{
