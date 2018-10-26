@@ -1,21 +1,14 @@
 import java.util.Scanner;
-import java.util.Arraylist;
+import java.util.ArrayList;
 
 public class Game
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
     private ArrayList<Zombie> Zombie = new ArrayList();
 
-=======
->>>>>>> fc217f53adf9b31dc1f370d6f7fd8259714a7307
 	private int tickNumber, sun, totalZombies;
-=======
-    private int tickNumber, sun, totalZombies;
-    private Arraylist<Zombie> zombies;
-    private Arraylist<Plant> plants;
+    private ArrayList<Zombie> zombies;
+    private ArrayList<Plant> plants;
     private final int spawnWave;
->>>>>>> origin/oliver
     
     /**
      * 
@@ -24,9 +17,9 @@ public class Game
 	{   
         sun = 0;
         totalZombies = 10; // might be changed
-        tick = 0;
-        zombies = new Arraylist<Zombie> ();
-        plants = new Arraylist<Plant> ();
+        tickNumber = 0;
+        zombies = new ArrayList<Zombie> ();
+        plants = new ArrayList<Plant> ();
 		titleScreen();
 	}
 	
@@ -47,8 +40,6 @@ public class Game
 				console.close();
 			}
 		}
-		
-<<<<<<< HEAD
     }
     
     /**
@@ -56,27 +47,22 @@ public class Game
      */
     public void changePosition(){
         for (Zombie zombie : Zombie) {
-            zombie.
+            //zombie.
         }
-    }
-=======
-		if (input.equals("play"))
+        if (input.equals("play"))
 		{
-			taketurn();
+			//taketurn();
 		}
 		else if (input.equals("exit"))
 		{
 			System.exit(0);
 		}
-<<<<<<< HEAD
-	}
->>>>>>> fc217f53adf9b31dc1f370d6f7fd8259714a7307
-=======
     }
+		
     
-    private taketurn() 
+    private void taketurn() 
     {
-        tick += 10; // increase the sun
+        tickNumber += 10; // increase the sun
         
         // Print the map
 
@@ -96,14 +82,14 @@ public class Game
 		
 		if (input.equals("drop"))
 		{
-            while (1) {
+            while (true) {
                 System.out.println("Enter the plant you wanna drop (sunflower/peashooter):");
                 input = console.nextLine();
                 if (input.equals("sunflower") || input.equals("peashooter")) {
                     String pType = input;
                     int row = -1;
                     int column = -1;
-                    while (1) {
+                    while (true) {
                         System.out.println("Enter the place you wanna drop (row column):");
                         input = console.nextLine();
                         String[] entity = input.split("\\s+");
@@ -131,7 +117,7 @@ public class Game
 			if (typeof(p) == DamagePlant) {
 				for (Zombie z : zombies) {
 					Zombie firstZombie = null;
-					if (p.getY == z.getY && (firstZombie == null || firstZombie.getX() > z.getX())) {
+					if (p.getY() == z.getY() && (firstZombie == null || firstZombie.getX() > z.getX())) {
 						firstZombie = z;
 					}
 				}
@@ -191,7 +177,12 @@ public class Game
     }
 >>>>>>> 60faf6bfb38bac26acf7cc46ff503ac2beb91247
     
-    private boolean zombieCrossTheLine() {
+    private Object typeof(Plant p) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private boolean zombieCrossTheLine() {
         for (Zombie z : zombies) {
             if (z.getX() < 0) {
                 return true;
