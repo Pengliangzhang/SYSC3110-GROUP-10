@@ -1,22 +1,19 @@
-import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Scanner;
 
-public class Game
-{
-    private int tickNumber, sun, totalZombies;
-    private ArrayList<Zombie> zombies; // a list of zombies appear in map
-    private ArrayList<Plant> plants; // a list of plants appear in map
-    
-    /**
-     * Create a PVZ game with title screen
-     */
-	private Game()
-	{   
-        sun = 0;
-        totalZombies = 10; // might be changed
-        tickNumber = 0;
-        zombies = new ArrayList<Zombie> ();
-        plants = new ArrayList<Plant> ();
+public class Game {
+	private int tickNumber, sun, totalZombies;
+	private ArrayList<Plant> plants = new ArrayList<Plant>();
+	private ArrayList<Zombie> Zombie = new ArrayList<Zombie>();
+	private String input = "";
+
+	/**
+	 * Constractor for the game class
+	 */
+	private Game() {
+		sun = 0;
+		totalZombies = 10; // might be changed
+		tickNumber = 0;
 		titleScreen();
 	}
 	
@@ -26,37 +23,51 @@ public class Game
 	private void titleScreen()
 	{
 		System.out.println("Welcome to SYSC3110 Group 10's PvZ, Console Vers.");
-		
+
 		Scanner console = new Scanner(System.in);
 		boolean goodInput = false;
-		String input = "";
-		while (!goodInput)
-		{
+
+		while (!goodInput) {
 			System.out.println("Enter \"play\" to play, and \"exit\" to quit.");
 			input = console.nextLine();
-			if (input.equals("play") || input.equals("exit"))
-			{
+			if (input.equals("play") || input.equals("exit")) {
 				goodInput = true;
 				console.close();
 			}
 		}
-		
+	}
+
+	/**
+	 * @
+	 */
+	public void changePosition() {
+		for (Zombie zombie : Zombie) {
+			// zombie.
+		}
 		if (input.equals("play"))
+
 		{
 			taketurn();
-		}
-		else if (input.equals("exit"))
-		{
+		} else if (input.equals("exit")) {
 			System.exit(0);
 		}
     }
     
 	/**
-	 * Take one turn
+	 * Take one turn, every turn has following step:
+	 * 1. increase the sun
+	 * 2. print the map
+	 * 3. prompt user (drop a plant on the map or do nothing)
+	 * 4. plants' actions (attack the zombie in their line)
+	 * 5. check if user win this game
+	 * 6. zombie spawn
+	 * 7. zombies' actions (attack plants or move on)
+	 * 8. check if user lost this game
 	 */
     private void taketurn() 
     {
-    	sun += 10; // increase the sun
+		// increase the sun
+    	sun += 10; 
         
         // Print the map
 
@@ -120,11 +131,12 @@ public class Game
 						zombies.remove(firstZombie);
 						totalZombies--;
 					}
+					console.close();
+					break;
 				}
 			} else if (p instanceof SunPlant) {
 				sun += ((SunPlant)p).getSunTick();
 			}
-			
 		}
 		
         // Check winner
@@ -199,7 +211,31 @@ public class Game
             }
         }
         return true;
-    }
+	}
+	
+	/**
+	 * @desc this method will set the position for the sun flowers, consume 10 sun
+	 *       for each sun flower
+	 * @author BeckZ
+	 * @param x, the x position for the sun flower
+	 * @param y, the y position for the sun flower
+	 * @return null
+	 */
+	public void setflower(int x, int y) {
+		if (sun >= 10) {
+			Sunflower flower = new Sunflower(x, y);
+			if (plants.add(flower)) {
+				sun = sun - 10;
+				System.out.println("You create an new sunflower.");
+			} else {
+				System.out.println("Unable to create a new sunflower!");
+				return;
+			}
+		} else {
+			return;
+		}
+
+	}
 
     /**
      * Auto-generate method

@@ -1,4 +1,7 @@
-
+/**
+ * @author Pengliang
+ * @version October 21, 2018
+ */
 public class Peashooter extends DamagePlant
 {
 	public Peashooter(int x, int y)
