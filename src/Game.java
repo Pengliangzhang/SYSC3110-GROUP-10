@@ -119,8 +119,9 @@ public class Game {
 	}
 
 	/**
-	 * @desc this method will set the position for the sun flowers, consume 10 sun
-	 *       for each sun flower
+	 * @ desc this method will set the position for the sun flowers
+	 * 		  consume 10 sun for each sun flower
+	 * 		  Push sun flower into end of plants list
 	 * @author BeckZ
 	 * @param x, the x position for the sun flower
 	 * @param y, the y position for the sun flower
