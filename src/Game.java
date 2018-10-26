@@ -16,7 +16,7 @@ public class Game {
 		tickNumber = 0;
 		titleScreen();
 	}
-
+	
 	/**
 	 * 
 	 */
