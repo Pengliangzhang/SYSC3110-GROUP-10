@@ -4,11 +4,11 @@ import java.util.ArrayList;
 public class Game
 {
     private int tickNumber, sun, totalZombies;
-    private ArrayList<Zombie> zombies;
-    private ArrayList<Plant> plants;
+    private ArrayList<Zombie> zombies; // a list of zombies appear in map
+    private ArrayList<Plant> plants; // a list of plants appear in map
     
     /**
-     * 
+     * Create a PVZ game with title screen
      */
 	private Game()
 	{   
@@ -20,6 +20,9 @@ public class Game
 		titleScreen();
 	}
 	
+	/**
+	 * Title screen, the first thing showed when the game was run 
+	 */
 	private void titleScreen()
 	{
 		System.out.println("Welcome to SYSC3110 Group 10's PvZ, Console Vers.");
@@ -48,6 +51,9 @@ public class Game
 		}
     }
     
+	/**
+	 * Take one turn
+	 */
     private void taketurn() 
     {
     	sun += 10; // increase the sun
@@ -125,7 +131,7 @@ public class Game
         if (totalZombies == 0) {
             // Player win
         	System.out.println("Player win");
-        	titleScreen();
+        	System.exit(0);
         }
 
         // Zombie spawn
@@ -155,12 +161,18 @@ public class Game
         if (zombieCrossTheLine()) {
             // Zombie win
         	System.out.println("Zombie win");
+        	System.exit(0);
         } else {
         	tickNumber++;
             taketurn();
         }
     }
     
+    /**
+     * Check whether the zombie(s) cross the whole line
+     * 
+     * @return True if at least one zombie cross the line, false otherwise
+     */
     private boolean zombieCrossTheLine() {
         for (Zombie z : zombies) {
             if (z.getX() < 0) {
@@ -170,6 +182,13 @@ public class Game
         return false;
     }
 
+    /**
+     * Check the entity in the map is empty (no plant in this coordinate)
+     * 
+     * @param row The y of the entity 
+     * @param column The x of the entity 
+     * @return True if no plant is in that coordinate, false if this coordinate already has plant or invalid
+     */
     private boolean isEmpty(int row, int column) {
         if (row < 0 || row > 4 || column < 0 || column > 8) {
             return false;
@@ -183,7 +202,7 @@ public class Game
     }
 
     /**
-     * 
+     * Auto-generate method
      */
 	public static void main(String[] args)
 	{
