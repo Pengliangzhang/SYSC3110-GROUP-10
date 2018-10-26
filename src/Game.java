@@ -4,7 +4,8 @@ import java.util.Scanner;
 public class Game {
 	private int tickNumber, sun, totalZombies;
 	private ArrayList<Sunflower> sunflower = new ArrayList<Sunflower>();
-	private ArrayList<Zombie> zombieList = new ArrayList<Zombie>();
+	private ArrayList<Zombie> Zombie = new ArrayList<Zombie>();
+	private String input = "";
 
 	/**
 	 * 
@@ -16,26 +17,37 @@ public class Game {
 		titleScreen();
 	}
 
+	/**
+	 * @desc console allow players to input
+	 * @author BeckZ
+	 * 
+	 * */
 	private void titleScreen() {
 		System.out.println("Welcome to SYSC3110 Group 10's PvZ, Console Vers.");
 
 		Scanner console = new Scanner(System.in);
 		boolean goodInput = false;
-		String input = "";
+		
 		while (!goodInput) {
 			System.out.println("Enter \"play\" to play, and \"exit\" to quit.");
 			input = console.nextLine();
 			if (input.equals("play") || input.equals("exit")) {
-				goodInput = true;
-				console.close();
+				if(input.equals("exit")) {
+					goodInput = false;
+					console.close();
+				}else {
+					goodInput = true;
+				}
+				
 			}
 		}
 	}
 
 	/**
 	 * @
+	 *
 	 */
-	public void changePosition(Zombie curr) {
+	public void changePosition() {
 		for (Zombie zombie : Zombie) {
 			if (input.equals("play")) {
 				taketurn();
@@ -71,19 +83,25 @@ public class Game {
 	}
 	
 	/** 
-	 * @desc this method will set the position for the sun flowers
+	 * @desc this method will set the position for the sun flowers, consume 10 sun for each sun flower
 	 * @author BeckZ
 	 * @param x, the x position for the sun flower
 	 * @param y, the y position for the sun flower
 	 * @return null
 	 */
 	public void setflower(int x, int y) {
-		Sunflower flower = new Sunflower(x, y);
-		if(sunflower.add(flower)) {
-			System.out.println("You create an new sunflower.");
+		if(sun>=10) {
+			Sunflower flower = new Sunflower(x, y);
+			if(sunflower.add(flower)) {
+				System.out.println("You create an new sunflower.");
+			}else {
+				System.out.println("Unable to create a new sunflower!");
+			}
 		}else {
-			System.out.println("Unable to create a new sunflower!");
+			sun = sun -10;
+			return;
 		}
+		
 		
 	}
 
@@ -91,6 +109,6 @@ public class Game {
 	 * 
 	 */
 	public static void main(String[] args) {
-
+		new Game();
 	}
 }
