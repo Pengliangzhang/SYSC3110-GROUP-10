@@ -1,12 +1,11 @@
 import java.util.Scanner;
-import java.util.Arraylist;
+import java.util.ArrayList;
 
 public class Game
 {
     private int tickNumber, sun, totalZombies;
-    private Arraylist<Zombie> zombies;
-    private Arraylist<Plant> plants;
-    private final int spawnWave;
+    private ArrayList<Zombie> zombies;
+    private ArrayList<Plant> plants;
     
     /**
      * 
@@ -15,9 +14,9 @@ public class Game
 	{   
         sun = 0;
         totalZombies = 10; // might be changed
-        tick = 0;
-        zombies = new Arraylist<Zombie> ();
-        plants = new Arraylist<Plant> ();
+        tickNumber = 0;
+        zombies = new ArrayList<Zombie> ();
+        plants = new ArrayList<Plant> ();
 		titleScreen();
 	}
 	
@@ -49,36 +48,35 @@ public class Game
 		}
     }
     
-    private taketurn() 
+    private void taketurn() 
     {
-        tick += 10; // increase the sun
+    	sun += 10; // increase the sun
         
         // Print the map
 
         // Prompt user
         Scanner console = new Scanner(System.in);
-        boolean goodInput = false;
 		String input = "";
-		while (!goodInput)
+		while (true)
 		{
 			System.out.println("Enter the action at this turn (pass/drop):");
 			input = console.nextLine();
 			if (input.equals("pass") || input.equals("drop"))
 			{
-				goodInput = true;
+				break;
 			}
 		}
 		
 		if (input.equals("drop"))
 		{
-            while (1) {
+            while (true) {
                 System.out.println("Enter the plant you wanna drop (sunflower/peashooter):");
                 input = console.nextLine();
                 if (input.equals("sunflower") || input.equals("peashooter")) {
                     String pType = input;
                     int row = -1;
                     int column = -1;
-                    while (1) {
+                    while (true) {
                         System.out.println("Enter the place you wanna drop (row column):");
                         input = console.nextLine();
                         String[] entity = input.split("\\s+");
@@ -103,22 +101,22 @@ public class Game
         
         // Plant turn
 		for (Plant p : plants) {
-			if (typeof(p) == DamagePlant) {
+			if (p instanceof DamagePlant) {
+				Zombie firstZombie = null;
 				for (Zombie z : zombies) {
-					Zombie firstZombie = null;
-					if (p.getY == z.getY && (firstZombie == null || firstZombie.getX() > z.getX())) {
+					if (p.getY() == z.getY() && (firstZombie == null || firstZombie.getX() > z.getX())) {
 						firstZombie = z;
 					}
 				}
 				if (firstZombie != null) {
-					firstZombie.takeDamage(p.getDamageTick());
+					firstZombie.takeDamage(((DamagePlant)p).getDamageTick());
 					if (firstZombie.getHealth() <= 0) {
 						zombies.remove(firstZombie);
 						totalZombies--;
 					}
 				}
-			} else if (typeof(p) == SunPlant) {
-				sun += p.getSunTick();
+			} else if (p instanceof SunPlant) {
+				sun += ((SunPlant)p).getSunTick();
 			}
 			
 		}
@@ -127,22 +125,19 @@ public class Game
         if (totalZombies == 0) {
             // Player win
         	System.out.println("Player win");
+        	titleScreen();
         }
 
         // Zombie spawn
-        if (0) {
-            zombies.add(new BasicZombie(0));
-            zombies.add(new BasicZombie(1));
-            zombies.add(new BasicZombie(2));
-            zombies.add(new BasicZombie(3));
-            zombies.add(new BasicZombie(4));
+        if (false) {
+            // zombies.add(new BasicZombie(0));
         }
 
         // Zombie turn
         for (Zombie z : zombies) {
         	boolean action = false;
             for (Plant p : plants) {
-                if (z.getX == p.getX && z.getY == p.getY) {
+                if (z.getX() == p.getX() && z.getY() == p.getY()) {
                     p.takeDamage(z.getDamage());
                     if (p.getHealth() <= 0) {
                         plants.remove(p);
@@ -161,6 +156,7 @@ public class Game
             // Zombie win
         	System.out.println("Zombie win");
         } else {
+        	tickNumber++;
             taketurn();
         }
     }
@@ -191,6 +187,6 @@ public class Game
      */
 	public static void main(String[] args)
 	{
-
+		Game g = new Game();
     }
 }
