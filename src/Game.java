@@ -2,6 +2,11 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * This class create a text-based Plants vs Zombie game
+ * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
+ * @version Oct 28, 2018
+ */
 public class Game {
 	private int tickNumber, sun, totalZombies, zombieUnshowed;
 	private ArrayList<Plant> plants = new ArrayList<Plant>();
@@ -51,10 +56,12 @@ public class Game {
 	 * actions (attack the zombie in their line) 5. check if user win this game 6.
 	 * zombie spawn 7. zombies' actions (attack plants or move on) 8. check if user
 	 * lost this game
+	 * 
+	 * @author Xinrui Li
 	 */
 	private void taketurn() {
 		// increase the sun
-		sun += 50;
+		sun += 25;
 
 		// Print the map
 		printMap();
@@ -88,8 +95,11 @@ public class Game {
 
 	/**
 	 * Print the map to the user to show the position of all zombies and plants
+	 * 
+	 * @author Xinrui Li
 	 */
 	private void printMap() {
+		System.out.println(sun);
 		for(Zombie zombie : Zombie) {
 			if(zombie instanceof BasicZombie) {
 				System.out.println("There have a zombie at (" + zombie.getX() + ' '+zombie.getY() + ")" + zombie.getHealth());
@@ -106,6 +116,8 @@ public class Game {
 
 	/**
 	 * User action in this turn, user can select drop plant or pass the turn
+	 * 
+	 * @author Xinrui Li
 	 */
 	private void userTurn() {
 		Scanner console = new Scanner(System.in);
@@ -146,6 +158,7 @@ public class Game {
 	/**
 	 * The action of the plants in this turn: generating sun, attacking zombies, or
 	 * standing by
+	 * @author Xinrui Li
 	 */
 	private void plantAction() {
 		for (Plant p : plants) {
@@ -164,7 +177,7 @@ public class Game {
 					}
 				}
 			} else if (p instanceof SunPlant) {
-				sun += ((SunPlant) p).getSunTick();
+				sun += ((SunPlant) p).generateSun();
 			}
 		}
 	}
@@ -173,7 +186,7 @@ public class Game {
 	 * @desc The method will check the position for sun-flower and zombie, if zombie
 	 *       and sun-flow at same position, sun-flower get attack, otherwise zombie
 	 *       move forward.
-	 * @author OliverL, BeckZ
+	 * @author Xinrui Li, BeckZ
 	 */
 	private void zombieAction() {
 		for (Zombie z : Zombie) {
@@ -211,6 +224,7 @@ public class Game {
 	/**
 	 * Check whether the zombie(s) cross the whole line
 	 * 
+	 * @author Xinrui Li
 	 * @return True if at least one zombie cross the line, false otherwise
 	 */
 	private boolean zombieCrossTheLine() {
@@ -225,6 +239,7 @@ public class Game {
 	/**
 	 * Check the entity in the map is empty (no plant in this coordinate)
 	 * 
+	 * @author Xinrui Li
 	 * @param row    The y of the entity
 	 * @param column The x of the entity
 	 * @return True if no plant is in that coordinate, false if this coordinate
