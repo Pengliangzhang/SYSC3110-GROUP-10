@@ -70,9 +70,47 @@ public class Game {
     	sun += 10; 
         
         // Print the map
+    	printMap();
+    	
+        // User turn
+    	userTurn();
+        
+        // Plant turn
+		plantAction();
+		
+        // Check winner
+        if (totalZombies == 0) {
+            // Player win
+        	System.out.println("Player win");
+        	System.exit(0);
+        }
 
-        // Prompt user
-        Scanner console = new Scanner(System.in);
+        // Zombie turn
+        zombieAction();
+        
+        // Check winner
+        if (zombieCrossTheLine()) {
+            // Zombie win
+        	System.out.println("Zombie win");
+        	System.exit(0);
+        } else {
+        	tickNumber++;
+            taketurn();
+        }
+    }
+    
+    /**
+     * Print the map to the user to show the position of all zombies and plants
+     */
+    private void printMap() {
+    	
+    }
+    
+    /**
+     * User action in this turn, user can select drop plant or pass the turn
+     */
+    private void userTurn() {
+    	Scanner console = new Scanner(System.in);
 		String input = "";
 		while (true)
 		{
@@ -112,12 +150,14 @@ public class Game {
                     break;
 			    }
             }
-            
-            
 		}
-        
-        // Plant turn
-		for (Plant p : plants) {
+    }
+    
+    /**
+     * The action of the plants in this turn: generating sun, attacking zombies, or standing by
+     */
+    private void plantAction() {
+    	for (Plant p : plants) {
 			if (p instanceof DamagePlant) {
 				Zombie firstZombie = null;
 				for (Zombie z : Zombie) {
@@ -131,28 +171,24 @@ public class Game {
 						Zombie.remove(firstZombie);
 						totalZombies--;
 					}
-					console.close();
 					break;
 				}
 			} else if (p instanceof SunPlant) {
 				sun += ((SunPlant)p).getSunTick();
 			}
 		}
-		
-        // Check winner
-        if (totalZombies == 0) {
-            // Player win
-        	System.out.println("Player win");
-        	System.exit(0);
-        }
-
-        // Zombie spawn
-        if (false) {
+    }
+    
+    /**
+     * The action of the zombies in this turn: spawning zombie, attacking plants, or moving forward
+     */
+    private void zombieAction() {
+    	// Zombie spawn
+        if (true) {
             // zombies.add(new BasicZombie(0));
         }
-
-        // Zombie turn
-        for (Zombie z : Zombie) {
+    	
+    	for (Zombie z : Zombie) {
         	boolean action = false;
             for (Plant p : plants) {
                 if (z.getX() == p.getX() && z.getY() == p.getY()) {
@@ -167,16 +203,6 @@ public class Game {
             if (!action) {
             	z.setX(z.getX() - z.getMoveSpeed());
             }
-        }
-        
-        // Check winner
-        if (zombieCrossTheLine()) {
-            // Zombie win
-        	System.out.println("Zombie win");
-        	System.exit(0);
-        } else {
-        	tickNumber++;
-            taketurn();
         }
     }
     
