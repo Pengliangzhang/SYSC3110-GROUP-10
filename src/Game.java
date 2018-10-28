@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Game {
@@ -88,7 +89,19 @@ public class Game {
 	 * Print the map to the user to show the position of all zombies and plants
 	 */
 	private void printMap() {
-
+		for(Zombie zombie : Zombie) {
+			if(zombie instanceof BasicZombie) {
+				System.out.println("There have a zombie at (" + zombie.getX() + ' '+zombie.getY() + ")");
+			}
+		}
+		for (Plant plant:plants) {
+			if(plant instanceof Sunflower) {
+				System.out.println("There have a sunflower at (" + plant.getX() + ' '+plant.getY() + ")");
+			}else if(plant instanceof DamagePlant) {
+				System.out.println("There have a damage-plant at (" + plant.getX() + ' '+plant.getY() + ")");
+			}
+		}
+		
 	}
 
 	/**
@@ -115,12 +128,12 @@ public class Game {
 					while (true) {
 						System.out.println("Enter the place you wanna drop (row column):");
 						String position = console.nextLine();
-						int x=0;
-						int y=0;
+						int x = 0;
+						int y = 0;
 						String[] entity = position.split("\\s+");
-						x=Integer.valueOf(entity[0]);
-						y=Integer.valueOf(entity[1]);
-						if((x>=1 && x <= 5) && (y<=10 && y>=1)) {
+						x = Integer.valueOf(entity[0]);
+						y = Integer.valueOf(entity[1]);
+						if ((x >= 1 && x <= 5) && (y <= 10 && y >= 1)) {
 							setplant(x, y, input);
 							break;
 						}
@@ -128,6 +141,7 @@ public class Game {
 					break;
 				}
 			}
+
 		}
 	}
 
@@ -159,15 +173,23 @@ public class Game {
 	}
 
 	/**
-	 * @desc 	The method will check the position for sun-flower and zombie,
-	 * 		 	if zombie and sun-flow at same position, sun-flower get attack, otherwise zombie move forward.
+	 * @desc The method will check the position for sun-flower and zombie, if zombie
+	 *       and sun-flow at same position, sun-flower get attack, otherwise zombie
+	 *       move forward.
 	 * @author OliverL, BeckZ
 	 */
 	private void zombieAction() {
 		// Zombie spawn
-		if (true) {
-			// zombies.add(new BasicZombie(0));
+		Random rand = new Random();
+		int n = rand.nextInt(5) + 1;
+		if (tickNumber == 0) {
+			Zombie z = new BasicZombie(n);
+			Zombie.add(z);
+		} else if ((tickNumber % 2) == 0) {
+			Zombie z = new BasicZombie(n);
+			Zombie.add(z);
 		}
+
 		for (Zombie z : Zombie) {
 			boolean action = false;
 			for (Plant p : plants) {
@@ -232,12 +254,12 @@ public class Game {
 		if (sun >= 25 && type.equals("sunflower")) {
 			Sunflower plant = new Sunflower(x, y);
 			if (plants.add(plant)) {
-				sun = sun - plant.getSun() ;
+				sun = sun - plant.getSun();
 				System.out.println("You created an new sunflower.");
 				return;
 			}
 			System.out.println("Unable to create a new sunflower!");
-		}else if(sun >= 50 && type.equals("peashooter")) {
+		} else if (sun >= 50 && type.equals("peashooter")) {
 			Peashooter plant = new Peashooter(x, y);
 			if (plants.add(plant)) {
 				sun = sun - plant.getSun();
@@ -245,7 +267,7 @@ public class Game {
 				return;
 			}
 			System.out.println("Unable to create a new Peashooter!");
-		}else {
+		} else {
 			System.out.println("You do not have enough sun!");
 			return;
 		}
