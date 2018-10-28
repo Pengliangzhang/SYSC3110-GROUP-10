@@ -85,11 +85,6 @@ public class Game {
         	System.exit(0);
         }
 
-        // Zombie spawn
-        if (false) {
-            // zombies.add(new BasicZombie(0));
-        }
-
         // Zombie turn
         zombieAction();
         
@@ -104,10 +99,16 @@ public class Game {
         }
     }
     
+    /**
+     * Print the map to the user to show the position of all zombies and plants
+     */
     private void printMap() {
     	
     }
     
+    /**
+     * User action in this turn, user can select drop plant or pass the turn
+     */
     private void userTurn() {
     	Scanner console = new Scanner(System.in);
 		String input = "";
@@ -152,6 +153,9 @@ public class Game {
 		}
     }
     
+    /**
+     * The action of the plants in this turn: generating sun, attacking zombies, or standing by
+     */
     private void plantAction() {
     	for (Plant p : plants) {
 			if (p instanceof DamagePlant) {
@@ -175,7 +179,15 @@ public class Game {
 		}
     }
     
+    /**
+     * The action of the zombies in this turn: spawning zombie, attacking plants, or moving forward
+     */
     private void zombieAction() {
+    	// Zombie spawn
+        if (true) {
+            // zombies.add(new BasicZombie(0));
+        }
+    	
     	for (Zombie z : Zombie) {
         	boolean action = false;
             for (Plant p : plants) {
