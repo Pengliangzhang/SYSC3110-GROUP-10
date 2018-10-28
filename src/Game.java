@@ -15,6 +15,8 @@ public class Game {
 		totalZombies = 10; // might be changed
 		tickNumber = 0;
 		titleScreen();
+		changePosition();
+		printMap();
 	}
 	
 	/**
@@ -44,167 +46,48 @@ public class Game {
 		for (Zombie zombie : Zombie) {
 			// zombie.
 		}
+		
 		if (input.equals("play"))
 
 		{
-			taketurn();
+			//taketurn();
 		} else if (input.equals("exit")) {
 			System.exit(0);
 		}
     }
     
-	/**
-	 * Take one turn, every turn has following step:
-	 * 1. increase the sun
-	 * 2. print the map
-	 * 3. prompt user (drop a plant on the map or do nothing)
-	 * 4. plants' actions (attack the zombie in their line)
-	 * 5. check if user win this game
-	 * 6. zombie spawn
-	 * 7. zombies' actions (attack plants or move on)
-	 * 8. check if user lost this game
-	 */
-    private void taketurn() 
-    {
-		// increase the sun
-    	sun += 10; 
-        
-        // Print the map
-    	printMap();
-    	
-        // User turn
-    	userTurn();
-        
-        // Plant turn
-		plantAction();
-		
-        // Check winner
-        if (totalZombies == 0) {
-            // Player win
-        	System.out.println("Player win");
-        	System.exit(0);
-        }
-
-        // Zombie turn
-        zombieAction();
-        
-        // Check winner
-        if (zombieCrossTheLine()) {
-            // Zombie win
-        	System.out.println("Zombie win");
-        	System.exit(0);
-        } else {
-        	tickNumber++;
-            taketurn();
-        }
-    }
-    
-    /**
-     * Print the map to the user to show the position of all zombies and plants
-     */
-    private void printMap() {
-    	
-    }
-    
-    /**
-     * User action in this turn, user can select drop plant or pass the turn
-     */
-    private void userTurn() {
-    	Scanner console = new Scanner(System.in);
-		String input = "";
-		while (true)
-		{
-			System.out.println("Enter the action at this turn (pass/drop):");
-			input = console.nextLine();
-			if (input.equals("pass") || input.equals("drop"))
-			{
-				break;
+	
+	private void printMap() {
+		if(plants != null) {
+			String a = "Plants: ";
+			for(int i = 0; i< plants.size(); i++) {
+				a += (i+1) + "("+  "Name: " + plants.get(i).getName() + " Index: " + plants.get(i).getX() + "," + plants.get(i).getY() + ")  ";
 			}
+			System.out.println(a);
+		}
+		else {
+			System.out.println("You didn't place any plants.");
 		}
 		
-		if (input.equals("drop"))
-		{
-            while (true) {
-                System.out.println("Enter the plant you wanna drop (sunflower/peashooter):");
-                input = console.nextLine();
-                if (input.equals("sunflower") || input.equals("peashooter")) {
-                    String pType = input;
-                    int row = -1;
-                    int column = -1;
-                    while (true) {
-                        System.out.println("Enter the place you wanna drop (row column):");
-                        input = console.nextLine();
-                        String[] entity = input.split("\\s+");
-                        row = Integer.parseInt(entity[0]);
-                        column = Integer.parseInt(entity[1]);
-                        if (isEmpty(row, column)) {
-                            if (pType.equals("sunflower")){
-                                plants.add(new Sunflower(column, row));
-                            } else {
-                                plants.add(new Peashooter(column, row));
-                            }
-                            break;
-                        }
-                    }
-                    console.close();
-                    break;
-			    }
-            }
-		}
-    }
-    
-    /**
-     * The action of the plants in this turn: generating sun, attacking zombies, or standing by
-     */
-    private void plantAction() {
-    	for (Plant p : plants) {
-			if (p instanceof DamagePlant) {
-				Zombie firstZombie = null;
-				for (Zombie z : Zombie) {
-					if (p.getY() == z.getY() && (firstZombie == null || firstZombie.getX() > z.getX())) {
-						firstZombie = z;
-					}
-				}
-				if (firstZombie != null) {
-					firstZombie.takeDamage(((DamagePlant)p).getDamageTick());
-					if (firstZombie.getHealth() <= 0) {
-						Zombie.remove(firstZombie);
-						totalZombies--;
-					}
-					break;
-				}
-			} else if (p instanceof SunPlant) {
-				sun += ((SunPlant)p).getSunTick();
+	    if(Zombie != null) {
+	    	for(int i = 0; i< Zombie.size(); i++) {
+				System.out.println("Name: " + Zombie.get(i).getName() + " Index: " + Zombie.get(i).getX() + "," + Zombie.get(i).getY());
 			}
-		}
-    }
-    
-    /**
-     * The action of the zombies in this turn: spawning zombie, attacking plants, or moving forward
-     */
-    private void zombieAction() {
-    	// Zombie spawn
-        if (true) {
-            // zombies.add(new BasicZombie(0));
-        }
-    	
-    	for (Zombie z : Zombie) {
-        	boolean action = false;
-            for (Plant p : plants) {
-                if (z.getX() == p.getX() && z.getY() == p.getY()) {
-                    p.takeDamage(z.getDamage());
-                    if (p.getHealth() <= 0) {
-                        plants.remove(p);
-                    }
-                    action = true;
-                    break;
-                }
-            }
-            if (!action) {
-            	z.setX(z.getX() - z.getMoveSpeed());
-            }
-        }
-    }
+	    }
+	    else {
+	    	System.out.println("There is no Zombie in the map.");
+	    }
+	    System.out.println("Sun: " + sun);
+	    String s = "Available plants: ";
+	    if(sun >= 25) {
+	    	 s += "Sunflower ";
+	     }
+	    if(sun >= 30) {
+	    	 s += "Peashooter ";
+	     }
+	    System.out.println(s);
+	}
+   
     
     /**
      * Check whether the zombie(s) cross the whole line
@@ -249,7 +132,7 @@ public class Game {
 	 */
 	public void setflower(int x, int y) {
 		if (sun >= 10) {
-			Sunflower flower = new Sunflower(x, y);
+			Sunflower flower = new Sunflower(x, y);  
 			if (plants.add(flower)) {
 				sun = sun - 10;
 				System.out.println("You create an new sunflower.");
@@ -268,5 +151,6 @@ public class Game {
 	public static void main(String[] args)
 	{
 		Game g = new Game();
+		
     }
 }

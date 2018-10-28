@@ -1,4 +1,5 @@
 
+
 /**
  * Represents plants.
  * 
@@ -8,15 +9,20 @@
 public class Plant extends Entity
 {
 	private int health;
+	private String name;
+	
+	
 	
 	/**
 	 * 
 	 * @param health The plant's health
 	 */
-	protected Plant(int x, int y, int health)
+	protected Plant(int x, int y, int health, String name)
 	{
 		super (x, y);
 		this.health = health;
+		this.name = name;
+	
 	}
 	
 	/**
@@ -36,4 +42,9 @@ public class Plant extends Entity
 	{
 		this.health -= amount;
 	}
+	
+	public String getName() {
+		return name;
+	}
+	
 }

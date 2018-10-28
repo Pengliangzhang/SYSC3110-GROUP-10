@@ -8,6 +8,7 @@
 public class Zombie extends Entity
 {
 	private int damage, health, moveSpeed, attackSpeed;
+	private String name;
 	
 	/**
 	 * Constructor for all zombies.
@@ -17,13 +18,14 @@ public class Zombie extends Entity
 	 * @param moveSpeed Ticks required to move 1 space forward
 	 * @param attackSpeed Ticks between attacks
 	 */
-	protected Zombie(int x, int y, int damage, int health, int moveSpeed, int attackSpeed)
+	protected Zombie(int x, int y, int damage, int health, int moveSpeed, int attackSpeed, String name)
 	{
 		super(x, y);
 		this.damage = damage;
 		this.health = health;
 		this.moveSpeed = moveSpeed;
 		this.attackSpeed = attackSpeed;
+		this.name = name;
 	}
 	
 	/**
@@ -69,5 +71,9 @@ public class Zombie extends Entity
 	public void takeDamage(int amount)
 	{
 		this.health -= amount;
+	}
+	
+	public String getName() {
+		return name;
 	}
 }
