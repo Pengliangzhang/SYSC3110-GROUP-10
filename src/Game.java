@@ -3,7 +3,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Game {
-	private int tickNumber, sun, totalZombies;
+	private int tickNumber, sun, totalZombies, zombieUnshowed;
 	private ArrayList<Plant> plants = new ArrayList<Plant>();
 	private ArrayList<Zombie> Zombie = new ArrayList<Zombie>();
 	private String input = "";
@@ -15,6 +15,7 @@ public class Game {
 	private Game() {
 		sun = 50;
 		totalZombies = 10; // might be changed
+		zombieUnshowed = 10;
 		tickNumber = 0;
 		titleScreen();
 	}
@@ -53,7 +54,7 @@ public class Game {
 	 */
 	private void taketurn() {
 		// increase the sun
-		sun += 10;
+		sun += 50;
 
 		// Print the map
 		printMap();
@@ -91,7 +92,7 @@ public class Game {
 	private void printMap() {
 		for(Zombie zombie : Zombie) {
 			if(zombie instanceof BasicZombie) {
-				System.out.println("There have a zombie at (" + zombie.getX() + ' '+zombie.getY() + ")");
+				System.out.println("There have a zombie at (" + zombie.getX() + ' '+zombie.getY() + ")" + zombie.getHealth());
 			}
 		}
 		for (Plant plant:plants) {
@@ -101,7 +102,6 @@ public class Game {
 				System.out.println("There have a damage-plant at (" + plant.getX() + ' '+plant.getY() + ")");
 			}
 		}
-		
 	}
 
 	/**
@@ -123,8 +123,6 @@ public class Game {
 				input = console.nextLine();
 				if (input.equals("sunflower") || input.equals("peashooter")) {
 					String pType = input;
-					int row = -1;
-					int column = -1;
 					while (true) {
 						System.out.println("Enter the place you wanna drop (row column):");
 						String position = console.nextLine();
@@ -133,10 +131,10 @@ public class Game {
 						String[] entity = position.split("\\s+");
 						x = Integer.valueOf(entity[0]);
 						y = Integer.valueOf(entity[1]);
-						if ((x >= 1 && x <= 5) && (y <= 10 && y >= 1)) {
+						if(isEmpty(x, y)) {
 							setplant(x, y, input);
-							break;
 						}
+						break;
 					}
 					break;
 				}
@@ -154,17 +152,16 @@ public class Game {
 			if (p instanceof DamagePlant) {
 				Zombie firstZombie = null;
 				for (Zombie z : Zombie) {
-					if (p.getY() == z.getY() && (firstZombie == null || firstZombie.getX() > z.getX())) {
+					if (p.getX() == z.getX() && (firstZombie == null || firstZombie.getY() > z.getY())) {
 						firstZombie = z;
 					}
 				}
 				if (firstZombie != null) {
-					firstZombie.takeDamage(((DamagePlant) p).getDamageTick());
+					firstZombie.takeDamage(((DamagePlant) p).getDamage());
 					if (firstZombie.getHealth() <= 0) {
 						Zombie.remove(firstZombie);
 						totalZombies--;
 					}
-					break;
 				}
 			} else if (p instanceof SunPlant) {
 				sun += ((SunPlant) p).getSunTick();
@@ -179,17 +176,6 @@ public class Game {
 	 * @author OliverL, BeckZ
 	 */
 	private void zombieAction() {
-		// Zombie spawn
-		Random rand = new Random();
-		int n = rand.nextInt(5) + 1;
-		if (tickNumber == 0) {
-			Zombie z = new BasicZombie(n);
-			Zombie.add(z);
-		} else if ((tickNumber % 2) == 0) {
-			Zombie z = new BasicZombie(n);
-			Zombie.add(z);
-		}
-
 		for (Zombie z : Zombie) {
 			boolean action = false;
 			for (Plant p : plants) {
@@ -203,7 +189,21 @@ public class Game {
 				}
 			}
 			if (!action) {
-				z.setY(z.getY() + z.getMoveSpeed());
+				z.setY(z.getY() - z.getMoveSpeed());
+			}
+		}
+		// Zombie spawn
+		if (zombieUnshowed > 0) {
+			Random rand = new Random();
+			int n = rand.nextInt(5) + 1;
+			if (tickNumber == 0) {
+				Zombie z = new BasicZombie(n);
+				Zombie.add(z);
+				zombieUnshowed--;
+			} else if ((tickNumber % 2) == 0) {
+				Zombie z = new BasicZombie(n);
+				Zombie.add(z);
+				zombieUnshowed--;
 			}
 		}
 	}
@@ -215,7 +215,7 @@ public class Game {
 	 */
 	private boolean zombieCrossTheLine() {
 		for (Zombie z : Zombie) {
-			if (z.getX() < 0) {
+			if (z.getY() <= 0) {
 				return true;
 			}
 		}
@@ -231,11 +231,11 @@ public class Game {
 	 *         already has plant or invalid
 	 */
 	private boolean isEmpty(int row, int column) {
-		if (row < 0 || row > 4 || column < 0 || column > 8) {
+		if (row<1 || row> 5 || column < 1 || column > 10) {
 			return false;
 		}
 		for (Plant p : plants) {
-			if (p.getX() == column && p.getY() == row) {
+			if (p.getX() == row && p.getY() == column) {
 				return false;
 			}
 		}
