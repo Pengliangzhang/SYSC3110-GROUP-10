@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Game {
@@ -58,12 +59,31 @@ public class Game {
     
 	
 	private void printMap() {
+		 System.out.println("Sun: " + sun);
+		    String s = "Available plants: ";
+		    if(sun >= 25) {
+		    	 s += "Sunflower ";
+		     }
+		    if(sun >= 30) {
+		    	 s += "Peashooter ";
+		     }
+		    System.out.println(s);
+		    
+		String[][] a = new String[5][10];
+		 
+		for(int i=0;i<5;i++) {
+			Arrays.fill(a[i], " ");
+		}
+		
 		if(plants != null) {
-			String a = "Plants: ";
-			for(int i = 0; i< plants.size(); i++) {
-				a += (i+1) + "("+  "Name: " + plants.get(i).getName() + " Index: " + plants.get(i).getX() + "," + plants.get(i).getY() + ")  ";
-			}
-			System.out.println(a);
+			 for(int i = 0; i<plants.size();i++) {
+				 if(plants.get(i) instanceof Sunflower) {
+					 a[plants.get(i).getX()-1][plants.get(i).getY()-1] = "s";
+				 }
+				 else if (plants.get(i) instanceof Peashooter) {
+					 a[plants.get(i).getX()-1][plants.get(i).getY()-1] = "p";
+				 }
+			 }
 		}
 		else {
 			System.out.println("You didn't place any plants.");
@@ -71,21 +91,17 @@ public class Game {
 		
 	    if(Zombie != null) {
 	    	for(int i = 0; i< Zombie.size(); i++) {
-				System.out.println("Name: " + Zombie.get(i).getName() + " Index: " + Zombie.get(i).getX() + "," + Zombie.get(i).getY());
+				if(Zombie.get(i) instanceof BasicZombie) {
+					a[Zombie.get(i).getX()][Zombie.get(i).getY()] = "z";
+				}
 			}
 	    }
 	    else {
 	    	System.out.println("There is no Zombie in the map.");
 	    }
-	    System.out.println("Sun: " + sun);
-	    String s = "Available plants: ";
-	    if(sun >= 25) {
-	    	 s += "Sunflower ";
-	     }
-	    if(sun >= 30) {
-	    	 s += "Peashooter ";
-	     }
-	    System.out.println(s);
+	    for(int i =0; i<5;i++) {
+	    	System.out.println(Arrays.toString(a[i]));
+	    }
 	}
    
     
