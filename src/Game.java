@@ -32,7 +32,8 @@ public class Game {
 			input = console.nextLine();
 			if (input.equals("play") || input.equals("exit")) {
 				goodInput = true;
-				console.close();
+				// console.close();
+				taketurn();
 			}
 		}
 	}
@@ -111,19 +112,15 @@ public class Game {
      */
     private void userTurn() {
     	Scanner console = new Scanner(System.in);
-		String input = "";
-		while (true)
-		{
+		while (true) {
 			System.out.println("Enter the action at this turn (pass/drop):");
 			input = console.nextLine();
-			if (input.equals("pass") || input.equals("drop"))
-			{
+			if (input.equals("pass") || input.equals("drop")) {
 				break;
 			}
 		}
 		
-		if (input.equals("drop"))
-		{
+		if (input.equals("drop")) {
             while (true) {
                 System.out.println("Enter the plant you wanna drop (sunflower/peashooter):");
                 input = console.nextLine();
@@ -138,7 +135,7 @@ public class Game {
                         row = Integer.parseInt(entity[0]);
                         column = Integer.parseInt(entity[1]);
                         if (isEmpty(row, column)) {
-                            if (pType.equals("sunflower")){
+                            if (pType.equals("sunflower")) {
                                 plants.add(new Sunflower(column, row));
                             } else {
                                 plants.add(new Peashooter(column, row));
@@ -146,7 +143,7 @@ public class Game {
                             break;
                         }
                     }
-                    console.close();
+                    // console.close();
                     break;
 			    }
             }
@@ -228,11 +225,13 @@ public class Game {
      * @return True if no plant is in that coordinate, false if this coordinate already has plant or invalid
      */
     private boolean isEmpty(int row, int column) {
-        if (row < 0 || row > 4 || column < 0 || column > 8) {
+        if (row <= 0 || row > 5 || column <= 0 || column > 9) {
+        	System.out.println("Invalid position.");
             return false;
         }
         for (Plant p : plants) {
             if (p.getX() == column && p.getY() == row) {
+            	System.out.println("There is a plant in this position.");
                 return false;
             }
         }
