@@ -70,9 +70,46 @@ public class Game {
     	sun += 10; 
         
         // Print the map
+    	printMap();
+    	
+        // User turn
+    	userTurn();
+        
+        // Plant turn
+		plantAction();
+		
+        // Check winner
+        if (totalZombies == 0) {
+            // Player win
+        	System.out.println("Player win");
+        	System.exit(0);
+        }
 
-        // Prompt user
-        Scanner console = new Scanner(System.in);
+        // Zombie spawn
+        if (false) {
+            // zombies.add(new BasicZombie(0));
+        }
+
+        // Zombie turn
+        zombieAction();
+        
+        // Check winner
+        if (zombieCrossTheLine()) {
+            // Zombie win
+        	System.out.println("Zombie win");
+        	System.exit(0);
+        } else {
+        	tickNumber++;
+            taketurn();
+        }
+    }
+    
+    private void printMap() {
+    	
+    }
+    
+    private void userTurn() {
+    	Scanner console = new Scanner(System.in);
 		String input = "";
 		while (true)
 		{
@@ -112,15 +149,14 @@ public class Game {
                     break;
 			    }
             }
-            
-            
 		}
-        
-        // Plant turn
-		for (Plant p : plants) {
+    }
+    
+    private void plantAction() {
+    	for (Plant p : plants) {
 			if (p instanceof DamagePlant) {
 				Zombie firstZombie = null;
-				for (Zombie z : zombies) {
+				for (Zombie z : Zombie) {
 					if (p.getY() == z.getY() && (firstZombie == null || firstZombie.getX() > z.getX())) {
 						firstZombie = z;
 					}
@@ -128,31 +164,19 @@ public class Game {
 				if (firstZombie != null) {
 					firstZombie.takeDamage(((DamagePlant)p).getDamageTick());
 					if (firstZombie.getHealth() <= 0) {
-						zombies.remove(firstZombie);
+						Zombie.remove(firstZombie);
 						totalZombies--;
 					}
-					console.close();
 					break;
 				}
 			} else if (p instanceof SunPlant) {
 				sun += ((SunPlant)p).getSunTick();
 			}
 		}
-		
-        // Check winner
-        if (totalZombies == 0) {
-            // Player win
-        	System.out.println("Player win");
-        	System.exit(0);
-        }
-
-        // Zombie spawn
-        if (false) {
-            // zombies.add(new BasicZombie(0));
-        }
-
-        // Zombie turn
-        for (Zombie z : zombies) {
+    }
+    
+    private void zombieAction() {
+    	for (Zombie z : Zombie) {
         	boolean action = false;
             for (Plant p : plants) {
                 if (z.getX() == p.getX() && z.getY() == p.getY()) {
@@ -168,16 +192,6 @@ public class Game {
             	z.setX(z.getX() - z.getMoveSpeed());
             }
         }
-        
-        // Check winner
-        if (zombieCrossTheLine()) {
-            // Zombie win
-        	System.out.println("Zombie win");
-        	System.exit(0);
-        } else {
-        	tickNumber++;
-            taketurn();
-        }
     }
     
     /**
@@ -186,7 +200,7 @@ public class Game {
      * @return True if at least one zombie cross the line, false otherwise
      */
     private boolean zombieCrossTheLine() {
-        for (Zombie z : zombies) {
+        for (Zombie z : Zombie) {
             if (z.getX() < 0) {
                 return true;
             }
