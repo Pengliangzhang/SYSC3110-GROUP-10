@@ -8,7 +8,7 @@ public class Game {
 	private String input = "";
 
 	/**
-	 * Constractor for the game class
+	 * @desc Constractor for the game class
 	 */
 	private Game() {
 		sun = 0;
@@ -18,7 +18,8 @@ public class Game {
 	}
 	
 	/**
-	 * Title screen, the first thing showed when the game was run 
+	 * @desc Title screen, the first thing showed when the game was run
+	 * @author BeckZ, Kevin
 	 */
 	private void titleScreen()
 	{
@@ -31,18 +32,25 @@ public class Game {
 			System.out.println("Enter \"play\" to play, and \"exit\" to quit.");
 			input = console.nextLine();
 			if (input.equals("play") || input.equals("exit")) {
+				if(input.equals("exit")) {
+					goodInput = false;
+					console.close();
+					System.out.println("Thanks for playing our game again!");
+				}
 				goodInput = true;
-				console.close();
+				taketurn();
 			}
 		}
 	}
 
 	/**
-	 * @
+	 * @desc change the position for all zombies
+	 * 
 	 */
 	public void changePosition() {
 		for (Zombie zombie : Zombie) {
-			// zombie.
+			int currY = zombie.getY();
+			zombie.setY(currY +1);
 		}
 		if (input.equals("play"))
 
@@ -241,6 +249,6 @@ public class Game {
      */
 	public static void main(String[] args)
 	{
-		Game g = new Game();
+		Game game = new Game();
     }
 }
