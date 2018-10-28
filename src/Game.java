@@ -92,7 +92,12 @@ public class Game {
 	    if(Zombie != null) {
 	    	for(int i = 0; i< Zombie.size(); i++) {
 				if(Zombie.get(i) instanceof BasicZombie) {
-					a[Zombie.get(i).getX()][Zombie.get(i).getY()] = "z";
+					if(a[Zombie.get(i).getX()-1][Zombie.get(i).getY()-1] == " ") {
+					a[Zombie.get(i).getX()-1][Zombie.get(i).getY()-1] = "z";	
+					}
+					else {
+						a[Zombie.get(i).getX()-1][Zombie.get(i).getY()-1] = a[Zombie.get(i).getX()-1][Zombie.get(i).getY()-1] + "/z";
+					}
 				}
 			}
 	    }
@@ -146,6 +151,11 @@ public class Game {
 	 * @param y, the y position for the sun flower
 	 * @return null
 	 */
+    public void setZ(int x) {
+    	BasicZombie a = new BasicZombie(x);    
+    	Zombie.add(a);
+    }
+    
 	public void setflower(int x, int y) {
 		if (sun >= 10) {
 			Sunflower flower = new Sunflower(x, y);  
