@@ -15,7 +15,7 @@ public class Game {
 	private String input = "";
 
 	/**
-	 * @desc Constractor for the game class
+	 * @desc Constructor for the game class
 	 * @author BeckZ
 	 */
 	private Game() {
@@ -27,7 +27,8 @@ public class Game {
 	}
 
 	/**
-	 * @desc Title screen, the first thing showed when the game was run
+	 * Title "screen", prompts the user to start a game or exit.
+	 * 
 	 * @author BeckZ, Kevin
 	 */
 	private void titleScreen() {
@@ -36,7 +37,8 @@ public class Game {
 		Scanner console = new Scanner(System.in);
 		boolean goodInput = false;
 
-		while (!goodInput) {
+		while (!goodInput)
+		{
 			System.out.println("Enter \"play\" to play, and \"exit\" to quit.");
 			input = console.nextLine();
 			if (input.equals("play") || input.equals("exit")) {
@@ -52,11 +54,15 @@ public class Game {
 	}
 
 	/**
-	 * Take one turn, every turn has following step: 1. increase the sun 2. print
-	 * the map 3. prompt user (drop a plant on the map or do nothing) 4. plants'
-	 * actions (attack the zombie in their line) 5. check if user win this game 6.
-	 * zombie spawn 7. zombies' actions (attack plants or move on) 8. check if user
-	 * lost this game
+	 * Take one turn, every turn has following step: 
+	 * 1. increase the sun 
+	 * 2. print the map
+	 * 3. prompt user (drop a plant on the map or do nothing)
+	 * 4. plants' actions (attack the zombie in their row)
+	 * 5. check if user win this game
+	 * 6. zombies spawn
+	 * 7. zombies' actions (attack plants or move on)
+	 * 8. check if user lost this game
 	 * 
 	 * @author Xinrui Li
 	 */
@@ -167,7 +173,7 @@ public class Game {
 		}
 		if (input.equals("drop")) {
 			while (true) {
-				System.out.println("Enter the plant you wanna drop (sunflower/peashooter):");
+				System.out.println("Enter the plant you want to drop (sunflower/peashooter):");
 				input = console.nextLine();
 				if (input.equals("sunflower") || input.equals("peashooter")) {
 					String pType = input;
@@ -187,8 +193,8 @@ public class Game {
 					break;
 				}
 			}
-
 		}
+		console.close();
 	}
 
 	/**
@@ -313,7 +319,7 @@ public class Game {
 		} else if (sun >= 50 && type.equals("peashooter")) {
 			Peashooter plant = new Peashooter(x, y);
 			if (plants.add(plant)) {
-				sun = sun - plant.getSun();
+				sun = sun - plant.getSunCost();
 				System.out.println("You create an new Peashooter.");
 				return;
 			}
