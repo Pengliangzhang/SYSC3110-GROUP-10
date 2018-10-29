@@ -4,26 +4,24 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * This class create a text-based Plants vs Zombie game
+ * This class creates a text-based Plants vs Zombie game
+ * 
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
  * @version Oct 28, 2018
  */
-public class Game {
-	private int tickNumber, sun, totalZombies, zombieUnshowed;
+public class Game
+{
+	private int tickCount, sun, totalZombies, remainingZombies;
 	private ArrayList<Plant> plants = new ArrayList<Plant>();
 	private ArrayList<Zombie> zombies = new ArrayList<Zombie>();
-	private String input = "";
 
 	/**
-	 * @desc Constructor for the game class
+	 * Initializes the game.
+	 * 
 	 * @author BeckZ
 	 */
 	private Game()
 	{
-		sun = 50;
-		totalZombies = 10; // might be changed
-		zombieUnshowed = 10;
-		tickNumber = 0;
 		titleScreen();
 	}
 
@@ -36,14 +34,26 @@ public class Game {
 	{
 		System.out.println("Welcome to SYSC3110 Group 10's PvZ, Console Vers.");
 
+		// TODO closing the Scanner causes errors
 		Scanner console = new Scanner(System.in);
+		boolean goodInput = false;
+		String input = "";
 
-		while (true)
+		while (!goodInput)
 		{
 			System.out.println("Enter \"play\" to play, and \"exit\" to quit.");
 			input = console.nextLine();
 			if (input.equals("play"))
 			{
+				// initialize the zombies, and give the player some sun to start off with
+				sun = 50;
+				totalZombies = 10; // may be changed in the future
+				remainingZombies = 10;
+				tickCount = 0;
+				
+				//console.close();
+				
+				// start Turn 1
 				takeTurn();
 			}
 			else if (input.equals("exit"))
@@ -56,7 +66,7 @@ public class Game {
 
 	/**
 	 * Take one turn, every turn has following step: 
-	 * 1. increase the sun 
+	 * 1. increment sun by 25 (natural sun generation)
 	 * 2. print the map
 	 * 3. prompt user (drop a plant on the map or do nothing)
 	 * 4. plants' actions (attack the zombie in their row)
@@ -85,7 +95,7 @@ public class Game {
 		if (totalZombies == 0)
 		{
 			// Player win
-			System.out.println("Player win");
+			System.out.println("All zombies are eliminated.\nYou have won!");
 			System.exit(0);
 		}
 
@@ -96,12 +106,12 @@ public class Game {
 		if (checkZombieWin())
 		{
 			// Zombie win
-			System.out.println("Zombie win");
+			System.out.println("The zombies ate your brains!\nGame over.");
 			System.exit(0);
 		}
 		else
 		{
-			tickNumber++;
+			tickCount++;
 			takeTurn();
 		}
 	}
@@ -113,7 +123,10 @@ public class Game {
 	 */
 	private void printMap()
 	{
-		System.out.println("Sun: " + sun);
+		// current amount of sun at the player's disposal
+		System.out.println("Available Sun: " + sun);
+		
+		// plants that can be planted
 	    String s = "Available plants: ";
 	    if (sun >= 25)
 	    {
@@ -124,24 +137,27 @@ public class Game {
 	    	 s += "Peashooter ";
 	    }
 	    System.out.println(s.trim());
-	    String[][] a = new String[5][10];
-	 
+	    
+	    
+	    // text based representation of the board
+	    String[][] board = new String[5][10];
 		for (int i = 0; i < 5; i++)
 		{
-			Arrays.fill(a[i], " ");
+			Arrays.fill(board[i], " ");
 		}
 		
+		// print out the plants
 		if (plants != null)
 		{
 			 for(Plant plant : plants)
 			 {
 				 if(plant instanceof Sunflower)
 				 {
-					 a[plant.getX() - 1][plant.getY() - 1] = "s";
+					 board[plant.getX() - 1][plant.getY() - 1] = "s";
 				 }
 				 else if (plant instanceof Peashooter)
 				 {
-					 a[plant.getX() - 1][plant.getY() - 1] = "p";
+					 board[plant.getX() - 1][plant.getY() - 1] = "p";
 				 }
 			 }
 		}
@@ -150,87 +166,103 @@ public class Game {
 			System.out.println("You didn't place any plants.");
 		}
 		
+		// print out the zombies
 	    if(zombies != null)
 	    {
 	    	for	(Zombie zombie : zombies)
 	    	{
 				if (zombie instanceof BasicZombie)
 				{
-					if(a[zombie.getX() - 1][zombie.getY() - 1] == " ")
+					if(board[zombie.getX() - 1][zombie.getY() - 1] == " ")
 					{
-						a[zombie.getX() - 1][zombie.getY() - 1] = "z";	
+						board[zombie.getX() - 1][zombie.getY() - 1] = "z";	
 					}
 					else
 					{
-						a[zombie.getX() - 1][zombie.getY() - 1] = a[zombie.getX() - 1][zombie.getY() - 1] + "/z";
+						board[zombie.getX() - 1][zombie.getY() - 1] = board[zombie.getX() - 1][zombie.getY() - 1] + "/z";
 					}
 				}
 			}
 	    }
 	    else
 	    {
-	    	System.out.println("There is no zombies in the map.");
+	    	System.out.println("There are no zombies on the map.");
 	    }
 	    
 	    for(int i = 0; i < 5; i++)
 	    {
-	    	System.out.println(Arrays.toString(a[i]));
+	    	System.out.println(Arrays.toString(board[i]));
 	    }
 	}
 
 	/**
-	 * User action in this turn, user can select drop plant or pass the turn
+	 * User action in this turn, they can either drop a plant or pass the turn
 	 * 
 	 * @author Xinrui Li
 	 */
 	private void userTurn()
 	{
+		// TODO closing the Scanner causes errors
 		Scanner console = new Scanner(System.in);
 		String input = "";
+		boolean goodInput = false;
 		
-		while (true)
+		while (!goodInput)
 		{
-			System.out.println("Enter the action at this turn (pass/drop):");
+			System.out.println("\n\nWhat would you like to do? (pass/drop):");
 			input = console.nextLine().trim();
 			if (input.equals("pass"))
 			{
-				console.close();
+				//console.close();
 				return;
 			}
 			else if (input.equals("drop"))
 			{
-				while (true)
+				goodInput = true;
+			}
+		}
+		
+		goodInput = false;
+		while (!goodInput)
+		{
+			System.out.println("Which plant do you want to drop? (sunflower/peashooter):");
+			input = console.nextLine().trim();
+			
+			if (input.equals("sunflower") || input.equals("peashooter"))
+			{
+				goodInput = true;
+			}
+		}
+		
+		goodInput = false;
+		while (!goodInput)
+		{
+			System.out.println("Enter the coordinates at which the plant should be placed. (row column):");
+			String position = console.nextLine();
+			String[] entity = position.split("\\s+");
+			if (entity.length == 2)
+			{
+				int x = Integer.valueOf(entity[0]);
+				int y = Integer.valueOf(entity[1]);
+				if (isEmpty(x, y))
 				{
-					System.out.println("Enter the plant you want to drop (sunflower/peashooter):");
-					input = console.nextLine().trim();
-					
-					if (input.equals("sunflower") || input.equals("peashooter"))
-					{
-						while (true)
-						{
-							System.out.println("Enter the place you wanna drop (row column):");
-							String position = console.nextLine();
-							int x = 0;
-							int y = 0;
-							String[] entity = position.split("\\s+");
-							x = Integer.valueOf(entity[0]);
-							y = Integer.valueOf(entity[1]);
-							if (isEmpty(x, y))
-							{
-								plantAPlant(x, y, input);
-								console.close();
-								return;
-							}
-						}
-					}
+					plantAPlant(x, y, input);
+					goodInput = true;
+					//console.close();
+					return;
+				}
+				else
+				{
+					System.out.println("That spot is already occupied.");
 				}
 			}
 		}
 	}
 
 	/**
-	 * The action of the plants in this turn: generating sun, attacking zombies, or
-	 * standing by
+	 * This method takes care of all plants' actions.
+	 * The plants will generate sun, attack zombies in their row, or be on standby.
+	 * 
 	 * @author Xinrui Li
 	 */
 	private void plantAction()
@@ -265,9 +297,9 @@ public class Game {
 	}
 
 	/**
-	 * The method will check the position for sun-flower and zombie, if zombie
-	 * and sun-flower at same position, sun-flower get attack, otherwise zombie
-	 * move forward.
+	 * This method takes care of all zombies' actions.
+	 * The zombies will attack, if there is a plant in front of it.
+	 * Otherwise, they will advance.
 	 * 
 	 * @author Xinrui Li, BeckZ
 	 */
@@ -297,30 +329,30 @@ public class Game {
 		
 		
 		// Zombies spawn
-		if (zombieUnshowed > 0)
+		if (remainingZombies > 0)
 		{
 			Random rand = new Random();
 			int n = rand.nextInt(5) + 1;
-			if (tickNumber == 0)
+			if (tickCount == 0)
 			{
 				Zombie z = new BasicZombie(n);
 				zombies.add(z);
-				zombieUnshowed--;
+				remainingZombies--;
 			}
-			else if ((tickNumber % 2) == 0)
+			else if ((tickCount % 2) == 0)
 			{
 				Zombie z = new BasicZombie(n);
 				zombies.add(z);
-				zombieUnshowed--;
+				remainingZombies--;
 			}
 		}
 	}
 
 	/**
-	 * Check whether the zombie(s) cross the whole line
+	 * Check for zombies that have arrived at the player's doorstep, which signals a zombie victory.
 	 * 
 	 * @author Xinrui Li
-	 * @return True if at least one zombie cross the line, false otherwise
+	 * @return true if at least one zombie has arrived at the player's doorstep, false otherwise
 	 */
 	private boolean checkZombieWin()
 	{
@@ -335,13 +367,12 @@ public class Game {
 	}
 
 	/**
-	 * Check the entity in the map is empty (no plant in this coordinate)
+	 * Check if the position given by the coordinates is empty, so that a plant may be placed there. 
 	 * 
 	 * @author Xinrui Li
-	 * @param row    The y of the entity
-	 * @param column The x of the entity
-	 * @return True if no plant is in that coordinate, false if this coordinate
-	 *         already has plant or invalid
+	 * @param row 
+	 * @param column
+	 * @return false if the coordinates are out of bounds or the position given by the coordinates is taken, true otherwise
 	 */
 	private boolean isEmpty(int row, int column)
 	{
@@ -361,12 +392,11 @@ public class Game {
 	}
 
 	/**
-	 * This method will set the position for the sun flowers, consume 10 sun
-	 * for each sun flower
+	 * This method will place the given plant at the given coordinates.
+	 * 
 	 * @author BeckZ
-	 * @param x, the x position for the plant
-	 * @param y, the y position for the plant
-	 * @return null
+	 * @param x The column number for the plant
+	 * @param y The row number for the plant
 	 */
 	public void plantAPlant(int x, int y, String type)
 	{
@@ -376,9 +406,11 @@ public class Game {
 			if (plants.add(plant))
 			{
 				sun = sun - plant.getSun();
-				System.out.println("You created an new sunflower.");
+				System.out.println("Sunflower placed at (" + x + ", " + y + ")");
 				return;
 			}
+			
+			// TODO this should never happen, since we have already checked the required conditions
 			System.out.println("Unable to create a new sunflower!");
 		}
 		else if (sun >= 50 && type.equals("peashooter"))
@@ -387,21 +419,21 @@ public class Game {
 			if (plants.add(plant))
 			{
 				sun = sun - plant.getSunCost();
-				System.out.println("You create an new Peashooter.");
+				System.out.println("Peashooter placed at (" + x + ", " + y + ")");
 				return;
 			}
+			
+			// TODO again, this should never happen
 			System.out.println("Unable to create a new Peashooter!");
 		}
 		else
 		{
+			// TODO should never happen, since we check the conditions before
 			System.out.println("You do not have enough sun!");
 			return;
 		}
 	}
-
-	/**
-	 * Auto-generate method
-	 */
+	
 	public static void main(String[] args)
 	{
 		Game game = new Game();
