@@ -56,7 +56,12 @@ public class Game {
 			System.exit(0);
 		}
     }
-    
+    /*
+     * printMap function allows the user to print the index of exist zombies and plants. 
+     * if the space is empty, plant or zombie will be put individually, 
+     * if the space is not empty, they will be put together. Moreover, 
+     * the amount of sun which user owns and the available plants will be print as well
+     */
 	
 	private void printMap() {
 		 System.out.println("Sun: " + sun);
