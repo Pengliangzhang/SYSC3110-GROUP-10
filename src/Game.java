@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -99,19 +100,54 @@ public class Game {
 	 * @author Xinrui Li
 	 */
 	private void printMap() {
-		System.out.println(sun);
-		for(Zombie zombie : Zombie) {
-			if(zombie instanceof BasicZombie) {
-				System.out.println("There have a zombie at (" + zombie.getX() + ' '+zombie.getY() + ")" + zombie.getHealth());
+		System.out.println("Sun: " + sun);
+	    String s = "Available plants: ";
+	    if(sun >= 25) {
+	    	 s += "Sunflower ";
+	     }
+	    if(sun >= 30) {
+	    	 s += "Peashooter ";
+	     }
+	    System.out.println(s);
+	    
+	String[][] a = new String[5][10];
+	 
+	for(int i=0;i<5;i++) {
+		Arrays.fill(a[i], " ");
+	}
+	
+	if(plants != null) {
+		 for(int i = 0; i<plants.size();i++) {
+			 if(plants.get(i) instanceof Sunflower) {
+				 a[plants.get(i).getX()-1][plants.get(i).getY()-1] = "s";
+			 }
+			 else if (plants.get(i) instanceof Peashooter) {
+				 a[plants.get(i).getX()-1][plants.get(i).getY()-1] = "p";
+			 }
+		 }
+	}
+	else {
+		System.out.println("You didn't place any plants.");
+	}
+	
+    if(Zombie != null) {
+    	for(int i = 0; i< Zombie.size(); i++) {
+			if(Zombie.get(i) instanceof BasicZombie) {
+				if(a[Zombie.get(i).getX()-1][Zombie.get(i).getY()-1] == " ") {
+				a[Zombie.get(i).getX()-1][Zombie.get(i).getY()-1] = "z";	
+				}
+				else {
+					a[Zombie.get(i).getX()-1][Zombie.get(i).getY()-1] = a[Zombie.get(i).getX()-1][Zombie.get(i).getY()-1] + "/z";
+				}
 			}
 		}
-		for (Plant plant:plants) {
-			if(plant instanceof Sunflower) {
-				System.out.println("There have a sunflower at (" + plant.getX() + ' '+plant.getY() + ")");
-			}else if(plant instanceof DamagePlant) {
-				System.out.println("There have a damage-plant at (" + plant.getX() + ' '+plant.getY() + ")");
-			}
-		}
+    }
+    else {
+    	System.out.println("There is no Zombie in the map.");
+    }
+    for(int i =0; i<5;i++) {
+    	System.out.println(Arrays.toString(a[i]));
+    }
 	}
 
 	/**
