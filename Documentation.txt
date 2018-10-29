@@ -1,0 +1,21 @@
+Design process
+    For our group project 
+        Firstly we talked about the game, and list all necessary function we need to acomplish. So, we think our the Plant VS Zombie should be able 
+        to create new game. During the game process, users have to make decision whether they want to pass the creating plant step or they want to create
+        a plant and put into the game map. Then, the game also need to create Zombies in random x position(x>=1 && x<=5) and from y=1(Y>=1 && Y<=10), so that
+        we create the zombie and plant class, which will make those zombie and plant be object in the game class. then we talked about details about how many 
+        suns are needed to create plants and how many times attacks will a demage plant kill a basic zombie. 
+    
+        Secondly, we dispatch all works to each team members, and everyone has to write there method and at the end, all works will be merged together.
+User Manual
+    1. Run Game.java
+    2. Enter play to play game, exit to exit game
+    3. What would you like to do? (pass/drop):
+        pass: do not create any plants for this round, game continue (Repeat step 3)
+        drop: creating a new plant
+    4. If(drop commend is entered)
+        Which plant do you want to drop? (sunflower/peashooter):
+        select plant type you wish to create (sunflower or peashooter)
+    5. Enter the coordinates at which the plant should be placed. (row column):
+        Decide where to put your plant, format example(row 1, column 1): 1 1   
+    6. Repeat step 3 untill zombie or user win the game
