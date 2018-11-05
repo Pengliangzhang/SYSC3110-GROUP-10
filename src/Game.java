@@ -3,26 +3,28 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
+import javax.swing.JFrame;
+
 /**
  * This class creates a text-based Plants vs Zombie game
  * 
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
  * @version Oct 28, 2018
  */
-public class Game
-{
+public class Game {
 	private int tickCount, sun, totalZombies, remainingZombies;
 	private ArrayList<Plant> plants = new ArrayList<Plant>();
 	private ArrayList<Zombie> zombies = new ArrayList<Zombie>();
+	private JFrame jframe;
 
 	/**
 	 * Initializes the game.
 	 * 
 	 * @author BeckZ
 	 */
-	private Game()
+	public Game()
 	{
-		titleScreen();
+		//titleScreen();
 	}
 
 	/**
