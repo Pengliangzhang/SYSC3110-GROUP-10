@@ -12,6 +12,7 @@ import javax.swing.JFrame;
  * @version Oct 28, 2018
  */
 public class Game {
+	
 	private int tickCount, sun, totalZombies, remainingZombies;
 	private ArrayList<Plant> plants = new ArrayList<Plant>();
 	private ArrayList<Zombie> zombies = new ArrayList<Zombie>();
@@ -22,9 +23,8 @@ public class Game {
 	 * 
 	 * @author BeckZ
 	 */
-	public Game()
-	{
-		//titleScreen();
+	public Game() {
+		// titleScreen();
 	}
 
 	/**
@@ -32,8 +32,7 @@ public class Game {
 	 * 
 	 * @author BeckZ, Kevin
 	 */
-	private void titleScreen()
-	{
+	private void titleScreen() {
 		System.out.println("Welcome to SYSC3110 Group 10's PvZ, Console Vers.");
 
 		// TODO closing the Scanner causes errors
@@ -41,25 +40,21 @@ public class Game {
 		boolean goodInput = false;
 		String input = "";
 
-		while (!goodInput)
-		{
+		while (!goodInput) {
 			System.out.println("Enter \"play\" to play, and \"exit\" to quit.");
 			input = console.nextLine();
-			if (input.equals("play"))
-			{
+			if (input.equals("play")) {
 				// initialize the zombies, and give the player some sun to start off with
 				sun = 50;
 				totalZombies = 10; // may be changed in the future
 				remainingZombies = 10;
 				tickCount = 0;
-				
-				//console.close();
-				
+
+				// console.close();
+
 				// start Turn 1
 				takeTurn();
-			}
-			else if (input.equals("exit"))
-			{
+			} else if (input.equals("exit")) {
 				System.out.println("Thanks for playing our game!");
 				System.exit(0);
 			}
@@ -67,20 +62,15 @@ public class Game {
 	}
 
 	/**
-	 * Take one turn, every turn has following step: 
-	 * 1. increment sun by 25 (natural sun generation)
-	 * 2. print the map
-	 * 3. prompt user (drop a plant on the map or do nothing)
-	 * 4. plants' actions (attack the zombie in their row)
-	 * 5. check if user win this game
-	 * 6. zombies spawn
-	 * 7. zombies' actions (attack plants or move on)
-	 * 8. check if user lost this game
+	 * Take one turn, every turn has following step: 1. increment sun by 25 (natural
+	 * sun generation) 2. print the map 3. prompt user (drop a plant on the map or
+	 * do nothing) 4. plants' actions (attack the zombie in their row) 5. check if
+	 * user win this game 6. zombies spawn 7. zombies' actions (attack plants or
+	 * move on) 8. check if user lost this game
 	 * 
 	 * @author Xinrui Li
 	 */
-	private void takeTurn()
-	{
+	private void takeTurn() {
 		// increase the sun
 		sun += 25;
 
@@ -94,8 +84,7 @@ public class Game {
 		plantAction();
 
 		// Check for player win
-		if (totalZombies == 0)
-		{
+		if (totalZombies == 0) {
 			// Player win
 			System.out.println("All zombies are eliminated.\nYou have won!");
 			System.exit(0);
@@ -105,14 +94,11 @@ public class Game {
 		zombieAction();
 
 		// Check for zombie win
-		if (checkZombieWin())
-		{
+		if (checkZombieWin()) {
 			// Zombie win
 			System.out.println("The zombies ate your brains!\nGame over.");
 			System.exit(0);
-		}
-		else
-		{
+		} else {
 			tickCount++;
 			takeTurn();
 		}
@@ -123,78 +109,58 @@ public class Game {
 	 * 
 	 * @author Xinrui Li
 	 */
-	private void printMap()
-	{
+	private void printMap() {
 		// current amount of sun at the player's disposal
 		System.out.println("Available Sun: " + sun);
-		
+
 		// plants that can be planted
-	    String s = "Available plants: ";
-	    if (sun >= 25)
-	    {
-	    	 s += "Sunflower ";
-	    }
-	    if (sun >= 30)
-	    {
-	    	 s += "Peashooter ";
-	    }
-	    System.out.println(s.trim());
-	    
-	    
-	    // text based representation of the board
-	    String[][] board = new String[5][10];
-		for (int i = 0; i < 5; i++)
-		{
+		String s = "Available plants: ";
+		if (sun >= 25) {
+			s += "Sunflower ";
+		}
+		if (sun >= 30) {
+			s += "Peashooter ";
+		}
+		System.out.println(s.trim());
+
+		// text based representation of the board
+		String[][] board = new String[5][10];
+		for (int i = 0; i < 5; i++) {
 			Arrays.fill(board[i], " ");
 		}
-		
+
 		// print out the plants
-		if (plants != null)
-		{
-			 for(Plant plant : plants)
-			 {
-				 if(plant instanceof Sunflower)
-				 {
-					 board[plant.getX() - 1][plant.getY() - 1] = "s";
-				 }
-				 else if (plant instanceof Peashooter)
-				 {
-					 board[plant.getX() - 1][plant.getY() - 1] = "p";
-				 }
-			 }
-		}
-		else
-		{
+		if (plants != null) {
+			for (Plant plant : plants) {
+				if (plant instanceof Sunflower) {
+					board[plant.getX() - 1][plant.getY() - 1] = "s";
+				} else if (plant instanceof Peashooter) {
+					board[plant.getX() - 1][plant.getY() - 1] = "p";
+				}
+			}
+		} else {
 			System.out.println("You didn't place any plants.");
 		}
-		
+
 		// print out the zombies
-	    if(zombies != null)
-	    {
-	    	for	(Zombie zombie : zombies)
-	    	{
-				if (zombie instanceof BasicZombie)
-				{
-					if(board[zombie.getX() - 1][zombie.getY() - 1] == " ")
-					{
-						board[zombie.getX() - 1][zombie.getY() - 1] = "z";	
-					}
-					else
-					{
-						board[zombie.getX() - 1][zombie.getY() - 1] = board[zombie.getX() - 1][zombie.getY() - 1] + "/z";
+		if (zombies != null) {
+			for (Zombie zombie : zombies) {
+				if (zombie instanceof BasicZombie) {
+					if (board[zombie.getX() - 1][zombie.getY() - 1] == " ") {
+						board[zombie.getX() - 1][zombie.getY() - 1] = "z";
+					} else {
+						board[zombie.getX() - 1][zombie.getY() - 1] = board[zombie.getX() - 1][zombie.getY() - 1]
+								+ "/z";
 					}
 				}
 			}
-	    }
-	    else
-	    {
-	    	System.out.println("There are no zombies on the map.");
-	    }
-	    
-	    for(int i = 0; i < 5; i++)
-	    {
-	    	System.out.println(Arrays.toString(board[i]));
-	    }
+		} else {
+			System.out.println("There are no zombies on the map.");
+		}
+
+		for (int i = 0; i < 5; i++) {
+			System.out.println(Arrays.toString(board[i]));
+		}
 	}
 
 	/**
@@ -202,59 +168,47 @@ public class Game {
 	 * 
 	 * @author Xinrui Li
 	 */
-	private void userTurn()
-	{
+	private void userTurn() {
 		// TODO closing the Scanner causes errors
 		Scanner console = new Scanner(System.in);
 		String input = "";
 		boolean goodInput = false;
-		
-		while (!goodInput)
-		{
+
+		while (!goodInput) {
 			System.out.println("\n\nWhat would you like to do? (pass/drop):");
 			input = console.nextLine().trim();
-			if (input.equals("pass"))
-			{
-				//console.close();
+			if (input.equals("pass")) {
+				// console.close();
 				return;
-			}
-			else if (input.equals("drop"))
-			{
+			} else if (input.equals("drop")) {
 				goodInput = true;
 			}
 		}
-		
+
 		goodInput = false;
-		while (!goodInput)
-		{
+		while (!goodInput) {
 			System.out.println("Which plant do you want to drop? (sunflower/peashooter):");
 			input = console.nextLine().trim();
-			
-			if (input.equals("sunflower") || input.equals("peashooter"))
-			{
+
+			if (input.equals("sunflower") || input.equals("peashooter")) {
 				goodInput = true;
 			}
 		}
-		
+
 		goodInput = false;
-		while (!goodInput)
-		{
+		while (!goodInput) {
 			System.out.println("Enter the coordinates at which the plant should be placed. (row column):");
 			String position = console.nextLine();
 			String[] entity = position.split("\\s+");
-			if (entity.length == 2)
-			{
+			if (entity.length == 2) {
 				int x = Integer.valueOf(entity[0]);
 				int y = Integer.valueOf(entity[1]);
-				if (isEmpty(x, y))
-				{
+				if (isEmpty(x, y)) {
 					plantAPlant(x, y, input);
 					goodInput = true;
-					//console.close();
+					// console.close();
 					return;
-				}
-				else
-				{
+				} else {
 					System.out.println("That spot is already occupied.");
 				}
 			}
@@ -262,87 +216,66 @@ public class Game {
 	}
 
 	/**
-	 * This method takes care of all plants' actions.
-	 * The plants will generate sun, attack zombies in their row, or be on standby.
+	 * This method takes care of all plants' actions. The plants will generate sun,
+	 * attack zombies in their row, or be on standby.
 	 * 
 	 * @author Xinrui Li
 	 */
-	private void plantAction()
-	{
-		for (Plant p : plants)
-		{
-			if (p instanceof DamagePlant)
-			{
+	private void plantAction() {
+		for (Plant p : plants) {
+			if (p instanceof DamagePlant) {
 				Zombie firstZombie = null;
-				for (Zombie z : zombies)
-				{
-					if (p.getX() == z.getX() && (firstZombie == null || firstZombie.getY() > z.getY()))
-					{
+				for (Zombie z : zombies) {
+					if (p.getX() == z.getX() && (firstZombie == null || firstZombie.getY() > z.getY())) {
 						firstZombie = z;
 					}
 				}
-				if (firstZombie != null)
-				{
+				if (firstZombie != null) {
 					firstZombie.takeDamage(((DamagePlant) p).getDamage());
-					if (firstZombie.getHealth() <= 0)
-					{
+					if (firstZombie.getHealth() <= 0) {
 						zombies.remove(firstZombie);
 						totalZombies--;
 					}
 				}
-			}
-			else if (p instanceof SunPlant)
-			{
+			} else if (p instanceof SunPlant) {
 				sun += ((SunPlant) p).generateSun();
 			}
 		}
 	}
 
 	/**
-	 * This method takes care of all zombies' actions.
-	 * The zombies will attack, if there is a plant in front of it.
-	 * Otherwise, they will advance.
+	 * This method takes care of all zombies' actions. The zombies will attack, if
+	 * there is a plant in front of it. Otherwise, they will advance.
 	 * 
 	 * @author Xinrui Li, BeckZ
 	 */
-	private void zombieAction()
-	{
-		for (Zombie z : zombies)
-		{
+	private void zombieAction() {
+		for (Zombie z : zombies) {
 			boolean action = false;
-			for (Plant p : plants)
-			{
-				if (z.getX() == p.getX() && z.getY() == p.getY())
-				{
+			for (Plant p : plants) {
+				if (z.getX() == p.getX() && z.getY() == p.getY()) {
 					p.takeDamage(z.getDamage());
-					if (p.getHealth() <= 0)
-					{
+					if (p.getHealth() <= 0) {
 						plants.remove(p);
 					}
 					action = true;
 					break;
 				}
 			}
-			if (!action)
-			{
+			if (!action) {
 				z.setY(z.getY() - z.getMoveSpeed());
 			}
 		}
-		
-		
+
 		// Zombies spawn
-		if (remainingZombies > 0)
-		{
+		if (remainingZombies > 0) {
 			Random rand = new Random();
 			int n = rand.nextInt(5) + 1;
-			if (tickCount == 0)
-			{
+			if (tickCount == 0) {
 				Zombie z = new BasicZombie(n);
 				zombies.add(z);
 				remainingZombies--;
-			}
-			else if ((tickCount % 2) == 0)
-			{
+			} else if ((tickCount % 2) == 0) {
 				Zombie z = new BasicZombie(n);
 				zombies.add(z);
 				remainingZombies--;
@@ -351,17 +284,16 @@ public class Game {
 	}
 
 	/**
-	 * Check for zombies that have arrived at the player's doorstep, which signals a zombie victory.
+	 * Check for zombies that have arrived at the player's doorstep, which signals a
+	 * zombie victory.
 	 * 
 	 * @author Xinrui Li
-	 * @return true if at least one zombie has arrived at the player's doorstep, false otherwise
+	 * @return true if at least one zombie has arrived at the player's doorstep,
+	 *         false otherwise
 	 */
-	private boolean checkZombieWin()
-	{
-		for (Zombie z : zombies)
-		{
-			if (z.getY() <= 0)
-			{
+	private boolean checkZombieWin() {
+		for (Zombie z : zombies) {
+			if (z.getY() <= 0) {
 				return true;
 			}
 		}
@@ -369,24 +301,22 @@ public class Game {
 	}
 
 	/**
-	 * Check if the position given by the coordinates is empty, so that a plant may be placed there. 
+	 * Check if the position given by the coordinates is empty, so that a plant may
+	 * be placed there.
 	 * 
 	 * @author Xinrui Li
-	 * @param row 
+	 * @param row
 	 * @param column
-	 * @return false if the coordinates are out of bounds or the position given by the coordinates is taken, true otherwise
+	 * @return false if the coordinates are out of bounds or the position given by
+	 *         the coordinates is taken, true otherwise
 	 */
-	private boolean isEmpty(int row, int column)
-	{
-		if (row < 1 || row > 5 || column < 1 || column > 10)
-		{
+	private boolean isEmpty(int row, int column) {
+		if (row < 1 || row > 5 || column < 1 || column > 10) {
 			return false;
 		}
-		
-		for (Plant p : plants)
-		{
-			if (p.getX() == row && p.getY() == column)
-			{
+
+		for (Plant p : plants) {
+			if (p.getX() == row && p.getY() == column) {
 				return false;
 			}
 		}
@@ -400,44 +330,36 @@ public class Game {
 	 * @param x The column number for the plant
 	 * @param y The row number for the plant
 	 */
-	public void plantAPlant(int x, int y, String type)
-	{
-		if (sun >= 25 && type.equals("sunflower"))
-		{
+	public void plantAPlant(int x, int y, String type) {
+		if (sun >= 25 && type.equals("sunflower")) {
 			Sunflower plant = new Sunflower(x, y);
-			if (plants.add(plant))
-			{
+			if (plants.add(plant)) {
 				sun = sun - plant.getSun();
 				System.out.println("Sunflower placed at (" + x + ", " + y + ")");
 				return;
 			}
-			
-			// TODO this should never happen, since we have already checked the required conditions
+
+			// TODO this should never happen, since we have already checked the required
+			// conditions
 			System.out.println("Unable to create a new sunflower!");
-		}
-		else if (sun >= 50 && type.equals("peashooter"))
-		{
+		} else if (sun >= 50 && type.equals("peashooter")) {
 			Peashooter plant = new Peashooter(x, y);
-			if (plants.add(plant))
-			{
+			if (plants.add(plant)) {
 				sun = sun - plant.getSunCost();
 				System.out.println("Peashooter placed at (" + x + ", " + y + ")");
 				return;
 			}
-			
+
 			// TODO again, this should never happen
 			System.out.println("Unable to create a new Peashooter!");
-		}
-		else
-		{
+		} else {
 			// TODO should never happen, since we check the conditions before
 			System.out.println("You do not have enough sun!");
 			return;
 		}
 	}
-	
-	public static void main(String[] args)
-	{
+
+	public static void main(String[] args) {
 		Game game = new Game();
 	}
 }
