@@ -358,6 +358,14 @@ public class Game {
 			return;
 		}
 	}
+	
+	/**
+	 * @desc get how many suns in current game
+	 * @return return number of sun
+	 * */
+	public int getSun() {
+		return sun;
+	}
 
 	public static void main(String[] args) {
 		Game game = new Game();
