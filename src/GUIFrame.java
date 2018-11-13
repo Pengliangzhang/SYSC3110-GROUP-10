@@ -1,24 +1,12 @@
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
+import java.awt.*;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 public class GUIFrame {
 
 	private JPanel pane; //top panel
 	private JPanel jlistPanel;
+	private JFrame jframe;
 	private GridBagConstraints c;
 	private Game game = new Game();
 	private JMenu Game;
@@ -33,7 +21,7 @@ public class GUIFrame {
 	 **/
 	public GUIFrame() {
 
-		JFrame jframe = new JFrame("SYSC3110 GROUP-10");
+		jframe = new JFrame("SYSC3110 GROUP-10");
 		jframe.setLayout(new BorderLayout());
 		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
