@@ -1,10 +1,11 @@
 import java.awt.*;
+import java.awt.event.*;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class GUIFrame {
+public class GUIFrame implements ActionListener{
 
 	private JPanel pane; //top panel
 	private JPanel jlistPanel;
@@ -13,7 +14,7 @@ public class GUIFrame {
 	private GridBagConstraints c;
 	private Game game = new Game();
 	private JMenu Game;
-	private JMenuItem newGame;
+	private JMenuItem newGame, exit;
 	private int Width, Height;
 	private JButton SF,Pea, PASS;
 	
@@ -47,7 +48,11 @@ public class GUIFrame {
 		jframe.add(menuBar, BorderLayout.NORTH);
 		// Add menuItem
 		newGame = new JMenuItem("New Game");
+		newGame.addActionListener(this);
 		Game.add(newGame);
+		exit = new JMenuItem("Exit");
+		exit.addActionListener(this);
+		Game.add(exit);
 		selectionPanel();
 		mappingPanel();
 
@@ -95,7 +100,21 @@ public class GUIFrame {
 		
 		listModel.addElement(new Sunflower(1, 2));
 	}
-
+	
+	/**
+	 * @desc perform a action when user click the 
+	 */
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == newGame) {
+			
+		} else if (e.getSource() == exit) {
+			System.exit(0);
+		} else {
+			
+		}
+	}
+	
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		new GUIFrame();
