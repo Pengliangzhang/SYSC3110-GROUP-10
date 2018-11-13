@@ -7,6 +7,7 @@ public class GUIFrame {
 	private JPanel pane; //top panel
 	private JPanel jlistPanel;
 	private JFrame jframe;
+	private JMenuBar menuBar;
 	private GridBagConstraints c;
 	private Game game = new Game();
 	private JMenu Game;
@@ -28,7 +29,7 @@ public class GUIFrame {
 		//initialize pane and add to jframe, using GridBagLayout
 		pane = new JPanel();
 		pane.setLayout(new GridLayout(1, 5));
-		jframe.add(pane, BorderLayout.BEFORE_FIRST_LINE);
+		jframe.add(pane, BorderLayout.AFTER_LAST_LINE);
 		
 		jlistPanel= new JPanel();
 		jlistPanel.setLayout(new GridLayout(0, 1));
@@ -43,7 +44,7 @@ public class GUIFrame {
 		jframe.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 		// Add menu to JFrame
-		JMenuBar menuBar = new JMenuBar();
+		menuBar = new JMenuBar();
 		Game = new JMenu("Game");
 		menuBar.add(Game);
 		jframe.add(menuBar, BorderLayout.NORTH);
