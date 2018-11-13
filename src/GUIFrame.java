@@ -1,6 +1,8 @@
 import java.awt.*;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class GUIFrame {
 
@@ -13,9 +15,11 @@ public class GUIFrame {
 	private JMenu Game;
 	private JMenuItem newGame;
 	private int Width, Height;
+	private JButton SF,Pea, PASS;
 	
-	private JList<Object> JList;
-	private DefaultListModel<Object> listModel = new DefaultListModel<>();
+	
+	private JList<Plant> JList;
+	private DefaultListModel<Plant> listModel = new DefaultListModel<>();
 
 	/**
 	 * @desc Initialize an frame
@@ -26,14 +30,7 @@ public class GUIFrame {
 		jframe.setLayout(new BorderLayout());
 		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		//initialize pane and add to jframe, using GridBagLayout
-		pane = new JPanel();
-		pane.setLayout(new GridLayout(1, 5));
-		jframe.add(pane, BorderLayout.AFTER_LAST_LINE);
-		
-		jlistPanel= new JPanel();
-		jlistPanel.setLayout(new GridLayout(0, 1));
-		jframe.add(jlistPanel);
+		//initialize pane and add to jframe, using GridBagLayout		
 
 		Width = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 		Height = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
@@ -52,6 +49,7 @@ public class GUIFrame {
 		newGame = new JMenuItem("New Game");
 		Game.add(newGame);
 		selectionPanel();
+		mappingPanel();
 
 		jframe.setVisible(true);
 	}
@@ -60,21 +58,42 @@ public class GUIFrame {
 	 * 	@desc add selection panel to the top of jframe which contains {Sunflower, Peashooter etc.}
 	 * */
 	public void selectionPanel() {
-		pane.add(new JButton("Sunflower"));
-		pane.add(new JButton("Peashooter"));
-		pane.add(new JButton("Pass a round"));
+		pane = new JPanel();
+		pane.setLayout(new GridLayout(1, 5));
+		jframe.add(pane, BorderLayout.AFTER_LAST_LINE);
+		SF= new JButton("Sunflower");
+		Pea = new JButton("Peashooter");
+		PASS = new JButton("Pass a round");
+		
+		pane.add(SF);
+		pane.add(Pea);
+		pane.add(PASS);
 		JTextField sun = new JTextField("Your total number of sun is: " + game.getSun());
 		sun.setEditable(false);
 		
 		pane.add(sun);
 	}
 	
+	
 	/**
 	 * 	@desc add result panel to the middle of jframe which shows current map
 	 * */
 	public void mappingPanel() {
+		jlistPanel= new JPanel();
+		jlistPanel.setLayout(new GridLayout(0, 1));
+		jframe.add(jlistPanel, BorderLayout.BEFORE_LINE_BEGINS);
 		JList = new JList<>(listModel);
-		pane.add(JList, BorderLayout.CENTER);
+		JList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		JList.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if (!JList.getValueIsAdjusting()) {
+					//selected = JList.getSelectedValue();
+				}
+			}
+		});
+		
+		listModel.addElement(new Sunflower(1, 2));
 	}
 
 	public static void main(String[] args) {
