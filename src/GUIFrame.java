@@ -1,18 +1,23 @@
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
+import javax.swing.*;
+import javax.swing.event.*;
 
-public class GUIFrame {
+// import javax.swing.JFrame;
+// import javax.swing.JMenu;
+// import javax.swing.JMenuBar;
+// import javax.swing.JMenuItem;
+
+public class GUIFrame implements ActionListener{
 
 	private JFrame jframe;
-	private Game game = new Game();
+	private Game game;
 	private JMenu Game;
-	private JMenuItem newGame;
+	private JMenuItem newGame, exit;
 	private int Width, Height;
 
 	/**
@@ -39,11 +44,24 @@ public class GUIFrame {
 		jframe.add(menuBar, BorderLayout.NORTH);
 		// Add menuItem
 		newGame = new JMenuItem("New Game");
+		newGame.addActionListener(this);
 		Game.add(newGame);
-
+		exit = new JMenuItem("Exit");
+		exit.addActionListener(this);
+		Game.add(exit);
+		
 		jframe.setVisible(true);
+		
+		
 	}
-
+	
+	public void actionPerformed(ActionEvent e) 
+	{
+		if (e.getSource() == newGame) {
+			game = new Game();
+		}
+	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		new GUIFrame();
