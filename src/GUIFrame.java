@@ -204,6 +204,17 @@ public class GUIFrame implements ActionListener  {
 	}
 	
 	/**
+	 * @desc re-print the map
+	 * */
+	public void renewMap() {
+		for (int i = 0; i < 5; ++i) {
+			for (int j = 0; j < 9; ++j) {
+				printZombieMap(i, j);
+			}
+		}
+	}
+	
+	/**
 	 * @desc perform a action when user click the
 	 * @param e ActionEvent which user clicked
 	 */
@@ -225,6 +236,7 @@ public class GUIFrame implements ActionListener  {
 			status = game.takeTurn();
 			sun.setText("Your total number of sun is: " + game.getSun());
 			checkWinner();
+			renewMap();
 		} else {
 			buttons[0][9].setText("");
 			for (int i = 0; i < 5; ++i) {
@@ -240,8 +252,7 @@ public class GUIFrame implements ActionListener  {
 						}
 						plantSelect = -1;						
 					}
-					printZombieMap(i, j);
-					
+					renewMap();
 				}
 			}
 		}
