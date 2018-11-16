@@ -54,7 +54,9 @@ public class GUIFrame implements ActionListener {
 		Game.add(exit);
 		selectionPanel();
 		mappingPanel();
+		
 		disableAll();
+		game = new Game();
 
 		jframe.setVisible(true);
 	}
@@ -114,7 +116,7 @@ public class GUIFrame implements ActionListener {
 		}
 		disableAll();
 		if (status == 1) {
-			sun.setText("All zombies are eliminated.You have won!");
+			sun.setText("All zombies are eliminated. You have won!");
 		} else if (status == -1) {
 			sun.setText("The zombies ate your brains!");
 		}
@@ -158,9 +160,7 @@ public class GUIFrame implements ActionListener {
 	 * @param i, j button's position
 	 * @param plant type of plant which is selected by user
 	 * */
-	public void printPlantMap(int i, int j, int plant) {
-		System.out.println("Printing map" +i + " " +j+ " " +plant);
-		
+	public void printPlantMap(int i, int j, int plant) {		
 		if(plant==0) {
 			buttons[i][j].setText("S F");
 		}else if(plant == 1) {
@@ -170,11 +170,20 @@ public class GUIFrame implements ActionListener {
 	}
 	
 	/**
+	 * @desc printing the map
+	 * @param i, j button's position
+	 * @param plant type of plant which is selected by user
+	 * */
+	public void printZombieMap(int i, int j) {
+		
+	}
+	
+	/**
 	 * @desc perform a action when user click the
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == newGame) {
-			game = new Game();
+			game.newGame();
 			status = 0;
 			enableAll();
 			cleanButton();
@@ -204,6 +213,7 @@ public class GUIFrame implements ActionListener {
 						}
 						plantSelect = -1;
 					}
+					
 				}
 			}
 		}
