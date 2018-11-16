@@ -70,7 +70,7 @@ public class GUIFrame implements ActionListener {
 		jframe.add(pane, BorderLayout.PAGE_START);
 		SF = new JButton("Sunflower");
 		Pea = new JButton("Peashooter");
-		PASS = new JButton("Pass a round");
+		PASS = new JButton("Pass a Round");
 
 		SF.setBackground(Color.cyan);
 		Pea.setBackground(Color.cyan);
@@ -115,9 +115,12 @@ public class GUIFrame implements ActionListener {
 
 		} else if (e.getSource() == exit) {
 			System.exit(0);
-		} else {
-
+		}else if(e.getSource()==SF) {
+			
+		} else if(e.getSource()==buttons[0][0]){
+			
 		}
+		
 	}
 
 	public static void main(String[] args) {
