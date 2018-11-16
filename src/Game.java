@@ -404,6 +404,17 @@ public class Game {
 	public int getSun() {
 		return sun;
 	}
+	
+	public void setSun(int sun) {
+		  this.sun = sun;
+	}
+	public int getZombieSize() {
+		return zombies.size();
+	}
+	
+	public int getPlantSize() {
+		return plants.size();
+	}
 
 //	public static void main(String[] args) {
 //		Game game = new Game();
