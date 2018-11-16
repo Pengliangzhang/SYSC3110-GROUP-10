@@ -54,7 +54,9 @@ public class GUIFrame implements ActionListener{
 		Game.add(exit);
 		selectionPanel();
 		mappingPanel();
+		
 		disableAll();
+		game = new Game();
 
 		jframe.setVisible(true);
 	}
@@ -111,7 +113,7 @@ public class GUIFrame implements ActionListener{
 		}
 		disableAll();
 		if (status == 1) {
-			sun.setText("All zombies are eliminated.\tYou have won!");
+			sun.setText("All zombies are eliminated. You have won!");
 		} else if (status == -1) {
 			sun.setText("The zombies ate your brains!");
 		}
@@ -144,7 +146,7 @@ public class GUIFrame implements ActionListener{
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == newGame) {
-			game = new Game();
+			game.newGame();
 			status = 0;
 			enableAll();
 			sun.setText("Your total number of sun is: " + game.getSun());
@@ -164,8 +166,8 @@ public class GUIFrame implements ActionListener{
 				for (int j = 0; j < 9; ++j) {
 					if (e.getSource().equals(buttons[i][j]) && plantSelect != -1) {
 						boolean temp = game.userTurn(i + 1, j + 1, plantSelect);
-						plantSelect = -1;
 						if (temp) {
+							plantSelect = -1;
 							status = game.takeTurn();
 							sun.setText("Your total number of sun is: " + game.getSun());
 							checkWinner();

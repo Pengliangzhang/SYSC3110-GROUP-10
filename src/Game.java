@@ -14,8 +14,8 @@ import javax.swing.JFrame;
 public class Game {
 	
 	private int tickCount, sun, totalZombies, remainingZombies;
-	private ArrayList<Plant> plants = new ArrayList<Plant>();
-	private ArrayList<Zombie> zombies = new ArrayList<Zombie>();
+	private ArrayList<Plant> plants;
+	private ArrayList<Zombie> zombies;
 	private JFrame jframe;
 
 	/**
@@ -24,11 +24,18 @@ public class Game {
 	 * @author BeckZ
 	 */
 	public Game() {
+		plants = new ArrayList<Plant>();
+		zombies = new ArrayList<Zombie>();
 		//titleScreen();
+	}
+	
+	public void newGame() {
 		sun = 50;
 		totalZombies = 10; // may be changed in the future
 		remainingZombies = 10;
 		tickCount = 0;
+		plants.clear();
+		zombies.clear();
 	}
 
 	/**
