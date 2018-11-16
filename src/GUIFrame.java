@@ -69,11 +69,10 @@ public class GUIFrame implements ActionListener {
 		jframe.add(pane, BorderLayout.SOUTH);
 		SF = new JButton("Sunflower");
 		Pea = new JButton("Peashooter");
-		PASS = new JButton("Pass a Round");
-
-		SF.setBackground(Color.cyan);
-		Pea.setBackground(Color.cyan);
-		PASS.setBackground(Color.cyan);
+		PASS = new JButton("Pass a round");
+		SF.addActionListener(this);
+		Pea.addActionListener(this);
+		PASS.addActionListener(this);
 		
 		pane.add(SF);
 		pane.add(Pea);
@@ -115,9 +114,9 @@ public class GUIFrame implements ActionListener {
 		}
 		disableAll();
 		if (status == 1) {
-			sun.setText("Player win");
+			sun.setText("All zombies are eliminated.You have won!");
 		} else if (status == -1) {
-			sun.setText("Zombie win");
+			sun.setText("The zombies ate your brains!");
 		}
 	}
 	
@@ -144,6 +143,33 @@ public class GUIFrame implements ActionListener {
 	}
 	
 	/**
+	 * @desc clear all text on buttons
+	 * */
+	public void cleanButton() {
+		for (int i = 0; i < 5; ++i) {
+			for (int j = 0; j < 9; ++j) {
+				buttons[i][j].setText(null);;
+			}
+		}
+	}
+	
+	/**
+	 * @desc printing the map
+	 * @param i, j button's position
+	 * @param plant type of plant which is selected by user
+	 * */
+	public void printPlantMap(int i, int j, int plant) {
+		System.out.println("Printing map" +i + " " +j+ " " +plant);
+		
+		if(plant==0) {
+			buttons[i][j].setText("S F");
+		}else if(plant == 1) {
+			buttons[i][j].setText("PEA");
+		}
+		
+	}
+	
+	/**
 	 * @desc perform a action when user click the
 	 */
 	public void actionPerformed(ActionEvent e) {
@@ -151,27 +177,32 @@ public class GUIFrame implements ActionListener {
 			game = new Game();
 			status = 0;
 			enableAll();
+			cleanButton();
 			sun.setText("Your total number of sun is: " + game.getSun());
 		} else if (e.getSource() == exit) {
 			System.exit(0);
-		} else if (e.getSource() == SF) {
+		} else if (e.getSource().equals(SF)) {
 			plantSelect = 0;
-		} else if (e.getSource() == Pea) {
+		} else if (e.getSource().equals(Pea)) {
 			plantSelect = 1;
-		} else if (e.getSource() == PASS) {
+		} else if (e.getSource().equals(PASS)) {
 			plantSelect = -1;
 			status = game.takeTurn();
+			sun.setText("Your total number of sun is: " + game.getSun());
 			checkWinner();
-		} else if (e.getSource() instanceof JButton) {
+		} else {
 			for (int i = 0; i < 5; ++i) {
 				for (int j = 0; j < 9; ++j) {
 					if (e.getSource().equals(buttons[i][j]) && plantSelect != -1) {
-						if (i == 0) {
-							game.plantAPlant(i, j, "sunflower");
-						} else if (i == 1) {
-							game.plantAPlant(i, j, "peashooter");
+						boolean temp = game.userTurn(i + 1, j + 1, plantSelect);
+						if (temp) {
+							printPlantMap(i, j, plantSelect);
+							status = game.takeTurn();
+							sun.setText("Your total number of sun is: " + game.getSun());
+							checkWinner();
+							plantSelect = -1;
 						}
-						game.takeTurn();
+						plantSelect = -1;
 					}
 				}
 			}

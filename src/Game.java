@@ -167,13 +167,24 @@ public class Game {
 			System.out.println(Arrays.toString(board[i]));
 		}
 	}
-//
-//	/**
-//	 * User action in this turn, they can either drop a plant or pass the turn
-//	 * 
-//	 * @author Xinrui Li
-//	 */
-//	private void userTurn() {
+
+	/**
+	 * User action in this turn, they can either drop a plant or pass the turn
+	 * 
+	 * @author Xinrui Li
+	 */
+	public boolean userTurn(int i, int j, int select) {
+		if (isEmpty(i, j)) {
+			if (select == 0) {
+				plantAPlant(i, j, "sunflower");
+				return true;
+			} else if (select == 1) {
+				plantAPlant(i, j, "peashooter");
+				return true;
+			}
+		}
+		return false;
+		
 //		// TODO closing the Scanner causes errors
 //		Scanner console = new Scanner(System.in);
 //		String input = "";
@@ -218,7 +229,7 @@ public class Game {
 //				}
 //			}
 //		}
-//	}
+	}
 
 	/**
 	 * This method takes care of all plants' actions. The plants will generate sun,
