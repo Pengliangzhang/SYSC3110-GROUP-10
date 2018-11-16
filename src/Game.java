@@ -104,7 +104,7 @@ public class Game {
 		} else {
 			tickCount++;
 			// Print the map
-			printMap();
+			// printMap();
 			return 0;
 		}
 	}

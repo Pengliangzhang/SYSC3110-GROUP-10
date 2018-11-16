@@ -69,6 +69,9 @@ public class GUIFrame implements ActionListener{
 		SF = new JButton("Sunflower");
 		Pea = new JButton("Peashooter");
 		PASS = new JButton("Pass a round");
+		SF.addActionListener(this);
+		Pea.addActionListener(this);
+		PASS.addActionListener(this);
 		
 		pane.add(SF);
 		pane.add(Pea);
@@ -108,9 +111,9 @@ public class GUIFrame implements ActionListener{
 		}
 		disableAll();
 		if (status == 1) {
-			sun.setText("Player win");
+			sun.setText("All zombies are eliminated.\tYou have won!");
 		} else if (status == -1) {
-			sun.setText("Zombie win");
+			sun.setText("The zombies ate your brains!");
 		}
 	}
 	
@@ -147,15 +150,16 @@ public class GUIFrame implements ActionListener{
 			sun.setText("Your total number of sun is: " + game.getSun());
 		} else if (e.getSource() == exit) {
 			System.exit(0);
-		} else if (e.getSource() == SF) {
+		} else if (e.getSource().equals(SF)) {
 			plantSelect = 0;
-		} else if (e.getSource() == Pea) {
+		} else if (e.getSource().equals(Pea)) {
 			plantSelect = 1;
-		} else if (e.getSource() == PASS) {
+		} else if (e.getSource().equals(PASS)) {
 			plantSelect = -1;
 			status = game.takeTurn();
+			sun.setText("Your total number of sun is: " + game.getSun());
 			checkWinner();
-		} else if (e.getSource() instanceof JButton) {
+		} else {
 			for (int i = 0; i < 5; ++i) {
 				for (int j = 0; j < 9; ++j) {
 					if (e.getSource().equals(buttons[i][j]) && plantSelect != -1) {
@@ -164,7 +168,9 @@ public class GUIFrame implements ActionListener{
 						} else if (i == 1) {
 							game.plantAPlant(i, j, "peashooter");
 						}
-						game.takeTurn();
+						status = game.takeTurn();
+						sun.setText("Your total number of sun is: " + game.getSun());
+						checkWinner();
 					}
 				}
 			}
