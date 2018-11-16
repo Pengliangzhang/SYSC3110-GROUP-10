@@ -28,7 +28,7 @@ public class SunPlantTest {
 //		 
 //		assertEquals("test the getCurrentTick function in SunPlant", 1,plant.getCurrentTick());
 //	}
-
+//
 //	@Test
 //	public void setTickTest() {
 //		 plant.setTick(5);

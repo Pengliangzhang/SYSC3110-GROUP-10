@@ -8,14 +8,12 @@ Design process
     
         Secondly, we dispatch all works to each team members, and everyone has to write there method and at the end, all works will be merged together.
 User Manual
-    1. Run Game.java
-    2. Enter play to play game, exit to exit game
-    3. What would you like to do? (pass/drop):
-        pass: do not create any plants for this round, game continue (Repeat step 3)
-        drop: creating a new plant
-    4. If(drop commend is entered)
-        Which plant do you want to drop? (sunflower/peashooter):
-        select plant type you wish to create (sunflower or peashooter)
-    5. Enter the coordinates at which the plant should be placed. (row column):
-        Decide where to put your plant, format example(row 1, column 1): 1 1   
-    6. Repeat step 3 untill zombie or user win the game
+    1. Run GUIFrame.java
+    2. From menu bar, click Game and then select New Game or Exit (New Game will start a new round)
+    3. Click the button at the buttom of screen(Sunflower, Peashooter or Pass a round)
+        Sunflower: select sunflower to place
+        Peashooter: select Peashooter to place
+        Pass a round: do not place plant
+    4. Click place where to put your plant(if you selected sunflower or Peashooter from previous step)
+        The last column(column 10) do not allow put anything(is disabled)
+    5. Repeat step 3 untill game over
