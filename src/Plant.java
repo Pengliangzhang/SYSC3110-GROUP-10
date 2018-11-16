@@ -1,28 +1,27 @@
-
-
 /**
- * Represents plants.
+ * This class represents a basic plant.
+ * It keeps track of its own health and how much it costs to plant.
  * 
- * @author Kevin Li
- * @version October 21, 2018
+ * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
+ * @version Oct 28, 2018
  */
 public class Plant extends Entity
 {
-	private int health;
-	private String name;
-	
-	
+	private int health, sunCost;
 	
 	/**
+	 * Constructor for Plant objects.
 	 * 
+	 * @param x Column number
+	 * @param y Row number
 	 * @param health The plant's health
+	 * @param sunCost How much sun this plant requires in order to be planted
 	 */
-	protected Plant(int x, int y, int health, String name)
+	protected Plant(int x, int y, int health, int sunCost)
 	{
 		super (x, y);
 		this.health = health;
-		this.name = name;
-	
+		this.sunCost = sunCost;
 	}
 	
 	/**
@@ -43,8 +42,12 @@ public class Plant extends Entity
 		this.health -= amount;
 	}
 	
-	public String getName() {
-		return name;
+	/**
+	 * 
+	 * @return the amount of sun that this plant requires in order to be planted
+	 */
+	public int getSunCost()
+	{
+		return this.sunCost;
 	}
-	
 }

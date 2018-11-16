@@ -1,8 +1,19 @@
+/**
+ * Represents the most basic zombie.
+ * 
+ * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
+ * @version Oct 28, 2018
+ */
 
 public class BasicZombie extends Zombie
 {
-	public BasicZombie(int row, String name)
+	/**
+	 * All the parameters are standardized, just need to give the row that the zombie will attack.
+	 * 
+	 * @param row The zombie will spawn in this row
+	 */
+	public BasicZombie(int row)
 	{
-		super(9, row, 25, 100, 2, 2,name);
+		super(row, 10, 25, 100, 1, 2);
 	}
 }

@@ -1,37 +1,55 @@
-
+/**
+ * This class represents plants that are able to deal damage to zombies.
+ * Has range, damage, and attack speed.
+ * 
+ * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
+ * @version Oct 28, 2018
+ */
 public class DamagePlant extends Plant
 {
-	private int range;
-	private int sun;
-	private int damage, damageTick;
+	private int range, damage, damageTick;
 	
-	protected DamagePlant(int x, int y, int health, int range, int damage, int damageTick,String name, int sun)
+	/**
+	 * Constructor for DamagePlants.
+	 * 
+	 * @param x Column number
+	 * @param y Row number
+	 * @param health Health that this plant is to have
+	 * @param range Range that this plant is to have
+	 * @param damage Damage that this plant is to have
+	 * @param damageTick How many ticks that this plant must wait between attacks
+	 * @param sunCost The sun required to plant this plant
+	 */
+	protected DamagePlant(int x, int y, int health, int range, int damage, int damageTick, int sunCost)
 	{
-		super(x, y, health,name);
+		super(x, y, health, sunCost);
 		this.range = range;
 		this.damage = damage;
 		this.damageTick = damageTick;
-		this.sun = sun;
 	}
+	
 	/**
-	 * @return return the range that the plant is able to attack
+	 * 
+	 * @return return the range that the plant is able to attack from
 	 */
 	public int getRange()
 	{
 		return this.range;
 	}
 	
-	public int getsunNeed() {
-		return sun;
-	}
 	/**
 	 * 
+	 * @return return this plant's damage per attack
 	 */
 	public int getDamage()
 	{
 		return this.damage;
 	}
 	
+	/**
+	 *
+	 * @return return how many ticks this plant needs to wait between attacks
+	 */
 	public int getDamageTick()
 	{
 		return this.damageTick;

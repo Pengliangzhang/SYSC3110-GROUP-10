@@ -1,14 +1,13 @@
-
 /**
- * Represents zombies.
+ * This class represents zombies.
+ * Has health, damage, attack speed, and movement speed.
  * 
- * @author Kevin Li
- * @version October 21, 2018
+ * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
+ * @version Oct 28, 2018
  */
 public class Zombie extends Entity
 {
 	private int damage, health, moveSpeed, attackSpeed;
-	private String name;
 	
 	/**
 	 * Constructor for all zombies.
@@ -18,14 +17,13 @@ public class Zombie extends Entity
 	 * @param moveSpeed Ticks required to move 1 space forward
 	 * @param attackSpeed Ticks between attacks
 	 */
-	protected Zombie(int x, int y, int damage, int health, int moveSpeed, int attackSpeed, String name)
+	protected Zombie(int x, int y, int damage, int health, int moveSpeed, int attackSpeed)
 	{
 		super(x, y);
 		this.damage = damage;
 		this.health = health;
 		this.moveSpeed = moveSpeed;
 		this.attackSpeed = attackSpeed;
-		this.name = name;
 	}
 	
 	/**
@@ -65,15 +63,12 @@ public class Zombie extends Entity
 	}
 	
 	/**
+	 * Reduces this zombie's health by given amount.
 	 * 
-	 * @param amount How much the health is reduced by
+	 * @param amount How much this zombie's health is reduced by
 	 */
 	public void takeDamage(int amount)
 	{
 		this.health -= amount;
-	}
-	
-	public String getName() {
-		return name;
 	}
 }

@@ -1,27 +1,40 @@
 /**
- *  construct sun plant.
+ * This class represents plants that specifically generate sun for the player to use.
+ * Extends the plant class, and adds sun generated amount, and how often the sun is generated.
  * 
- * @author bohua Cao
- * @version October 21, 2018
+ * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
+ * @version Oct 28, 2018
  */
-
 public class SunPlant extends Plant
 {
-	private int sunTick,sun;
+	private int sun, sunTick, tick;
 	
-	protected SunPlant(int x, int y, int health, int sun, int sunTick, String name )
+	/**
+	 * Constructor for SunPlant.
+	 * 
+	 * @param x Column number
+	 * @param y Row number
+	 * @param health Health to be given to the SunPlant
+	 * @param sun How much sun this SunPlant generates
+	 * @param sunTick How many ticks between sun generation
+	 */
+	protected SunPlant(int x, int y, int health, int sun, int sunTick, int sunCost)
 	{
-		super(x, y, health,name);
+		super(x, y, health, sunCost);
 		this.sun = sun;
 		this.sunTick = sunTick;
+		
+		// keeps track of when it's time to generate sun
+		this.tick = 1;
 	}
 	
 	/**
 	 * 
 	 * @return how much sun this plant creates
 	 */
-	public int getSun() {
-		return sun;
+	public int getSun()
+	{
+		return this.sun;
 	}
 	
 	/**
@@ -31,5 +44,38 @@ public class SunPlant extends Plant
 	public int getSunTick()
 	{
 		return this.sunTick;
+	}
+	
+	/**
+	 * Called every tick by the Game class, and returns a non-zero value when it's time to generate sun.
+	 * 
+	 * @return the sun produce in a specific tick
+	 */
+	public int generateSun()
+	{
+		if (tick == sunTick)
+		{
+			tick = 1;
+			return this.sun;
+		}
+		else 
+		{
+			tick++;
+			return 0;
+		}
+	}
+	
+	/*
+	 *  set the tick to what user need
+	 */
+	public void setTick(int a) {
+		 this.tick = a;
+	}
+	
+	/*
+	 * @return the current tick
+	 */
+	public int getCurrentTick() {
+		return tick;
 	}
 }
