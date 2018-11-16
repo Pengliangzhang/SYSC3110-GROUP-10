@@ -14,12 +14,12 @@ public class GameTest {
 
 	@Test
 	public void initialZombieTest() {
-		 assertEquals("test if the zombie number start at 0", 0, game.getZombieSize());
+		 assertEquals("test if the zombie number start at 0", 0, game.getAllZombia().size());
 	}
 	
 	@Test
 	public void initialPlantsTest() {
-		 assertEquals("test if the plant number start at 0", 0, game.getPlantSize());
+		 assertEquals("test if the plant number start at 0", 0, game.getAllPlants().size());
 	}
 	
 	@Test
@@ -30,21 +30,21 @@ public class GameTest {
 	@Test
 	public void plantAPlantZeroSun() {
 		 game.plantAPlant(3,3,"sunflower");
-		 assertEquals("set plant failed due to 0 sun", 0, game.getPlantSize());
+		 assertEquals("set plant failed due to 0 sun", 0, game.getAllPlants().size());
 	}
 	
 	@Test
 	public void plantAPlantTwentySun() {
 		 game.setSun(25);
 		 game.plantAPlant(3,3,"sunflower");
-		 assertEquals("set sunflower successfully ", 1, game.getPlantSize());     
+		 assertEquals("set sunflower successfully ", 1, game.getAllPlants().size());     
 	}
 	
 	@Test
 	public void plantAPlantFiftySun() {
 		 game.setSun(50);
 		 game.plantAPlant(3,3,"peashooter");
-		 assertEquals("set sunflower successfully ", 1, game.getPlantSize());     
+		 assertEquals("set sunflower successfully ", 1, game.getAllPlants().size());     
 	}
 
 }
