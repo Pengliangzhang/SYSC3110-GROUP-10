@@ -163,14 +163,13 @@ public class GUIFrame implements ActionListener{
 			for (int i = 0; i < 5; ++i) {
 				for (int j = 0; j < 9; ++j) {
 					if (e.getSource().equals(buttons[i][j]) && plantSelect != -1) {
-						if (i == 0) {
-							game.plantAPlant(i, j, "sunflower");
-						} else if (i == 1) {
-							game.plantAPlant(i, j, "peashooter");
+						boolean temp = game.userTurn(i + 1, j + 1, plantSelect);
+						plantSelect = -1;
+						if (temp) {
+							status = game.takeTurn();
+							sun.setText("Your total number of sun is: " + game.getSun());
+							checkWinner();
 						}
-						status = game.takeTurn();
-						sun.setText("Your total number of sun is: " + game.getSun());
-						checkWinner();
 					}
 				}
 			}
