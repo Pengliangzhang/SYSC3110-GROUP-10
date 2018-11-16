@@ -12,7 +12,7 @@ import javax.swing.JFrame;
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
  * @version Oct 28, 2018
  */
-public class Game extends Observable {
+public class Game {
 	
 	private int tickCount, sun, totalZombies, remainingZombies;
 	private ArrayList<Plant> plants;
@@ -384,6 +384,20 @@ public class Game extends Observable {
 	}
 	
 	/**
+	 * 	@return the ArrayList of zombie
+	 * */
+	public ArrayList<Zombie> getAllZombia(){
+		return zombies;
+	}
+	
+	/**
+	 * 	@return the ArrayList of plant
+	 * */
+	public ArrayList<Plant> getAllPlants(){
+		return plants;
+	}
+	
+	/**
 	 * @desc get how many suns in current game
 	 * @return return number of sun
 	 * */
@@ -393,5 +407,6 @@ public class Game extends Observable {
 
 //	public static void main(String[] args) {
 //		Game game = new Game();
+//		game.notifyNewGUI(1);		
 //	}
 }

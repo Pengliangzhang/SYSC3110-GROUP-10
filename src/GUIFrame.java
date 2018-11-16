@@ -1,9 +1,11 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.*;
 
-public class GUIFrame implements ActionListener {
+public class GUIFrame implements ActionListener  {
 
 	private JPanel pane; // top panel
 	private JPanel jlistPanel;
@@ -54,6 +56,8 @@ public class GUIFrame implements ActionListener {
 		Game.add(exit);
 		selectionPanel();
 		mappingPanel();
+		
+		
 		
 		disableAll();
 		game = new Game();
@@ -122,6 +126,9 @@ public class GUIFrame implements ActionListener {
 		}
 	}
 	
+	/**
+	 * @desc disable all buttons
+	 * */
 	public void disableAll() {
 		for (int i = 0; i < 5; ++i) {
 			for (int j = 0; j < 10; ++j) {
@@ -133,6 +140,9 @@ public class GUIFrame implements ActionListener {
 		PASS.setEnabled(false);
 	}
 	
+	/**
+	 * @desc enable all buttons
+	 * */
 	public void enableAll() {
 		for (int i = 0; i < 5; ++i) {
 			for (int j = 0; j < 9; ++j) {
@@ -172,14 +182,30 @@ public class GUIFrame implements ActionListener {
 	/**
 	 * @desc printing the map
 	 * @param i, j button's position
-	 * @param plant type of plant which is selected by user
 	 * */
 	public void printZombieMap(int i, int j) {
-		
+		int x=i+1;
+		int y=j+1;
+		String s = "";
+
+		for (Plant p:game.getAllPlants()) {
+			if(x==p.getX()&&y==p.getY()&&(p instanceof Sunflower)) {
+				s = s+"-SF";
+			}else if(x==p.getX()&&y==p.getY()&&(p instanceof Peashooter)) {
+				s = s+"-PEA";
+			}
+		}
+		for(Zombie z:game.getAllZombia()) {
+			if(x==z.getX()&&y==z.getY()) {
+				s = s + "-Z";
+			}
+		}
+		buttons[i][j].setText(s);
 	}
 	
 	/**
 	 * @desc perform a action when user click the
+	 * @param e ActionEvent which user clicked
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == newGame) {
@@ -200,6 +226,7 @@ public class GUIFrame implements ActionListener {
 			sun.setText("Your total number of sun is: " + game.getSun());
 			checkWinner();
 		} else {
+			buttons[0][9].setText("");
 			for (int i = 0; i < 5; ++i) {
 				for (int j = 0; j < 9; ++j) {
 					if (e.getSource().equals(buttons[i][j]) && plantSelect != -1) {
@@ -211,8 +238,9 @@ public class GUIFrame implements ActionListener {
 							checkWinner();
 							plantSelect = -1;
 						}
-						plantSelect = -1;
+						plantSelect = -1;						
 					}
+					printZombieMap(i, j);
 					
 				}
 			}
@@ -225,5 +253,4 @@ public class GUIFrame implements ActionListener {
 		new GUIFrame();
 
 	}
-
 }
