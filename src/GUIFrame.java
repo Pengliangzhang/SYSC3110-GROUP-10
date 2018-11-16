@@ -16,6 +16,7 @@ public class GUIFrame implements ActionListener{
 	private int Width, Height;
 	private JButton SF,Pea, PASS;
 	private JTextField sun;
+	private int status;
 	private int plantSelect; // -1 for not select, 0 for sunflower, 1 for peashooter
 	private JButton[][] buttons;
 	
@@ -53,6 +54,7 @@ public class GUIFrame implements ActionListener{
 		Game.add(exit);
 		selectionPanel();
 		mappingPanel();
+		disableAll();
 
 		jframe.setVisible(true);
 	}
@@ -95,11 +97,43 @@ public class GUIFrame implements ActionListener{
 				jlistPanel.add(buttons[i][j]);
 				if (j < 9) {
 					buttons[i][j].addActionListener(this);
-				} else {
-					buttons[i][j].setEnabled(false);
 				}
 			}
 		}
+	}
+	
+	public void checkWinner() {
+		if (status == 0) {
+			return;
+		}
+		disableAll();
+		if (status == 1) {
+			sun.setText("Player win");
+		} else if (status == -1) {
+			sun.setText("Zombie win");
+		}
+	}
+	
+	public void disableAll() {
+		for (int i = 0; i < 5; ++i) {
+			for (int j = 0; j < 10; ++j) {
+				buttons[i][j].setEnabled(false);
+			}
+		}
+		SF.setEnabled(false);
+		Pea.setEnabled(false);
+		PASS.setEnabled(false);
+	}
+	
+	public void enableAll() {
+		for (int i = 0; i < 5; ++i) {
+			for (int j = 0; j < 9; ++j) {
+				buttons[i][j].setEnabled(true);
+			}
+		}
+		SF.setEnabled(true);
+		Pea.setEnabled(true);
+		PASS.setEnabled(true);
 	}
 	
 	/**
@@ -108,7 +142,9 @@ public class GUIFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == newGame) {
 			game = new Game();
-			sun = new JTextField("Your total number of sun is: " + game.getSun());
+			status = 0;
+			enableAll();
+			sun.setText("Your total number of sun is: " + game.getSun());
 		} else if (e.getSource() == exit) {
 			System.exit(0);
 		} else if (e.getSource() == SF) {
@@ -117,7 +153,8 @@ public class GUIFrame implements ActionListener{
 			plantSelect = 1;
 		} else if (e.getSource() == PASS) {
 			plantSelect = -1;
-			game.takeTurn();
+			status = game.takeTurn();
+			checkWinner();
 		} else if (e.getSource() instanceof JButton) {
 			for (int i = 0; i < 5; ++i) {
 				for (int j = 0; j < 9; ++j) {
