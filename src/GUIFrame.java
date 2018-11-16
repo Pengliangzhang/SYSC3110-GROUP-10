@@ -106,6 +106,8 @@ public class GUIFrame implements ActionListener  {
 				jlistPanel.add(buttons[i][j]);
 				if (j < 9) {
 					buttons[i][j].addActionListener(this);
+				} else {
+					buttons[i][j].setText("Zombies' Spawn(Invisible)");
 				}
 			}
 		}
