@@ -168,20 +168,6 @@ public class GUIFrame implements ActionListener  {
 	/**
 	 * @desc printing the map
 	 * @param i, j button's position
-	 * @param plant type of plant which is selected by user
-	 * */
-	public void printPlantMap(int i, int j, int plant) {		
-		if(plant==0) {
-			buttons[i][j].setText("S F");
-		}else if(plant == 1) {
-			buttons[i][j].setText("PEA");
-		}
-		
-	}
-	
-	/**
-	 * @desc printing the map
-	 * @param i, j button's position
 	 * */
 	public void printZombieMap(int i, int j) {
 		int x=i+1;
@@ -244,7 +230,6 @@ public class GUIFrame implements ActionListener  {
 					if (e.getSource().equals(buttons[i][j]) && plantSelect != -1) {
 						boolean temp = game.userTurn(i + 1, j + 1, plantSelect);
 						if (temp) {
-							printPlantMap(i, j, plantSelect);
 							status = game.takeTurn();
 							sun.setText("Your total number of sun is: " + game.getSun());
 							checkWinner();
@@ -252,9 +237,10 @@ public class GUIFrame implements ActionListener  {
 						}
 						plantSelect = -1;						
 					}
-					renewMap();
+					
 				}
 			}
+			renewMap();
 		}
 		
 	}
