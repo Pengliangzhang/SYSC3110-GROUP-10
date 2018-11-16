@@ -183,11 +183,9 @@ public class Game {
 	public boolean userTurn(int i, int j, int select) {
 		if (isEmpty(i, j)) {
 			if (select == 0) {
-				plantAPlant(i, j, "sunflower");
-				return true;
+				return plantAPlant(i, j, "sunflower");
 			} else if (select == 1) {
-				plantAPlant(i, j, "peashooter");
-				return true;
+				return plantAPlant(i, j, "peashooter");
 			}
 		}
 		return false;
@@ -353,13 +351,13 @@ public class Game {
 	 * @param x The column number for the plant
 	 * @param y The row number for the plant
 	 */
-	public void plantAPlant(int x, int y, String type) {
+	public boolean plantAPlant(int x, int y, String type) {
 		if (sun >= 25 && type.equals("sunflower")) {
 			Sunflower plant = new Sunflower(x, y);
 			if (plants.add(plant)) {
 				sun = sun - plant.getSun();
 				System.out.println("Sunflower placed at (" + x + ", " + y + ")");
-				return;
+				return true;
 			}
 
 			// TODO this should never happen, since we have already checked the required
@@ -370,7 +368,7 @@ public class Game {
 			if (plants.add(plant)) {
 				sun = sun - plant.getSunCost();
 				System.out.println("Peashooter placed at (" + x + ", " + y + ")");
-				return;
+				return true;
 			}
 
 			// TODO again, this should never happen
@@ -378,8 +376,8 @@ public class Game {
 		} else {
 			// TODO should never happen, since we check the conditions before
 			System.out.println("You do not have enough sun!");
-			return;
 		}
+		return false;
 	}
 	
 	/**
