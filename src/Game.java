@@ -85,7 +85,7 @@ public class Game {
 	 */
 	public int takeTurn() {
 		// increase the sun
-		sun += 25;
+		// sun += 25;
 
 		// User turn
 		// userTurn();

@@ -159,7 +159,7 @@ public class GUIFrame implements ActionListener  {
 	 * */
 	public void cleanButton() {
 		for (int i = 0; i < 5; ++i) {
-			for (int j = 0; j < 9; ++j) {
+			for (int j = 0; j < 10; ++j) {
 				buttons[i][j].setText(null);;
 			}
 		}
@@ -194,7 +194,7 @@ public class GUIFrame implements ActionListener  {
 	 * */
 	public void renewMap() {
 		for (int i = 0; i < 5; ++i) {
-			for (int j = 0; j < 9; ++j) {
+			for (int j = 0; j < 10; ++j) {
 				printZombieMap(i, j);
 			}
 		}
