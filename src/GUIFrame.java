@@ -2,8 +2,6 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 public class GUIFrame implements ActionListener{
 
@@ -12,16 +10,15 @@ public class GUIFrame implements ActionListener{
 	private JFrame jframe;
 	private JMenuBar menuBar;
 	private GridBagConstraints c;
-	private Game game = new Game();
+	private Game game;
 	private JMenu Game;
 	private JMenuItem newGame, exit;
 	private int Width, Height;
 	private JButton SF,Pea, PASS;
-	
+	private JTextField sun;
+	private int plantSelect; // -1 for not select, 0 for sunflower, 1 for peashooter
 	private JButton[][] buttons;
 	
-	private JList<Plant> JList;
-	private DefaultListModel<Plant> listModel = new DefaultListModel<>();
 
 	/**
 	 * @desc Initialize an frame
@@ -66,18 +63,20 @@ public class GUIFrame implements ActionListener{
 	public void selectionPanel() {
 		pane = new JPanel();
 		pane.setLayout(new GridLayout(1, 5));
-		jframe.add(pane, BorderLayout.AFTER_LAST_LINE);
-		SF= new JButton("Sunflower");
+		jframe.add(pane, BorderLayout.SOUTH);
+		SF = new JButton("Sunflower");
 		Pea = new JButton("Peashooter");
 		PASS = new JButton("Pass a round");
 		
 		pane.add(SF);
 		pane.add(Pea);
 		pane.add(PASS);
-		JTextField sun = new JTextField("Your total number of sun is: " + game.getSun());
+		sun = new JTextField("Game no start");
 		sun.setEditable(false);
 		
 		pane.add(sun);
+		
+		plantSelect = -1;
 	}
 	
 	
@@ -87,7 +86,7 @@ public class GUIFrame implements ActionListener{
 	public void mappingPanel() {
 		jlistPanel= new JPanel();
 		jlistPanel.setLayout(new GridLayout(5, 10));
-		jframe.add(jlistPanel);
+		jframe.add(jlistPanel, BorderLayout.CENTER);
 		buttons = new JButton[5][10];
 		
 		for (int i = 0; i < 5; ++i) {
@@ -108,11 +107,30 @@ public class GUIFrame implements ActionListener{
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == newGame) {
-			
+			game = new Game();
+			sun = new JTextField("Your total number of sun is: " + game.getSun());
 		} else if (e.getSource() == exit) {
 			System.exit(0);
-		} else {
-			
+		} else if (e.getSource() == SF) {
+			plantSelect = 0;
+		} else if (e.getSource() == Pea) {
+			plantSelect = 1;
+		} else if (e.getSource() == PASS) {
+			plantSelect = -1;
+			game.takeTurn();
+		} else if (e.getSource() instanceof JButton) {
+			for (int i = 0; i < 5; ++i) {
+				for (int j = 0; j < 9; ++j) {
+					if (e.getSource().equals(buttons[i][j]) && plantSelect != -1) {
+						if (i == 0) {
+							game.plantAPlant(i, j, "sunflower");
+						} else if (i == 1) {
+							game.plantAPlant(i, j, "peashooter");
+						}
+						game.takeTurn();
+					}
+				}
+			}
 		}
 	}
 	

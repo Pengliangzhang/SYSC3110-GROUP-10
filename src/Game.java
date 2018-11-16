@@ -70,15 +70,15 @@ public class Game {
 	 * 
 	 * @author Xinrui Li
 	 */
-	private void takeTurn() {
+	public void takeTurn() {
 		// increase the sun
 		sun += 25;
 
 		// Print the map
-		printMap();
+		// printMap();
 
 		// User turn
-		userTurn();
+		// userTurn();
 
 		// Plant turn
 		plantAction();
