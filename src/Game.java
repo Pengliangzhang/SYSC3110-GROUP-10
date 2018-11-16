@@ -25,6 +25,10 @@ public class Game {
 	 */
 	public Game() {
 		//titleScreen();
+		sun = 50;
+		totalZombies = 10; // may be changed in the future
+		remainingZombies = 10;
+		tickCount = 0;
 	}
 
 	/**
@@ -70,12 +74,9 @@ public class Game {
 	 * 
 	 * @author Xinrui Li
 	 */
-	public void takeTurn() {
+	public int takeTurn() {
 		// increase the sun
 		sun += 25;
-
-		// Print the map
-		// printMap();
 
 		// User turn
 		// userTurn();
@@ -87,7 +88,8 @@ public class Game {
 		if (totalZombies == 0) {
 			// Player win
 			System.out.println("All zombies are eliminated.\nYou have won!");
-			System.exit(0);
+			return 1;
+			// System.exit(0);
 		}
 
 		// Zombie turn
@@ -97,10 +99,13 @@ public class Game {
 		if (checkZombieWin()) {
 			// Zombie win
 			System.out.println("The zombies ate your brains!\nGame over.");
-			System.exit(0);
+			// System.exit(0);
+			return -1;
 		} else {
 			tickCount++;
-			takeTurn();
+			// Print the map
+			printMap();
+			return 0;
 		}
 	}
 
@@ -162,58 +167,58 @@ public class Game {
 			System.out.println(Arrays.toString(board[i]));
 		}
 	}
-
-	/**
-	 * User action in this turn, they can either drop a plant or pass the turn
-	 * 
-	 * @author Xinrui Li
-	 */
-	private void userTurn() {
-		// TODO closing the Scanner causes errors
-		Scanner console = new Scanner(System.in);
-		String input = "";
-		boolean goodInput = false;
-
-		while (!goodInput) {
-			System.out.println("\n\nWhat would you like to do? (pass/drop):");
-			input = console.nextLine().trim();
-			if (input.equals("pass")) {
-				// console.close();
-				return;
-			} else if (input.equals("drop")) {
-				goodInput = true;
-			}
-		}
-
-		goodInput = false;
-		while (!goodInput) {
-			System.out.println("Which plant do you want to drop? (sunflower/peashooter):");
-			input = console.nextLine().trim();
-
-			if (input.equals("sunflower") || input.equals("peashooter")) {
-				goodInput = true;
-			}
-		}
-
-		goodInput = false;
-		while (!goodInput) {
-			System.out.println("Enter the coordinates at which the plant should be placed. (row column):");
-			String position = console.nextLine();
-			String[] entity = position.split("\\s+");
-			if (entity.length == 2) {
-				int x = Integer.valueOf(entity[0]);
-				int y = Integer.valueOf(entity[1]);
-				if (isEmpty(x, y)) {
-					plantAPlant(x, y, input);
-					goodInput = true;
-					// console.close();
-					return;
-				} else {
-					System.out.println("That spot is already occupied.");
-				}
-			}
-		}
-	}
+//
+//	/**
+//	 * User action in this turn, they can either drop a plant or pass the turn
+//	 * 
+//	 * @author Xinrui Li
+//	 */
+//	private void userTurn() {
+//		// TODO closing the Scanner causes errors
+//		Scanner console = new Scanner(System.in);
+//		String input = "";
+//		boolean goodInput = false;
+//
+//		while (!goodInput) {
+//			System.out.println("\n\nWhat would you like to do? (pass/drop):");
+//			input = console.nextLine().trim();
+//			if (input.equals("pass")) {
+//				// console.close();
+//				return;
+//			} else if (input.equals("drop")) {
+//				goodInput = true;
+//			}
+//		}
+//
+//		goodInput = false;
+//		while (!goodInput) {
+//			System.out.println("Which plant do you want to drop? (sunflower/peashooter):");
+//			input = console.nextLine().trim();
+//
+//			if (input.equals("sunflower") || input.equals("peashooter")) {
+//				goodInput = true;
+//			}
+//		}
+//
+//		goodInput = false;
+//		while (!goodInput) {
+//			System.out.println("Enter the coordinates at which the plant should be placed. (row column):");
+//			String position = console.nextLine();
+//			String[] entity = position.split("\\s+");
+//			if (entity.length == 2) {
+//				int x = Integer.valueOf(entity[0]);
+//				int y = Integer.valueOf(entity[1]);
+//				if (isEmpty(x, y)) {
+//					plantAPlant(x, y, input);
+//					goodInput = true;
+//					// console.close();
+//					return;
+//				} else {
+//					System.out.println("That spot is already occupied.");
+//				}
+//			}
+//		}
+//	}
 
 	/**
 	 * This method takes care of all plants' actions. The plants will generate sun,
@@ -367,7 +372,7 @@ public class Game {
 		return sun;
 	}
 
-	public static void main(String[] args) {
-		Game game = new Game();
-	}
+//	public static void main(String[] args) {
+//		Game game = new Game();
+//	}
 }
