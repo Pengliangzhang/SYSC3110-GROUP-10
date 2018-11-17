@@ -8,9 +8,8 @@ Authors:
   
 Deliverables:
   * UML diagram: A class diagram, sequence diagram 
-  * Documentation: This file introduce our project process and discribe how to play the game
-  * nine java classes
-
+  * Documentation: This file introduces the process of creating this project and describes how to play
+  * 18 Java Classes
 
 Change Log:
 
@@ -24,19 +23,19 @@ Change Log:
       6. Created methods in the GUIFrame called printZombieMap and renewMap
 
   Xinrui:
+  
       1. Simplify the code of JButtons in GUIFrame
       2. Create actionPerformed, disableAll, enableAll, and checkWinner methods in GUIFrame
       3. Edit Game, takeTurn, userTurn methods in Game class to fix the GUIFrame
       4. Add newGame method to make the game restartable
-
-Bohua:
-      1.test class for every classes
-      2.testsuit for all tests
-      3.some useful set and get functions 
+      
+  Bohua:
 
   Kevin:
   
      1. Updated UML
+     2. Updated documentation for classes (GUIFrame.java, Game.java)
+     3. Renamed fields and methods for clarity (renewMap -> refreshMap, disableAll -> disableAllButtons, sun -> sunIndicator)
 
 Known Issues:
 
@@ -48,10 +47,8 @@ Known Issues:
 
 Road Map:
 
-  1. Pengliang will creat a class and wich named the class GUIFrame.java
-  2. Xinrui will update all methods in the game class
-  3. Bohua add test classes
-  4. Kevin tested all classes and draw the UML diagram, and documents all classes
+  1. Pengliang will create a class and wich named the class GUIFrame.java
+  2. 
 
 
 Work distribution: 
