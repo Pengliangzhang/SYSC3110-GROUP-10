@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Observable;
 import java.util.Random;
-import java.util.Scanner;
 
 import javax.swing.JFrame;
 
@@ -38,40 +37,6 @@ public class Game {
 		tickCount = 0;
 		plants.clear();
 		zombies.clear();
-	}
-
-	/**
-	 * Title "screen", prompts the user to start a game or exit.
-	 * 
-	 * @author BeckZ, Kevin
-	 */
-	private void titleScreen() {
-		System.out.println("Welcome to SYSC3110 Group 10's PvZ, Console Vers.");
-
-		// TODO closing the Scanner causes errors
-		Scanner console = new Scanner(System.in);
-		boolean goodInput = false;
-		String input = "";
-
-		while (!goodInput) {
-			System.out.println("Enter \"play\" to play, and \"exit\" to quit.");
-			input = console.nextLine();
-			if (input.equals("play")) {
-				// initialize the zombies, and give the player some sun to start off with
-				sun = 50;
-				totalZombies = 10; // may be changed in the future
-				remainingZombies = 10;
-				tickCount = 0;
-
-				// console.close();
-
-				// start Turn 1
-				takeTurn();
-			} else if (input.equals("exit")) {
-				System.out.println("Thanks for playing our game!");
-				System.exit(0);
-			}
-		}
 	}
 
 	/**
