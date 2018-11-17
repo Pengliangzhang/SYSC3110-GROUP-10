@@ -45,7 +45,9 @@ Known Issues:
 Road Map:
 
   1. Pengliang will creat a class and wich named the class GUIFrame.java
-  2. 
+  2. Xinrui will update all methods in the game class
+  3. Bohua add test classes
+  4. Kevin tested all classes and draw the UML diagram, and documents all classes
 
 
 Work distribution: 
