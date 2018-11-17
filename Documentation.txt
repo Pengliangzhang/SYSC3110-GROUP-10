@@ -7,6 +7,15 @@ Design process
         suns are needed to create plants and how many times attacks will a demage plant kill a basic zombie. 
     
         Secondly, we dispatch all works to each team members, and everyone has to write there method and at the end, all works will be merged together.
+        
+        
+Milestone 2 Update
+
+    The Game.java class originally contained the main method, and all of its methods were otherwise private. Now, some of its methods were
+    made public in order to be used by the GUIFrame.java class, and the main method is removed and put in the GUIFrame.java class as well.
+    Additionally, since the Game.java class holds the data for all the Plants and Zombies, and we need to display their data on the
+    GUIFrame.java class, two new methods that get the ArrayList for the PLants and Zombies were added.
+        
 User Manual
     1. Run GUIFrame.java
     2. From menu bar, click Game and then select New Game or Exit (New Game will start a new round)

@@ -35,6 +35,7 @@ public class Game {
 		zombies.clear();
 	}
 
+<<<<<<< HEAD
 	/*
 	 * old title screen for console based
 	private void titleScreen() {
@@ -66,6 +67,8 @@ public class Game {
 		}
 	} */
 
+=======
+>>>>>>> 86e72640b4f58136ed5aac67e1ff1d60fc97bf28
 	/**
 	 * Take one turn, every turn has following step: 1. increment sun by 25 (natural
 	 * sun generation) 2. print the map 3. prompt user (drop a plant on the map or

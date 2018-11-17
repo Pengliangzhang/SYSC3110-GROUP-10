@@ -15,6 +15,7 @@ Deliverables:
 Change Log:
 
   Pengliang:
+  
       1. Created a class called GUIFrame
       2. Added mapping panel and selection panel on the frame
       3. Added buttons on the selection panel.
@@ -23,10 +24,19 @@ Change Log:
       6. Created methods in the GUIFrame called printZombieMap and renewMap
 
   Xinrui:
+      1. Simplify the code of JButtons in GUIFrame
+      2. Create actionPerformed, disableAll, enableAll, and checkWinner methods in GUIFrame
+      3. Edit Game, takeTurn, userTurn methods in Game class to fix the GUIFrame
+      4. Add newGame method to make the game restartable
 
-  Bohua:
+Bohua:
+      1.test class for every classes
+      2.testsuit for all tests
+      3.some useful set and get functions 
 
   Kevin:
+  
+     1. Updated UML
 
 Known Issues:
 
@@ -39,7 +49,9 @@ Known Issues:
 Road Map:
 
   1. Pengliang will creat a class and wich named the class GUIFrame.java
-  2. 
+  2. Xinrui will update all methods in the game class
+  3. Bohua add test classes
+  4. Kevin tested all classes and draw the UML diagram, and documents all classes
 
 
 Work distribution: 
