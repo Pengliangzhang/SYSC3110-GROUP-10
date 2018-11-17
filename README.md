@@ -28,7 +28,8 @@ Change Log:
       2. Create actionPerformed, disableAll, enableAll, and checkWinner methods in GUIFrame
       3. Edit Game, takeTurn, userTurn methods in Game class to fix the GUIFrame
       4. Add newGame method to make the game restartable
-  Bohua:
+
+Bohua:
       1.test class for every classes
       2.testsuit for all tests
       3.some useful set and get functions 
