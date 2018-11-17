@@ -11,7 +11,8 @@ Design process
         
 Milestone 2 Update
 
-    The Game.java class originally contained the main method, and all of its methods were otherwise private. Now, some of its methods were made public in order to be used by the GUIFrame.java class, and the main method is removed and put in the GUIFrame.java class as well.
+    The Game.java class originally contained the main method, and all of its methods were otherwise private. Now, some of its methods were
+    made public in order to be used by the GUIFrame.java class, and the main method is removed and put in the GUIFrame.java class as well.
         
 User Manual
     1. Run GUIFrame.java
