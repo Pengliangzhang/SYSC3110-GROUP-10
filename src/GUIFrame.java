@@ -1,98 +1,89 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.*;
 
 public class GUIFrame implements ActionListener  {
-
 	private JPanel pane; // top panel
 	private JPanel jlistPanel;
 	private JFrame jframe;
 	private JMenuBar menuBar;
-	private GridBagConstraints c;
 	private Game game;
-	private JMenu Game;
+	private JMenu fileMenu;
 	private JMenuItem newGame, exit;
-	private int Width, Height;
-	private JButton SF,Pea, PASS;
-	private JTextField sun;
+	private int width, height;
+	private JButton sunflowerButton, peaButton, passButton;
+	private JTextField sunIndication;
 	private int status;
 	private int plantSelect; // -1 for not select, 0 for sunflower, 1 for peashooter
 	private JButton[][] buttons;
 	
-
 	/**
-	 * @desc Initialize an frame
-	 **/
+	 * Constructor for GUIFrame objects. Initializes the JFrame and its JMenuBar.
+	 */
 	public GUIFrame() {
-
 		jframe = new JFrame("SYSC3110 GROUP-10");
 		jframe.setLayout(new BorderLayout());
 		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// initialize pane and add to jframe, using GridBagLayout
+		width = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+		height = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
-		Width = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-		Height = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-
-		Dimension DimMax = Toolkit.getDefaultToolkit().getScreenSize();
-		jframe.setSize(Width, Height);
-		jframe.setMaximumSize(DimMax);
+		Dimension maxDimension = Toolkit.getDefaultToolkit().getScreenSize();
+		jframe.setSize(width, height);
+		jframe.setMaximumSize(maxDimension);
 		jframe.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 		// Add menu to JFrame
 		menuBar = new JMenuBar();
-		Game = new JMenu("Game");
-		menuBar.add(Game);
+		fileMenu = new JMenu("File");
+		menuBar.add(fileMenu);
 		jframe.add(menuBar, BorderLayout.BEFORE_FIRST_LINE);
+		
 		// Add menuItem
 		newGame = new JMenuItem("New Game");
 		newGame.addActionListener(this);
-		Game.add(newGame);
+		fileMenu.add(newGame);
 		exit = new JMenuItem("Exit");
 		exit.addActionListener(this);
-		Game.add(exit);
+		fileMenu.add(exit);
 		selectionPanel();
 		mappingPanel();
-		
-		
-		
-		disableAll();
+		disableAllButtons();
 		game = new Game();
 
 		jframe.setVisible(true);
 	}
 
 	/**
-	 * @desc add selection panel to the top of jframe which contains {Sunflower,
-	 *       Peashooter etc.}
+	 * Add a panel below the board that allows the user to select plants to plant,
+	 * allows the user to skip a turn, and informs the user of how much sun they possess at the moment.
 	 */
 	public void selectionPanel() {
 		pane = new JPanel();
 		pane.setLayout(new GridLayout(1, 5));
 		jframe.add(pane, BorderLayout.SOUTH);
-		SF = new JButton("Sunflower");
-		Pea = new JButton("Peashooter");
-		PASS = new JButton("Pass a round");
-		SF.addActionListener(this);
-		Pea.addActionListener(this);
-		PASS.addActionListener(this);
+		sunflowerButton = new JButton("Sunflower");
+		peaButton = new JButton("Peashooter");
+		passButton = new JButton("Pass a round");
+		sunflowerButton.addActionListener(this);
+		peaButton.addActionListener(this);
+		passButton.addActionListener(this);
 		
-		pane.add(SF);
-		pane.add(Pea);
-		pane.add(PASS);
-		sun = new JTextField("Game no start");
-		sun.setEditable(false);
+		pane.add(sunflowerButton);
+		pane.add(peaButton);
+		pane.add(passButton);
+		sunIndication = new JTextField("The game has not yet started");
+		sunIndication.setEditable(false);
 
-		pane.add(sun);
+		pane.add(sunIndication);
 		
 		plantSelect = -1;
 	}
 
 	/**
-	 * @desc add result panel to the middle of jframe which shows current map
+	 * Adds a panel which holds all the JButtons that make up the game board.
 	 */
 	public void mappingPanel() {
 		jlistPanel = new JPanel();
@@ -112,52 +103,52 @@ public class GUIFrame implements ActionListener  {
 	}
 	
 	/**
-	 * @desc Check who is the winner
-	 * */
+	 * Determine the winner of the current game, initiated when there are no more zombies.
+	 */
 	public void checkWinner() {
 		if (status == 0) {
 			return;
 		}
-		disableAll();
+		disableAllButtons();
 		if (status == 1) {
-			sun.setText("All zombies are eliminated. You have won!");
+			sunIndication.setText("All zombies are eliminated. You have won!");
 		} else if (status == -1) {
-			sun.setText("The zombies ate your brains!");
+			sunIndication.setText("The zombies ate your brains!");
 		}
 	}
 	
 	/**
-	 * @desc disable all buttons
-	 * */
-	public void disableAll() {
+	 * Disables all buttons on the board, used when the game is over.
+	 */
+	public void disableAllButtons() {
 		for (int i = 0; i < 5; ++i) {
 			for (int j = 0; j < 10; ++j) {
 				buttons[i][j].setEnabled(false);
 			}
 		}
-		SF.setEnabled(false);
-		Pea.setEnabled(false);
-		PASS.setEnabled(false);
+		sunflowerButton.setEnabled(false);
+		peaButton.setEnabled(false);
+		passButton.setEnabled(false);
 	}
 	
 	/**
-	 * @desc enable all buttons
-	 * */
-	public void enableAll() {
+	 * Enables all buttons on the board.
+	 */
+	public void enableAllButtons() {
 		for (int i = 0; i < 5; ++i) {
 			for (int j = 0; j < 9; ++j) {
 				buttons[i][j].setEnabled(true);
 			}
 		}
-		SF.setEnabled(true);
-		Pea.setEnabled(true);
-		PASS.setEnabled(true);
+		sunflowerButton.setEnabled(true);
+		peaButton.setEnabled(true);
+		passButton.setEnabled(true);
 	}
 	
 	/**
-	 * @desc clear all text on buttons
-	 * */
-	public void cleanButton() {
+	 * Wipes the text off all buttons on the board.
+	 */
+	public void clearButtonText() {
 		for (int i = 0; i < 5; ++i) {
 			for (int j = 0; j < 10; ++j) {
 				buttons[i][j].setText(null);;
@@ -166,23 +157,25 @@ public class GUIFrame implements ActionListener  {
 	}
 	
 	/**
-	 * @desc printing the map
-	 * @param i, j button's position
-	 * */
+	 * Updates the desired button on the board with the given Zombie's position.
+	 * 
+	 * @param i the zombie's row
+	 * @param j the zombie's column
+	 */
 	public void printZombieMap(int i, int j) {
-		int x=i+1;
-		int y=j+1;
+		int x = i + 1;
+		int y = j + 1;
 		String s = "";
 
 		for (Plant p:game.getAllPlants()) {
-			if(x==p.getX()&&y==p.getY()&&(p instanceof Sunflower)) {
-				s = s+"-SF";
-			}else if(x==p.getX()&&y==p.getY()&&(p instanceof Peashooter)) {
-				s = s+"-PEA";
+			if (x == p.getX() && y == p.getY() && (p instanceof Sunflower)) {
+				s = s+"-sunflowerButton";
+			} else if (x == p.getX() && y == p.getY() && (p instanceof Peashooter)) {
+				s = s + "-PEA";
 			}
 		}
-		for(Zombie z:game.getAllZombis()) {
-			if(x==z.getX()&&y==z.getY()) {
+		for (Zombie z : game.getAllZombies()) {
+			if (x == z.getX() && y == z.getY()) {
 				s = s + "-Z";
 			}
 		}
@@ -190,9 +183,10 @@ public class GUIFrame implements ActionListener  {
 	}
 	
 	/**
-	 * @desc re-print the map
-	 * */
-	public void renewMap() {
+	 * Calls printZombieMap() for each button the board, in order to update the board with 
+	 * all the zombies' positions.
+	 */
+	public void refreshMap() {
 		for (int i = 0; i < 5; ++i) {
 			for (int j = 0; j < 10; ++j) {
 				printZombieMap(i, j);
@@ -201,28 +195,29 @@ public class GUIFrame implements ActionListener  {
 	}
 	
 	/**
-	 * @desc perform a action when user click the
-	 * @param e ActionEvent which user clicked
+	 * Performs various actions based on which component sent the ActionEvent.
+	 * 
+	 * @param e Contains the source of the ActionEvent
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == newGame) {
 			game.newGame();
 			status = 0;
-			enableAll();
-			cleanButton();
-			sun.setText("Your total number of sun is: " + game.getSun());
+			enableAllButtons();
+			clearButtonText();
+			sunIndication.setText("Your total number of sun is: " + game.getSun());
 		} else if (e.getSource() == exit) {
 			System.exit(0);
-		} else if (e.getSource().equals(SF)) {
+		} else if (e.getSource().equals(sunflowerButton)) {
 			plantSelect = 0;
-		} else if (e.getSource().equals(Pea)) {
+		} else if (e.getSource().equals(peaButton)) {
 			plantSelect = 1;
-		} else if (e.getSource().equals(PASS)) {
+		} else if (e.getSource().equals(passButton)) {
 			plantSelect = -1;
 			status = game.takeTurn();
-			sun.setText("Your total number of sun is: " + game.getSun());
+			sunIndication.setText("Your total number of sun is: " + game.getSun());
 			checkWinner();
-			renewMap();
+			refreshMap();
 		} else {
 			buttons[0][9].setText("");
 			for (int i = 0; i < 5; ++i) {
@@ -231,7 +226,7 @@ public class GUIFrame implements ActionListener  {
 						boolean temp = game.userTurn(i + 1, j + 1, plantSelect);
 						if (temp) {
 							status = game.takeTurn();
-							sun.setText("Your total number of sun is: " + game.getSun());
+							sunIndication.setText("Your total number of sun is: " + game.getSun());
 							checkWinner();
 							plantSelect = -1;
 						}
@@ -240,14 +235,17 @@ public class GUIFrame implements ActionListener  {
 					
 				}
 			}
-			renewMap();
+			refreshMap();
 		}
 		
 	}
 
+	/**
+	 * Main method that runs an instance of GUIFrame.
+	 * 
+	 * @param args Required by default
+	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		new GUIFrame();
-
 	}
 }

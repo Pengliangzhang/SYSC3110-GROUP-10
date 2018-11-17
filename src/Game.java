@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
-import java.util.Scanner;
 
 /**
  * This class creates a text-based Plants vs Zombie game
@@ -36,11 +35,8 @@ public class Game {
 		zombies.clear();
 	}
 
-	/**
-	 * Title "screen", prompts the user to start a game or exit.
-	 * 
-	 * @author BeckZ, Kevin
-	 */
+	/*
+	 * old title screen for console based
 	private void titleScreen() {
 		System.out.println("Welcome to SYSC3110 Group 10's PvZ, Console Vers.");
 
@@ -68,7 +64,7 @@ public class Game {
 				System.exit(0);
 			}
 		}
-	}
+	} */
 
 	/**
 	 * Take one turn, every turn has following step: 1. increment sun by 25 (natural
@@ -379,27 +375,31 @@ public class Game {
 	}
 	
 	/**
-	 * 	@return the ArrayList of zombie
-	 * */
-	public ArrayList<Zombie> getAllZombis(){
+	 * @return The ArrayList that contains all the zombies in the game
+	 */
+	public ArrayList<Zombie> getAllZombies(){
 		return zombies;
 	}
 	
 	/**
-	 * 	@return the ArrayList of plant
-	 * */
+	 * @return The ArrayList that contains all the plants in the game
+	 */
 	public ArrayList<Plant> getAllPlants(){
 		return plants;
 	}
 	
 	/**
-	 * @desc get how many suns in current game
-	 * @return return number of sun
-	 * */
+	 * @return The amount of sun currently at the user's disposal
+	 */
 	public int getSun() {
 		return sun;
 	}
 	
+	/**
+	 * Updates the sun count with the given amount.
+	 * 
+	 * @param sun The new amount of sun
+	 */
 	public void setSun(int sun) {
 		  this.sun = sun;
 	}
