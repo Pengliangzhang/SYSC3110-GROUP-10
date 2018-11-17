@@ -3,7 +3,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-public class GUIFrame implements ActionListener  {
+public class GUIFrame implements ActionListener {
 	private JPanel pane; // top panel
 	private JPanel jlistPanel;
 	private JFrame jframe;
