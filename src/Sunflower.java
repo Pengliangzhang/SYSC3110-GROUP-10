@@ -19,7 +19,4 @@ public class Sunflower extends SunPlant
 		super(x, y, 100, 25, 2, 25);
 	}
 	
-	public String toString() {
-		return "SF";
-	}
 }
