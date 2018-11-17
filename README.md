@@ -15,6 +15,7 @@ Deliverables:
 Change Log:
 
   Pengliang:
+  
       1. Created a class called GUIFrame
       2. Added mapping panel and selection panel on the frame
       3. Added buttons on the selection panel.
@@ -27,6 +28,7 @@ Change Log:
   Bohua:
 
   Kevin:
+     1. Updated UML
 
 Known Issues:
 
