@@ -1,10 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Observable;
 import java.util.Random;
 import java.util.Scanner;
-
-import javax.swing.JFrame;
 
 /**
  * This class creates a text-based Plants vs Zombie game
@@ -17,7 +14,6 @@ public class Game {
 	private int tickCount, sun, totalZombies, remainingZombies;
 	private ArrayList<Plant> plants;
 	private ArrayList<Zombie> zombies;
-	private JFrame jframe;
 
 	/**
 	 * Initializes the game.
@@ -305,7 +301,6 @@ public class Game {
 			}
 		}
 	}
-	
 
 	/**
 	 * Check for zombies that have arrived at the player's doorstep, which signals a
@@ -386,7 +381,7 @@ public class Game {
 	/**
 	 * 	@return the ArrayList of zombie
 	 * */
-	public ArrayList<Zombie> getAllZombia(){
+	public ArrayList<Zombie> getAllZombis(){
 		return zombies;
 	}
 	
@@ -408,10 +403,4 @@ public class Game {
 	public void setSun(int sun) {
 		  this.sun = sun;
 	}
-	
-
-//	public static void main(String[] args) {
-//		Game game = new Game();
-//		game.notifyNewGUI(1);		
-//	}
 }

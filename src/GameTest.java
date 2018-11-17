@@ -14,7 +14,7 @@ public class GameTest {
 
 	@Test
 	public void initialZombieTest() {
-		 assertEquals("test if the zombie number start at 0", 0, game.getAllZombia().size());
+		 assertEquals("test if the zombie number start at 0", 0, game.getAllZombis().size());
 	}
 	
 	@Test

@@ -181,7 +181,7 @@ public class GUIFrame implements ActionListener  {
 				s = s+"-PEA";
 			}
 		}
-		for(Zombie z:game.getAllZombia()) {
+		for(Zombie z:game.getAllZombis()) {
 			if(x==z.getX()&&y==z.getY()) {
 				s = s + "-Z";
 			}
