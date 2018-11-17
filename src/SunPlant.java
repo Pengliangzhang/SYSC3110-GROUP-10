@@ -46,6 +46,20 @@ public class SunPlant extends Plant
 		return this.sunTick;
 	}
 	
+	/*
+	 * @return the current tick
+	 */
+	public int getCurrentTick() {
+		return tick;
+	}
+	
+	/*
+	 * set the current tick to a number that user choose 
+	 */
+	public void setCurrentTick(int tick) {
+		this.tick = tick;
+	}
+	
 	/**
 	 * Called every tick by the Game class, and returns a non-zero value when it's time to generate sun.
 	 * 
