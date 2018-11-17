@@ -170,8 +170,7 @@
    <object class="com.horstmann.violet.ClassNode" id="ClassNode4">
     <void property="methods">
      <void property="text">
-      <string>+ Sunflower(x: int; y: int)
-+ toString(): String</string>
+      <string>+ Sunflower(x: int; y: int)</string>
      </void>
     </void>
     <void property="name">
@@ -305,7 +304,6 @@
 + getAllPlants(): ArrayList&lt;Plant&gt;
 + getSun(): int
 + setSun(sun: int)
-- titleScreen()
 - printMap()
 - plantAction()
 - zombieAction()
@@ -691,19 +689,19 @@ ZombieTest</string>
 - jlistPanel: JPanel
 - jframe: JFrame
 - menuBar: JMenuBar
-- c: GridBagConstraints
 - game: Game
+- fileMenu: JMenu
 - newGame: JMenuItem
 - exit: JMenuItem
 - width: int
 - height: int
 - status: int
 - plantSelect: int
-- SF: JButton
-- Pea: JButton
-- PASS: JButton
+- sunflowerButton: JButton
+- peaButton: JButton
+- passButton: JButton
 - buttons: JButton[][]
-- sun: JTextField</string>
+- sunIndicator: JTextField</string>
      </void>
     </void>
     <void property="methods">
@@ -712,10 +710,10 @@ ZombieTest</string>
 + selectionPanel()
 + mappingPanel()
 + checkWinner()
-+ disableAll()
-+ enableAll()
-+ printZombieMap()
-+ renewMap()
++ disableAllButtons()
++ enableAllButtons()
++ printZombieMap(i: int; j: int)
++ refreshMap()
 + actionPerformed(e: ActionEvent)
 + main(args: String[])</string>
      </void>
@@ -738,12 +736,12 @@ ZombieTest</string>
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double17"/>
-      <double>40.0</double>
+      <double>50.0</double>
      </void>
     </void>
     <void method="setLocation">
      <double>1330.0</double>
-     <double>40.0</double>
+     <double>50.0</double>
     </void>
    </object>
   </void>
