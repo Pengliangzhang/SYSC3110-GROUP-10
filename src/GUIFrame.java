@@ -9,9 +9,9 @@ public class GUIFrame implements ActionListener {
 	private JPanel jlistPanel;
 	private JFrame jframe;
 	private JMenuBar menuBar;
-	private Game game;
-	private JMenu fileMenu;
-	private JMenuItem newGame, exit, redo, undo;
+	private Game game=null;
+	private JMenu fileMenu, gameMenu;
+	private JMenuItem newGame, exit, redo, undo, save, load;
 	private int width, height;
 	private JButton sunflowerButton, peaButton, passButton, advancedPea;
 	private JTextField sunIndication;
@@ -42,21 +42,31 @@ public class GUIFrame implements ActionListener {
 		menuBar = new JMenuBar();
 		fileMenu = new JMenu("File");
 		menuBar.add(fileMenu);
+		gameMenu = new JMenu("Games");
+		menuBar.add(gameMenu);
 		jframe.add(menuBar, BorderLayout.BEFORE_FIRST_LINE);
 
-		// Add menuItem
-		newGame = new JMenuItem("New Game");
-		newGame.addActionListener(this);
-		fileMenu.add(newGame);
+		// Add menuItem to file menu
+		save = new JMenuItem("Save");
+		save.addActionListener(this);
+		fileMenu.add(save);
+		load = new JMenuItem("Load");
+		load.addActionListener(this);
+		fileMenu.add(load);
 		exit = new JMenuItem("Exit");
 		exit.addActionListener(this);
 		fileMenu.add(exit);
+		// Add menuItem to Games menu
 		undo = new JMenuItem("Undo");
 		undo.addActionListener(this);
-		fileMenu.add(undo);
+		gameMenu.add(undo);
 		redo = new JMenuItem("Redo");
 		redo.addActionListener(this);
-		fileMenu.add(redo);
+		gameMenu.add(redo);
+		newGame = new JMenuItem("New Game");
+		newGame.addActionListener(this);
+		gameMenu.add(newGame);
+		
 		selectionPanel();
 		mappingPanel();
 		disableAllButtons();
@@ -128,8 +138,10 @@ public class GUIFrame implements ActionListener {
 		disableAllButtons();
 		if (status == 1) {
 			sunIndication.setText("All zombies are eliminated. You have won!");
+			JOptionPane.showMessageDialog(jframe,"All zombies are eliminated. You have won!");
 		} else if (status == -1) {
 			sunIndication.setText("The zombies ate your brains!");
+			JOptionPane.showMessageDialog(jframe,"The zombies ate your brains!");
 		}
 	}
 
@@ -217,6 +229,16 @@ public class GUIFrame implements ActionListener {
 		}
 		sunIndication.setText("Your total number of sun is: " + game.getSun());
 	}
+	
+	/**
+	 * @desc save the game to an file
+	 * */
+	public void save() {
+		boolean status = game.saveGame(game);
+		if(status&&game!=null) {
+			JOptionPane.showMessageDialog(jframe,"You saved the game.");
+		}
+	}
 
 	/**
 	 * Performs various actions based on which component sent the ActionEvent.
@@ -232,9 +254,11 @@ public class GUIFrame implements ActionListener {
 			sunIndication.setText("Your total number of sun is: " + game.getSun());
 		} else if (e.getSource() == exit) {
 			System.exit(0);
-		}else if(e.getSource()==undo) {
+		} else if(e.getSource()==undo) {
 			game.undo();
 			refreshMap();
+		} else if(e.getSource()==save) {
+			save();			
 		} else if (e.getSource().equals(sunflowerButton)) {
 			plantSelect = 0;
 		} else if (e.getSource().equals(peaButton)) {
@@ -266,7 +290,6 @@ public class GUIFrame implements ActionListener {
 			}
 			refreshMap();
 		}
-
 	}	
 
 	/**

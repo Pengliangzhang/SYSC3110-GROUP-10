@@ -399,15 +399,18 @@ public class Game implements Serializable{
 	/**
 	 * @desc save an game object into an file
 	 * @param g the game user like to store
+	 * @return return true if save to a file, false otherwise
 	 * */
-	public void saveGame(Game g) {
+	public boolean saveGame(Game g) {
 		try {
 			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("games.ser"));
 			out.writeObject(g);
 			out.close();
+			return true;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
 	}
 
@@ -438,5 +441,4 @@ public class Game implements Serializable{
 	public void setNext(Game next) {
 		this.next = next;
 	}
-
 }
