@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -10,13 +11,15 @@ public class GUIFrame implements ActionListener {
 	private JMenuBar menuBar;
 	private Game game;
 	private JMenu fileMenu;
-	private JMenuItem newGame, exit;
+	private JMenuItem newGame, exit, redo, undo;
 	private int width, height;
-	private JButton sunflowerButton, peaButton, passButton;
+	private JButton sunflowerButton, peaButton, passButton, advancedPea;
 	private JTextField sunIndication;
 	private int status;
-	private int plantSelect; // -1 for not select, 0 for sunflower, 1 for peashooter
+	private int plantSelect; // -1 for not select, 0 for sunflower, 1 for peashooter, 2 for advancedPeashooter
 	private JButton[][] buttons;
+	
+	private ArrayList<Game> gameList;
 
 	/**
 	 * Constructor for GUIFrame objects. Initializes the JFrame and its JMenuBar.
@@ -48,10 +51,17 @@ public class GUIFrame implements ActionListener {
 		exit = new JMenuItem("Exit");
 		exit.addActionListener(this);
 		fileMenu.add(exit);
+		undo = new JMenuItem("Undo");
+		undo.addActionListener(this);
+		fileMenu.add(undo);
+		redo = new JMenuItem("Redo");
+		redo.addActionListener(this);
+		fileMenu.add(redo);
 		selectionPanel();
 		mappingPanel();
 		disableAllButtons();
 		game = new Game();
+		gameList = new ArrayList<Game>();
 
 		jframe.setVisible(true);
 	}
@@ -67,13 +77,17 @@ public class GUIFrame implements ActionListener {
 		jframe.add(pane, BorderLayout.SOUTH);
 		sunflowerButton = new JButton("Sunflower");
 		peaButton = new JButton("Peashooter");
+		advancedPea = new JButton("Advanced Peashooter");
 		passButton = new JButton("Pass a round");
+		
 		sunflowerButton.addActionListener(this);
 		peaButton.addActionListener(this);
+		advancedPea.addActionListener(this);
 		passButton.addActionListener(this);
 
 		pane.add(sunflowerButton);
 		pane.add(peaButton);
+		pane.add(advancedPea);
 		pane.add(passButton);
 		sunIndication = new JTextField("The game has not yet started");
 		sunIndication.setEditable(false);
@@ -130,6 +144,7 @@ public class GUIFrame implements ActionListener {
 		}
 		sunflowerButton.setEnabled(false);
 		peaButton.setEnabled(false);
+		advancedPea.setEnabled(false);
 		passButton.setEnabled(false);
 	}
 
@@ -144,6 +159,7 @@ public class GUIFrame implements ActionListener {
 		}
 		sunflowerButton.setEnabled(true);
 		peaButton.setEnabled(true);
+		advancedPea.setEnabled(true);
 		passButton.setEnabled(true);
 	}
 
@@ -175,11 +191,15 @@ public class GUIFrame implements ActionListener {
 				s = s + "-sunflowerButton";
 			} else if (x == p.getX() && y == p.getY() && (p instanceof Peashooter)) {
 				s = s + "-PEA";
+			} else if (x == p.getX() && y == p.getY() && (p instanceof AdvancedPeashooter)) {
+				s = s + "-PEA(AD)";
 			}
 		}
 		for (Zombie z : game.getAllZombies()) {
-			if (x == z.getX() && y == z.getY()) {
+			if (x == z.getX() && y == z.getY() && (z instanceof BasicZombie)) {
 				s = s + "-Z";
+			}else if(x == z.getX() && y == z.getY() && (z instanceof AdvancedZombie)) {
+				s = s + "-A Z";
 			}
 		}
 		buttons[i][j].setText(s);
@@ -195,6 +215,7 @@ public class GUIFrame implements ActionListener {
 				printZombieMap(i, j);
 			}
 		}
+		sunIndication.setText("Your total number of sun is: " + game.getSun());
 	}
 
 	/**
@@ -211,15 +232,20 @@ public class GUIFrame implements ActionListener {
 			sunIndication.setText("Your total number of sun is: " + game.getSun());
 		} else if (e.getSource() == exit) {
 			System.exit(0);
+		}else if(e.getSource()==undo) {
+			game.undo();
+			refreshMap();
 		} else if (e.getSource().equals(sunflowerButton)) {
 			plantSelect = 0;
 		} else if (e.getSource().equals(peaButton)) {
 			plantSelect = 1;
+		} else if (e.getSource().equals(advancedPea)) {
+			plantSelect = 2;
 		} else if (e.getSource().equals(passButton)) {
 			plantSelect = -1;
 			status = game.takeTurn();
 			sunIndication.setText("Your total number of sun is: " + game.getSun());
-			checkWinner();
+			checkWinner();			
 			refreshMap();
 		} else {
 			buttons[0][9].setText("");
@@ -229,7 +255,7 @@ public class GUIFrame implements ActionListener {
 						boolean temp = game.userTurn(i + 1, j + 1, plantSelect);
 						if (temp) {
 							status = game.takeTurn();
-							sunIndication.setText("Your total number of sun is: " + game.getSun());
+//							sunIndication.setText("Your total number of sun is: " + game.getSun());
 							checkWinner();
 							plantSelect = -1;
 						}
@@ -241,7 +267,7 @@ public class GUIFrame implements ActionListener {
 			refreshMap();
 		}
 
-	}
+	}	
 
 	/**
 	 * Main method that runs an instance of GUIFrame.

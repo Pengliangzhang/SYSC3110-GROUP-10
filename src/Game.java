@@ -1,3 +1,7 @@
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -8,13 +12,17 @@ import java.util.Random;
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
  * @version Oct 28, 2018
  */
-public class Game {
+public class Game implements Serializable{
 
 	private int tickCount, sun, totalZombies, remainingZombies;
 	private ArrayList<Plant> plants;
 	private ArrayList<Zombie> zombies;
-	private int[] sunPosition;
-	private int plantPosition, zombiePosition;
+	//private int[] sunPosition;
+	//private int plantPosition, zombiePosition;
+	
+	private ArrayList<Plant> deletedPlants;
+	private ArrayList<Zombie> deletedZombies;
+	private int[] sumSun;
 
 	/**
 	 * Initializes the game.
@@ -94,7 +102,7 @@ public class Game {
 		} else {
 			tickCount++;
 			// Print the map
-			printMap();
+			//printMap();
 			return 0;
 		}
 	}
@@ -169,6 +177,8 @@ public class Game {
 				return plantAPlant(i, j, "sunflower");
 			} else if (select == 1) {
 				return plantAPlant(i, j, "peashooter");
+			} else if (select == 2) {
+				return plantAPlant(i, j, "advancedPeashooter");
 			}
 		}
 		return false;
@@ -231,11 +241,21 @@ public class Game {
 			Random rand = new Random();
 			int n = rand.nextInt(5) + 1;
 			if (tickCount == 0) {
-				Zombie z = new BasicZombie(n);
+				Zombie z;
+				if((n%2)==0) {
+					z = new BasicZombie(n);
+				}else {
+					z = new AdvancedZombie(n);
+				}				
 				zombies.add(z);
 				remainingZombies--;
 			} else if ((tickCount % 2) == 0) {
-				Zombie z = new BasicZombie(n);
+				Zombie z;
+				if((n%2)==0) {
+					z = new AdvancedZombie(n);					
+				}else {
+					z = new BasicZombie(n);
+				}
 				zombies.add(z);
 				remainingZombies--;
 			}
@@ -311,7 +331,17 @@ public class Game {
 
 			// TODO again, this should never happen
 			System.out.println("Unable to create a new Peashooter!");
-		} else {
+		} else if (sun >= 75 && type.equals("advancedPeashooter")) {
+			AdvancedPeashooter plant = new AdvancedPeashooter(x, y);
+			if (plants.add(plant)) {
+				sun = sun - plant.getSunCost();
+				System.out.println("AdvancedPeashooter placed at (" + x + ", " + y + ")");
+				return true;
+			}
+
+			// TODO again, this should never happen
+			System.out.println("Unable to create a new Peashooter!");
+		}else {
 			// TODO should never happen, since we check the conditions before
 			System.out.println("You do not have enough sun!");
 		}
@@ -346,6 +376,28 @@ public class Game {
 	 */
 	public void setSun(int sun) {
 		this.sun = sun;
+	}
+	
+	/**
+	 * @desc 
+	 * */
+	public void undo() {
+		
+	}
+	
+	/**
+	 * @desc save an game object into an file
+	 * @param g the game user like to store
+	 * */
+	public void saveGame(Game g) {
+		try {
+			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("games.ser"));
+			out.writeObject(g);
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
