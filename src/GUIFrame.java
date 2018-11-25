@@ -188,7 +188,7 @@ public class GUIFrame implements ActionListener {
 
 		for (Plant p : game.getAllPlants()) {
 			if (x == p.getX() && y == p.getY() && (p instanceof Sunflower)) {
-				s = s + "-sunflowerButton";
+				s = s + "-sunflower";
 			} else if (x == p.getX() && y == p.getY() && (p instanceof Peashooter)) {
 				s = s + "-PEA";
 			} else if (x == p.getX() && y == p.getY() && (p instanceof AdvancedPeashooter)) {

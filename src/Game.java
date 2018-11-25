@@ -23,6 +23,8 @@ public class Game implements Serializable{
 	private ArrayList<Plant> deletedPlants;
 	private ArrayList<Zombie> deletedZombies;
 	private int[] sumSun;
+	
+	private Game pre, next;
 
 	/**
 	 * Initializes the game.
@@ -32,6 +34,8 @@ public class Game implements Serializable{
 	public Game() {
 		plants = new ArrayList<Plant>();
 		zombies = new ArrayList<Zombie>();
+		setPre(null);
+		setNext(null);
 
 		// titleScreen();
 	}
@@ -379,9 +383,16 @@ public class Game implements Serializable{
 	}
 	
 	/**
-	 * @desc 
+	 * @desc undo to the last step
 	 * */
 	public void undo() {
+		
+	}
+	
+	/**
+	 * @desc redo to the next step
+	 * */
+	public void redo() {
 		
 	}
 	
@@ -398,6 +409,34 @@ public class Game implements Serializable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * @return the pre
+	 */
+	public Game getPre() {
+		return pre;
+	}
+
+	/**
+	 * @param pre the pre to set
+	 */
+	public void setPre(Game pre) {
+		this.pre = pre;
+	}
+
+	/**
+	 * @return the next
+	 */
+	public Game getNext() {
+		return next;
+	}
+
+	/**
+	 * @param next the next to set
+	 */
+	public void setNext(Game next) {
+		this.next = next;
 	}
 
 }
