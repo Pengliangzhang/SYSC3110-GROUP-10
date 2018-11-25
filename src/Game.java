@@ -17,13 +17,7 @@ public class Game implements Serializable{
 	private int tickCount, sun, totalZombies, remainingZombies;
 	private ArrayList<Plant> plants;
 	private ArrayList<Zombie> zombies;
-	//private int[] sunPosition;
-	//private int plantPosition, zombiePosition;
-	
-	private ArrayList<Plant> deletedPlants;
-	private ArrayList<Zombie> deletedZombies;
-	private int[] sumSun;
-	
+
 	private Game pre, next;
 
 	/**
@@ -34,12 +28,43 @@ public class Game implements Serializable{
 	public Game() {
 		plants = new ArrayList<Plant>();
 		zombies = new ArrayList<Zombie>();
-		setPre(null);
-		setNext(null);
+		pre = null;
+		next = null;
 
 		// titleScreen();
 	}
+	
+	public Game(Game g) {
+		this.tickCount = g.getTickCount();
+		this.sun = g.getSun();
+		this.totalZombies = g.getTotalZombies();
+		this.remainingZombies = g.getRemainingZombies();
+		this.plants = g.getPlants();
+		this.zombies = g.getZombies();
+		this.pre = g.getPre();
+		this.next = g.getNext();
+	}
+	
+	public int getTickCount() {
+		return tickCount;
+	}
 
+	public int getTotalZombies() {
+		return totalZombies;
+	}
+
+	public int getRemainingZombies() {
+		return remainingZombies;
+	}
+
+	public ArrayList<Plant> getPlants() {
+		return plants;
+	}
+
+	public ArrayList<Zombie> getZombies() {
+		return zombies;
+	}
+	
 	public void newGame() {
 		sun = 50;
 		totalZombies = 10; // may be changed in the future
@@ -177,6 +202,7 @@ public class Game implements Serializable{
 	 */
 	public boolean userTurn(int i, int j, int select) {
 		if (isEmpty(i, j)) {
+			pre = new Game(this); // Save history
 			if (select == 0) {
 				return plantAPlant(i, j, "sunflower");
 			} else if (select == 1) {
@@ -385,15 +411,37 @@ public class Game implements Serializable{
 	/**
 	 * @desc undo to the last step
 	 * */
-	public void undo() {
-		
+	public boolean undo() {
+		if (pre == null) {
+			return false;
+		} 
+		this.next = new Game(this);
+		this.tickCount = pre.getTickCount();
+		this.sun = pre.getSun();
+		this.totalZombies = pre.getTotalZombies();
+		this.remainingZombies = pre.getRemainingZombies();
+		this.plants = pre.getPlants();
+		this.zombies = pre.getZombies();
+		this.pre = pre.getPre();
+		return true;
 	}
 	
 	/**
 	 * @desc redo to the next step
 	 * */
-	public void redo() {
-		
+	public boolean redo() {
+		if (next == null) {
+			return false;
+		} 
+		this.pre = new Game(this);
+		this.tickCount = next.getTickCount();
+		this.sun = next.getSun();
+		this.totalZombies = next.getTotalZombies();
+		this.remainingZombies = next.getRemainingZombies();
+		this.plants = next.getPlants();
+		this.zombies = next.getZombies();
+		this.next = next.getNext();
+		return true;
 	}
 	
 	/**
