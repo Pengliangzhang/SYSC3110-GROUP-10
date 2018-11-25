@@ -17,7 +17,7 @@ public class GUIFrame implements ActionListener {
 	private int status;
 	private int plantSelect; // -1 for not select, 0 for sunflower, 1 for peashooter
 	private JButton[][] buttons;
-	
+
 	/**
 	 * Constructor for GUIFrame objects. Initializes the JFrame and its JMenuBar.
 	 */
@@ -40,7 +40,7 @@ public class GUIFrame implements ActionListener {
 		fileMenu = new JMenu("File");
 		menuBar.add(fileMenu);
 		jframe.add(menuBar, BorderLayout.BEFORE_FIRST_LINE);
-		
+
 		// Add menuItem
 		newGame = new JMenuItem("New Game");
 		newGame.addActionListener(this);
@@ -58,7 +58,8 @@ public class GUIFrame implements ActionListener {
 
 	/**
 	 * Add a panel below the board that allows the user to select plants to plant,
-	 * allows the user to skip a turn, and informs the user of how much sun they possess at the moment.
+	 * allows the user to skip a turn, and informs the user of how much sun they
+	 * possess at the moment.
 	 */
 	public void selectionPanel() {
 		pane = new JPanel();
@@ -70,7 +71,7 @@ public class GUIFrame implements ActionListener {
 		sunflowerButton.addActionListener(this);
 		peaButton.addActionListener(this);
 		passButton.addActionListener(this);
-		
+
 		pane.add(sunflowerButton);
 		pane.add(peaButton);
 		pane.add(passButton);
@@ -78,7 +79,7 @@ public class GUIFrame implements ActionListener {
 		sunIndication.setEditable(false);
 
 		pane.add(sunIndication);
-		
+
 		plantSelect = -1;
 	}
 
@@ -90,7 +91,7 @@ public class GUIFrame implements ActionListener {
 		jlistPanel.setLayout(new GridLayout(5, 10));
 		jframe.add(jlistPanel, BorderLayout.CENTER);
 		buttons = new JButton[5][10];
-		
+
 		for (int i = 0; i < 5; ++i) {
 			for (int j = 0; j < 10; ++j) {
 				buttons[i][j] = new JButton();
@@ -101,9 +102,10 @@ public class GUIFrame implements ActionListener {
 			}
 		}
 	}
-	
+
 	/**
-	 * Determine the winner of the current game, initiated when there are no more zombies.
+	 * Determine the winner of the current game, initiated when there are no more
+	 * zombies.
 	 */
 	public void checkWinner() {
 		if (status == 0) {
@@ -116,7 +118,7 @@ public class GUIFrame implements ActionListener {
 			sunIndication.setText("The zombies ate your brains!");
 		}
 	}
-	
+
 	/**
 	 * Disables all buttons on the board, used when the game is over.
 	 */
@@ -130,7 +132,7 @@ public class GUIFrame implements ActionListener {
 		peaButton.setEnabled(false);
 		passButton.setEnabled(false);
 	}
-	
+
 	/**
 	 * Enables all buttons on the board.
 	 */
@@ -144,18 +146,19 @@ public class GUIFrame implements ActionListener {
 		peaButton.setEnabled(true);
 		passButton.setEnabled(true);
 	}
-	
+
 	/**
 	 * Wipes the text off all buttons on the board.
 	 */
 	public void clearButtonText() {
 		for (int i = 0; i < 5; ++i) {
 			for (int j = 0; j < 10; ++j) {
-				buttons[i][j].setText(null);;
+				buttons[i][j].setText(null);
+				;
 			}
 		}
 	}
-	
+
 	/**
 	 * Updates the desired button on the board with the given Zombie's position.
 	 * 
@@ -167,9 +170,9 @@ public class GUIFrame implements ActionListener {
 		int y = j + 1;
 		String s = "";
 
-		for (Plant p:game.getAllPlants()) {
+		for (Plant p : game.getAllPlants()) {
 			if (x == p.getX() && y == p.getY() && (p instanceof Sunflower)) {
-				s = s+"-sunflowerButton";
+				s = s + "-sunflowerButton";
 			} else if (x == p.getX() && y == p.getY() && (p instanceof Peashooter)) {
 				s = s + "-PEA";
 			}
@@ -181,10 +184,10 @@ public class GUIFrame implements ActionListener {
 		}
 		buttons[i][j].setText(s);
 	}
-	
+
 	/**
-	 * Calls printZombieMap() for each button the board, in order to update the board with 
-	 * all the zombies' positions.
+	 * Calls printZombieMap() for each button the board, in order to update the
+	 * board with all the zombies' positions.
 	 */
 	public void refreshMap() {
 		for (int i = 0; i < 5; ++i) {
@@ -193,7 +196,7 @@ public class GUIFrame implements ActionListener {
 			}
 		}
 	}
-	
+
 	/**
 	 * Performs various actions based on which component sent the ActionEvent.
 	 * 
@@ -230,14 +233,14 @@ public class GUIFrame implements ActionListener {
 							checkWinner();
 							plantSelect = -1;
 						}
-						plantSelect = -1;						
+						plantSelect = -1;
 					}
-					
+
 				}
 			}
 			refreshMap();
 		}
-		
+
 	}
 
 	/**

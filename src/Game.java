@@ -9,10 +9,12 @@ import java.util.Random;
  * @version Oct 28, 2018
  */
 public class Game {
-	
+
 	private int tickCount, sun, totalZombies, remainingZombies;
 	private ArrayList<Plant> plants;
 	private ArrayList<Zombie> zombies;
+	private int[] sunPosition;
+	private int plantPosition, zombiePosition;
 
 	/**
 	 * Initializes the game.
@@ -22,10 +24,10 @@ public class Game {
 	public Game() {
 		plants = new ArrayList<Plant>();
 		zombies = new ArrayList<Zombie>();
-		
-		//titleScreen();
+
+		// titleScreen();
 	}
-	
+
 	public void newGame() {
 		sun = 50;
 		totalZombies = 10; // may be changed in the future
@@ -36,35 +38,23 @@ public class Game {
 	}
 
 	/*
-	 * old title screen for console based
-	private void titleScreen() {
-		System.out.println("Welcome to SYSC3110 Group 10's PvZ, Console Vers.");
-
-		// TODO closing the Scanner causes errors
-		Scanner console = new Scanner(System.in);
-		boolean goodInput = false;
-		String input = "";
-
-		while (!goodInput) {
-			System.out.println("Enter \"play\" to play, and \"exit\" to quit.");
-			input = console.nextLine();
-			if (input.equals("play")) {
-				// initialize the zombies, and give the player some sun to start off with
-				sun = 50;
-				totalZombies = 10; // may be changed in the future
-				remainingZombies = 10;
-				tickCount = 0;
-
-				// console.close();
-
-				// start Turn 1
-				takeTurn();
-			} else if (input.equals("exit")) {
-				System.out.println("Thanks for playing our game!");
-				System.exit(0);
-			}
-		}
-	} */
+	 * old title screen for console based private void titleScreen() {
+	 * System.out.println("Welcome to SYSC3110 Group 10's PvZ, Console Vers.");
+	 * 
+	 * // TODO closing the Scanner causes errors Scanner console = new
+	 * Scanner(System.in); boolean goodInput = false; String input = "";
+	 * 
+	 * while (!goodInput) {
+	 * System.out.println("Enter \"play\" to play, and \"exit\" to quit."); input =
+	 * console.nextLine(); if (input.equals("play")) { // initialize the zombies,
+	 * and give the player some sun to start off with sun = 50; totalZombies = 10;
+	 * // may be changed in the future remainingZombies = 10; tickCount = 0;
+	 * 
+	 * // console.close();
+	 * 
+	 * // start Turn 1 takeTurn(); } else if (input.equals("exit")) {
+	 * System.out.println("Thanks for playing our game!"); System.exit(0); } } }
+	 */
 	/**
 	 * Take one turn, every turn has following step: 1. increment sun by 25 (natural
 	 * sun generation) 2. print the map 3. prompt user (drop a plant on the map or
@@ -182,51 +172,6 @@ public class Game {
 			}
 		}
 		return false;
-		
-//		// TODO closing the Scanner causes errors
-//		Scanner console = new Scanner(System.in);
-//		String input = "";
-//		boolean goodInput = false;
-//
-//		while (!goodInput) {
-//			System.out.println("\n\nWhat would you like to do? (pass/drop):");
-//			input = console.nextLine().trim();
-//			if (input.equals("pass")) {
-//				// console.close();
-//				return;
-//			} else if (input.equals("drop")) {
-//				goodInput = true;
-//			}
-//		}
-//
-//		goodInput = false;
-//		while (!goodInput) {
-//			System.out.println("Which plant do you want to drop? (sunflower/peashooter):");
-//			input = console.nextLine().trim();
-//
-//			if (input.equals("sunflower") || input.equals("peashooter")) {
-//				goodInput = true;
-//			}
-//		}
-//
-//		goodInput = false;
-//		while (!goodInput) {
-//			System.out.println("Enter the coordinates at which the plant should be placed. (row column):");
-//			String position = console.nextLine();
-//			String[] entity = position.split("\\s+");
-//			if (entity.length == 2) {
-//				int x = Integer.valueOf(entity[0]);
-//				int y = Integer.valueOf(entity[1]);
-//				if (isEmpty(x, y)) {
-//					plantAPlant(x, y, input);
-//					goodInput = true;
-//					// console.close();
-//					return;
-//				} else {
-//					System.out.println("That spot is already occupied.");
-//				}
-//			}
-//		}
 	}
 
 	/**
@@ -372,34 +317,35 @@ public class Game {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * @return The ArrayList that contains all the zombies in the game
 	 */
-	public ArrayList<Zombie> getAllZombies(){
+	public ArrayList<Zombie> getAllZombies() {
 		return zombies;
 	}
-	
+
 	/**
 	 * @return The ArrayList that contains all the plants in the game
 	 */
-	public ArrayList<Plant> getAllPlants(){
+	public ArrayList<Plant> getAllPlants() {
 		return plants;
 	}
-	
+
 	/**
 	 * @return The amount of sun currently at the user's disposal
 	 */
 	public int getSun() {
 		return sun;
 	}
-	
+
 	/**
 	 * Updates the sun count with the given amount.
 	 * 
 	 * @param sun The new amount of sun
 	 */
 	public void setSun(int sun) {
-		  this.sun = sun;
+		this.sun = sun;
 	}
+
 }
