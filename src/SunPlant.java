@@ -1,3 +1,5 @@
+import java.io.Serializable;
+
 /**
  * This class represents plants that specifically generate sun for the player to use.
  * Extends the plant class, and adds sun generated amount, and how often the sun is generated.
@@ -5,7 +7,7 @@
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
  * @version Oct 28, 2018
  */
-public class SunPlant extends Plant
+public class SunPlant extends Plant implements Serializable
 {
 	private int sun, sunTick, tick;
 	

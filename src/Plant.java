@@ -1,3 +1,5 @@
+import java.io.Serializable;
+
 /**
  * This class represents a basic plant.
  * It keeps track of its own health and how much it costs to plant.
@@ -5,7 +7,7 @@
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
  * @version Oct 28, 2018
  */
-public class Plant extends Entity
+public class Plant extends Entity implements Serializable
 {
 	private int health, sunCost;
 	

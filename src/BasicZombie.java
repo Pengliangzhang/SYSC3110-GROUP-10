@@ -1,3 +1,5 @@
+import java.io.Serializable;
+
 /**
  * Represents the most basic zombie.
  * 
@@ -5,7 +7,7 @@
  * @version Oct 28, 2018
  */
 
-public class BasicZombie extends Zombie
+public class BasicZombie extends Zombie implements Serializable
 {
 	/**
 	 * All the parameters are standardized, just need to give the row that the zombie will attack.

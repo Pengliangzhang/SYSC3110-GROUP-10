@@ -1,5 +1,7 @@
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -460,6 +462,22 @@ public class Game implements Serializable{
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	/**
+	 * @desc load an game to the current
+	 * */
+	public Game loadGame() {
+		try {
+			ObjectInputStream in = new ObjectInputStream(new FileInputStream("games.ser"));
+			Game g = (Game) in.readObject();
+			in.close();
+			return g;
+		} catch (IOException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	/**

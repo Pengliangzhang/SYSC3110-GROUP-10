@@ -1,10 +1,12 @@
+import java.io.Serializable;
+
 /**
  * Represents the Peashooter in the original PvZ, except that it costs 30 sun.
  * 
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
  * @version Oct 28, 2018
  */
-public class Peashooter extends DamagePlant
+public class Peashooter extends DamagePlant implements Serializable
 {
 	/**
 	 * The parameters for health, damage, etc. are standardized.

@@ -1,3 +1,5 @@
+import java.io.Serializable;
+
 /**
  * This class represents plants that are able to deal damage to zombies. Has
  * range, damage, and attack speed.
@@ -5,7 +7,7 @@
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
  * @version Oct 28, 2018
  */
-public class DamagePlant extends Plant {
+public class DamagePlant extends Plant implements Serializable {
 	private int range, damage, damageTick;
 
 	/**

@@ -239,6 +239,20 @@ public class GUIFrame implements ActionListener {
 			JOptionPane.showMessageDialog(jframe,"You saved the game.");
 		}
 	}
+	
+	/**
+	 * @desc load an old version game to the current round
+	 * */
+	private void load() {
+		// TODO Auto-generated method stub
+		if(game.loadGame()==null) {
+			JOptionPane.showMessageDialog(jframe,"Unable to load the previous game!");
+		}else {
+			game = game.loadGame();
+			refreshMap();
+		}
+		
+	}
 
 	/**
 	 * Performs various actions based on which component sent the ActionEvent.
@@ -257,8 +271,13 @@ public class GUIFrame implements ActionListener {
 		} else if(e.getSource()==undo) {
 			game.undo();
 			refreshMap();
+		} else if(e.getSource()==redo) {
+			game.redo();
+			refreshMap();
 		} else if(e.getSource()==save) {
 			save();			
+		} else if(e.getSource()==save) {
+			load();		
 		} else if (e.getSource().equals(sunflowerButton)) {
 			plantSelect = 0;
 		} else if (e.getSource().equals(peaButton)) {

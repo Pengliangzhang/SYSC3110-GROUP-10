@@ -1,3 +1,5 @@
+import java.io.Serializable;
+
 /**
  * This class represents zombies.
  * Has health, damage, attack speed, and movement speed.
@@ -5,7 +7,7 @@
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
  * @version Oct 28, 2018
  */
-public class Zombie extends Entity
+public class Zombie extends Entity implements Serializable
 {
 	private int damage, health, moveSpeed, attackSpeed;
 	

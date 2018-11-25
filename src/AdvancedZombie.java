@@ -1,3 +1,5 @@
+import java.io.Serializable;
+
 /**
  * Represents the most AdvancedZombie.
  * 
@@ -5,7 +7,7 @@
  * @version Oct 28, 2018
  */
 
-public class AdvancedZombie extends Zombie
+public class AdvancedZombie extends Zombie implements Serializable
 {
 	/**
 	 * All the parameters are standardized, just need to give the row that the zombie will attack.
