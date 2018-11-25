@@ -1,4 +1,6 @@
 import java.io.FileInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -34,37 +36,6 @@ public class Game implements Serializable{
 		next = null;
 
 		// titleScreen();
-	}
-	
-	public Game(Game g) {
-		this.tickCount = g.getTickCount();
-		this.sun = g.getSun();
-		this.totalZombies = g.getTotalZombies();
-		this.remainingZombies = g.getRemainingZombies();
-		this.plants = g.getPlants();
-		this.zombies = g.getZombies();
-		this.pre = g.getPre();
-		this.next = g.getNext();
-	}
-	
-	public int getTickCount() {
-		return tickCount;
-	}
-
-	public int getTotalZombies() {
-		return totalZombies;
-	}
-
-	public int getRemainingZombies() {
-		return remainingZombies;
-	}
-
-	public ArrayList<Plant> getPlants() {
-		return plants;
-	}
-
-	public ArrayList<Zombie> getZombies() {
-		return zombies;
 	}
 	
 	public void newGame() {
@@ -204,9 +175,12 @@ public class Game implements Serializable{
 	 */
 	public boolean userTurn(int i, int j, int select) {
 		if (isEmpty(i, j)) {
-			pre = new Game(this); // Save history
+			pre = copy(); // Save history
+			System.out.println(pre.plants);
 			if (select == 0) {
-				return plantAPlant(i, j, "sunflower");
+				plantAPlant(i, j, "sunflower");
+				System.out.println(pre.plants);
+				return true;
 			} else if (select == 1) {
 				return plantAPlant(i, j, "peashooter");
 			} else if (select == 2) {
@@ -417,7 +391,7 @@ public class Game implements Serializable{
 		if (pre == null) {
 			return false;
 		} 
-		this.next = new Game(this);
+		this.next = copy();
 		this.tickCount = pre.getTickCount();
 		this.sun = pre.getSun();
 		this.totalZombies = pre.getTotalZombies();
@@ -435,7 +409,7 @@ public class Game implements Serializable{
 		if (next == null) {
 			return false;
 		} 
-		this.pre = new Game(this);
+		this.pre = copy();
 		this.tickCount = next.getTickCount();
 		this.sun = next.getSun();
 		this.totalZombies = next.getTotalZombies();
@@ -488,23 +462,51 @@ public class Game implements Serializable{
 	}
 
 	/**
-	 * @param pre the pre to set
-	 */
-	public void setPre(Game pre) {
-		this.pre = pre;
-	}
-
-	/**
 	 * @return the next
 	 */
 	public Game getNext() {
 		return next;
 	}
+	
+	public int getTickCount() {
+		return tickCount;
+	}
 
-	/**
-	 * @param next the next to set
-	 */
-	public void setNext(Game next) {
-		this.next = next;
+	public int getTotalZombies() {
+		return totalZombies;
+	}
+
+	public int getRemainingZombies() {
+		return remainingZombies;
+	}
+
+	public ArrayList<Plant> getPlants() {
+		return plants;
+	}
+
+	public ArrayList<Zombie> getZombies() {
+		return zombies;
+	}
+	
+	public Game copy() {
+		Game temp = null;
+		try {
+			ByteArrayOutputStream m1 = new ByteArrayOutputStream();
+			ObjectOutputStream out = new ObjectOutputStream(m1);
+			out.writeObject(this);
+			out.flush();
+			out.close();
+			
+			ByteArrayInputStream m2 = new ByteArrayInputStream(m1.toByteArray());
+			ObjectInputStream in = new ObjectInputStream(m2);
+			temp = (Game) in.readObject();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return temp;
 	}
 }
