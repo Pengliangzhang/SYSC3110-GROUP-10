@@ -21,8 +21,9 @@ public class Game implements Serializable{
 	private int tickCount, sun, totalZombies, remainingZombies;
 	private ArrayList<Plant> plants;
 	private ArrayList<Zombie> zombies;
-
-	private Game pre, curr, next;
+	
+	private ArrayList<Game> lists;
+	private int index, size;
 
 	/**
 	 * Initializes the game.
@@ -32,9 +33,7 @@ public class Game implements Serializable{
 	public Game() {
 		plants = new ArrayList<Plant>();
 		zombies = new ArrayList<Zombie>();
-		pre = null;
-		next = null;
-		curr = null;
+		lists = new ArrayList<Game>();
 
 		// titleScreen();
 	}
@@ -46,9 +45,10 @@ public class Game implements Serializable{
 		tickCount = 0;
 		plants.clear();
 		zombies.clear();
-		pre = null;
-		next = null;
-		curr = copy(this);
+		lists.clear();
+		index = 0;
+		lists.add(index, copy(this));
+		size = 1;
 	}
 
 	/*
@@ -109,9 +109,9 @@ public class Game implements Serializable{
 		tickCount++;
 		// Print the map
 		//printMap();
-		pre = curr;
-		curr = copy(this);
-		next = null;
+		index++;
+		lists.add(index, copy(this));
+		size = index + 1;
 		return 0;
 	}
 
@@ -390,19 +390,19 @@ public class Game implements Serializable{
 	 * @desc undo to the last step
 	 * */
 	public boolean undo() {
-		if (pre == null) {
+		if (index <= 0) {
 			return false;
-		} 
-		System.out.println(pre.plants.toString());
-		this.next = copy(curr);
-		this.tickCount = pre.getTickCount();
-		this.sun = pre.getSun();
-		this.totalZombies = pre.getTotalZombies();
-		this.remainingZombies = pre.getRemainingZombies();
-		this.plants = pre.getPlants();
-		this.zombies = pre.getZombies();
-		this.pre = pre.getPre();
-		this.curr = pre.getCurr();
+		}
+		Game temp = lists.get(index - 1);
+		
+		this.tickCount = temp.getTickCount();
+		this.sun = temp.getSun();
+		this.totalZombies = temp.getTotalZombies();
+		this.remainingZombies = temp.getRemainingZombies();
+		this.plants = temp.getPlants();
+		this.zombies = temp.getZombies();
+		
+		index--;
 		return true;
 	}
 	
@@ -410,18 +410,18 @@ public class Game implements Serializable{
 	 * @desc redo to the next step
 	 * */
 	public boolean redo() {
-		if (next == null) {
+		if (index >= size - 1) {
 			return false;
 		} 
-		this.pre = copy(curr);
-		this.tickCount = next.getTickCount();
-		this.sun = next.getSun();
-		this.totalZombies = next.getTotalZombies();
-		this.remainingZombies = next.getRemainingZombies();
-		this.plants = next.getPlants();
-		this.zombies = next.getZombies();
-		this.next = next.getNext();
-		this.curr = next.getCurr();
+		Game temp = lists.get(index + 1);
+		
+		this.tickCount = temp.getTickCount();
+		this.sun = temp.getSun();
+		this.totalZombies = temp.getTotalZombies();
+		this.remainingZombies = temp.getRemainingZombies();
+		this.plants = temp.getPlants();
+		this.zombies = temp.getZombies();
+		index++;
 		return true;
 	}
 	
@@ -457,28 +457,6 @@ public class Game implements Serializable{
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	/**
-	 * @return the pre
-	 */
-	public Game getPre() {
-		return pre;
-	}
-
-	/**
-	 * @return the next
-	 */
-	public Game getNext() {
-		return next;
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public Game getCurr() {
-		return curr;
 	}
 	
 	public int getTickCount() {
