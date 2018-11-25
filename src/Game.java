@@ -45,6 +45,9 @@ public class Game implements Serializable{
 		tickCount = 0;
 		plants.clear();
 		zombies.clear();
+		pre = null;
+		next = null;
+		curr = copy(this);
 	}
 
 	/*
@@ -177,11 +180,8 @@ public class Game implements Serializable{
 	 */
 	public boolean userTurn(int i, int j, int select) {
 		if (isEmpty(i, j)) {
-			System.out.println(pre.plants);
 			if (select == 0) {
-				plantAPlant(i, j, "sunflower");
-				System.out.println(pre.plants);
-				return true;
+				return plantAPlant(i, j, "sunflower");
 			} else if (select == 1) {
 				return plantAPlant(i, j, "peashooter");
 			} else if (select == 2) {
