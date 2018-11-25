@@ -21,7 +21,7 @@ public class Game implements Serializable{
 	private ArrayList<Plant> plants;
 	private ArrayList<Zombie> zombies;
 
-	private Game pre, next;
+	private Game pre, curr, next;
 
 	/**
 	 * Initializes the game.
@@ -33,6 +33,7 @@ public class Game implements Serializable{
 		zombies = new ArrayList<Zombie>();
 		pre = null;
 		next = null;
+		curr = null;
 
 		// titleScreen();
 	}
@@ -100,12 +101,14 @@ public class Game implements Serializable{
 			System.out.println("The zombies ate your brains!\nGame over.");
 			// System.exit(0);
 			return -1;
-		} else {
-			tickCount++;
-			// Print the map
-			//printMap();
-			return 0;
 		}
+		tickCount++;
+		// Print the map
+		//printMap();
+		pre = curr;
+		curr = copy(this);
+		next = null;
+		return 0;
 	}
 
 	/**
@@ -174,7 +177,6 @@ public class Game implements Serializable{
 	 */
 	public boolean userTurn(int i, int j, int select) {
 		if (isEmpty(i, j)) {
-			pre = copy(); // Save history
 			System.out.println(pre.plants);
 			if (select == 0) {
 				plantAPlant(i, j, "sunflower");
@@ -390,7 +392,7 @@ public class Game implements Serializable{
 		if (pre == null) {
 			return false;
 		} 
-		this.next = copy();
+		this.next = copy(curr);
 		this.tickCount = pre.getTickCount();
 		this.sun = pre.getSun();
 		this.totalZombies = pre.getTotalZombies();
@@ -398,6 +400,7 @@ public class Game implements Serializable{
 		this.plants = pre.getPlants();
 		this.zombies = pre.getZombies();
 		this.pre = pre.getPre();
+		this.curr = pre.getCurr();
 		return true;
 	}
 	
@@ -408,7 +411,7 @@ public class Game implements Serializable{
 		if (next == null) {
 			return false;
 		} 
-		this.pre = copy();
+		this.pre = copy(curr);
 		this.tickCount = next.getTickCount();
 		this.sun = next.getSun();
 		this.totalZombies = next.getTotalZombies();
@@ -416,6 +419,7 @@ public class Game implements Serializable{
 		this.plants = next.getPlants();
 		this.zombies = next.getZombies();
 		this.next = next.getNext();
+		this.curr = next.getCurr();
 		return true;
 	}
 	
@@ -451,6 +455,14 @@ public class Game implements Serializable{
 		return next;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
+	public Game getCurr() {
+		return curr;
+	}
+	
 	public int getTickCount() {
 		return tickCount;
 	}
@@ -471,12 +483,12 @@ public class Game implements Serializable{
 		return zombies;
 	}
 	
-	public Game copy() {
+	public Game copy(Game g) {
 		Game temp = null;
 		try {
 			ByteArrayOutputStream m1 = new ByteArrayOutputStream();
 			ObjectOutputStream out = new ObjectOutputStream(m1);
-			out.writeObject(this);
+			out.writeObject(g);
 			out.flush();
 			out.close();
 			
