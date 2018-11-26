@@ -18,8 +18,6 @@ public class GUIFrame implements ActionListener {
 	private int status;
 	private int plantSelect; // -1 for not select, 0 for sunflower, 1 for peashooter, 2 for advancedPeashooter
 	private JButton[][] buttons;
-	
-	private ArrayList<Game> gameList;
 
 	/**
 	 * Constructor for GUIFrame objects. Initializes the JFrame and its JMenuBar.
@@ -71,7 +69,6 @@ public class GUIFrame implements ActionListener {
 		mappingPanel();
 		disableAllButtons();
 		game = new Game();
-		gameList = new ArrayList<Game>();
 
 		jframe.setVisible(true);
 	}
