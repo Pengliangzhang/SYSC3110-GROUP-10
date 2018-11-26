@@ -21,7 +21,7 @@ User Manual
     3. Click the button at the buttom of screen(Sunflower, Peashooter, Advanced Peashooter or Pass a round)
         Sunflower: select sunflower to place
         Peashooter: select Peashooter to place
-         Advanced Peashooter: select Advanced Peashooter to place(Advanced Peashooter has higher damage to zombie)
+        Advanced Peashooter: select Advanced Peashooter to place(Advanced Peashooter has higher damage to zombie)
         Pass a round: do not place plant
     4. Click place where to put your plant(if you selected sunflower or Peashooter from previous step)
         The last column(column 10) do not allow put anything(is disabled)

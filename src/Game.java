@@ -456,26 +456,47 @@ public class Game implements Serializable{
 //		return null;
 //	}
 	
+	/**
+	 * @return The no. of current turn
+	 */
 	public int getTickCount() {
 		return tickCount;
 	}
 
+	/**
+	 * @return The total zombies which idi not killed by plant
+	 */
 	public int getTotalZombies() {
 		return totalZombies;
 	}
 
+	/**
+	 * @return The remaining zombies which no show on map (did not spawn)
+	 */
 	public int getRemainingZombies() {
 		return remainingZombies;
 	}
 
+	/**
+	 * @return All the plants on the map
+	 */
 	public ArrayList<Plant> getPlants() {
 		return plants;
 	}
 
+	/**
+	 * @return All the zombies on the map
+	 */
 	public ArrayList<Zombie> getZombies() {
 		return zombies;
 	}
 	
+	/**
+	 * Copy the game
+	 * 
+	 * @param g A game needs copy
+	 * @return The copy game which would not effect by original one
+	 */
 	public Game copy(Game g) {
 		Game temp = null;
 		try {
