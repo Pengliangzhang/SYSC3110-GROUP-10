@@ -1,6 +1,5 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -9,7 +8,7 @@ public class GUIFrame implements ActionListener {
 	private JPanel jlistPanel;
 	private JFrame jframe;
 	private JMenuBar menuBar;
-	private Game game=null;
+	private Game game;
 	private JMenu fileMenu, gameMenu;
 	private JMenuItem newGame, exit, redo, undo, save, load;
 	private int width, height;
@@ -18,8 +17,6 @@ public class GUIFrame implements ActionListener {
 	private int status;
 	private int plantSelect; // -1 for not select, 0 for sunflower, 1 for peashooter, 2 for advancedPeashooter
 	private JButton[][] buttons;
-	
-	private ArrayList<Game> gameList;
 
 	/**
 	 * Constructor for GUIFrame objects. Initializes the JFrame and its JMenuBar.
@@ -71,7 +68,6 @@ public class GUIFrame implements ActionListener {
 		mappingPanel();
 		disableAllButtons();
 		game = new Game();
-		gameList = new ArrayList<Game>();
 
 		jframe.setVisible(true);
 	}
@@ -234,30 +230,7 @@ public class GUIFrame implements ActionListener {
 		sunIndication.setText("Your total number of sun is: " + game.getSun());
 	}
 	
-//	/**
-//	 * @desc save the game to an file
-//	 * */
-//	public void save() {
-//		boolean status = game.saveGame(game);
-//		if(status&&game!=null) {
-//			JOptionPane.showMessageDialog(jframe,"You saved the game.");
-//		}
-//	}
-//	
-//	/**
-//	 * @desc load an old version game to the current round
-//	 * */
-//	private void load() {
-//		// TODO Auto-generated method stub
-//		if(game.loadGame()==null) {
-//			JOptionPane.showMessageDialog(jframe,"Unable to load the previous game!");
-//		}else {
-//			game = game.loadGame();
-//			refreshMap();
-//		}
-//		
-//	}
-
+	
 	/**
 	 * Performs various actions based on which component sent the ActionEvent.
 	 * 

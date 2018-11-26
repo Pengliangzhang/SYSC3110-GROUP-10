@@ -1,17 +1,14 @@
-import java.io.FileInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 /**
- * This class creates a text-based Plants vs Zombie game
+ * This class represents the model portion of an MVC representation of a Plants vs. Zombies game.
  * 
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
  * @version Oct 28, 2018
@@ -22,6 +19,7 @@ public class Game implements Serializable{
 	private ArrayList<Plant> plants;
 	private ArrayList<Zombie> zombies;
 	
+	// fields for turn undo/redo
 	private ArrayList<Game> lists;
 	private int index, size;
 
@@ -51,24 +49,6 @@ public class Game implements Serializable{
 		size = 1;
 	}
 
-	/*
-	 * old title screen for console based private void titleScreen() {
-	 * System.out.println("Welcome to SYSC3110 Group 10's PvZ, Console Vers.");
-	 * 
-	 * // TODO closing the Scanner causes errors Scanner console = new
-	 * Scanner(System.in); boolean goodInput = false; String input = "";
-	 * 
-	 * while (!goodInput) {
-	 * System.out.println("Enter \"play\" to play, and \"exit\" to quit."); input =
-	 * console.nextLine(); if (input.equals("play")) { // initialize the zombies,
-	 * and give the player some sun to start off with sun = 50; totalZombies = 10;
-	 * // may be changed in the future remainingZombies = 10; tickCount = 0;
-	 * 
-	 * // console.close();
-	 * 
-	 * // start Turn 1 takeTurn(); } else if (input.equals("exit")) {
-	 * System.out.println("Thanks for playing our game!"); System.exit(0); } } }
-	 */
 	/**
 	 * Take one turn, every turn has following step: 1. increment sun by 25 (natural
 	 * sun generation) 2. print the map 3. prompt user (drop a plant on the map or
@@ -113,65 +93,6 @@ public class Game implements Serializable{
 		lists.add(index, copy(this));
 		size = index + 1;
 		return 0;
-	}
-
-	/**
-	 * Print the map to the user to show the position of all zombies and plants
-	 * 
-	 * @author Xinrui Li
-	 */
-	private void printMap() {
-		// current amount of sun at the player's disposal
-		System.out.println("Available Sun: " + sun);
-
-		// plants that can be planted
-		String s = "Available plants: ";
-		if (sun >= 25) {
-			s += "Sunflower ";
-		}
-		if (sun >= 30) {
-			s += "Peashooter ";
-		}
-		System.out.println(s.trim());
-
-		// text based representation of the board
-		String[][] board = new String[5][10];
-		for (int i = 0; i < 5; i++) {
-			Arrays.fill(board[i], " ");
-		}
-
-		// print out the plants
-		if (plants != null) {
-			for (Plant plant : plants) {
-				if (plant instanceof Sunflower) {
-					board[plant.getX() - 1][plant.getY() - 1] = "s";
-				} else if (plant instanceof Peashooter) {
-					board[plant.getX() - 1][plant.getY() - 1] = "p";
-				}
-			}
-		} else {
-			System.out.println("You didn't place any plants.");
-		}
-
-		// print out the zombies
-		if (zombies != null) {
-			for (Zombie zombie : zombies) {
-				if (zombie instanceof BasicZombie) {
-					if (board[zombie.getX() - 1][zombie.getY() - 1] == " ") {
-						board[zombie.getX() - 1][zombie.getY() - 1] = "z";
-					} else {
-						board[zombie.getX() - 1][zombie.getY() - 1] = board[zombie.getX() - 1][zombie.getY() - 1]
-								+ "/z";
-					}
-				}
-			}
-		} else {
-			System.out.println("There are no zombies on the map.");
-		}
-
-		for (int i = 0; i < 5; i++) {
-			System.out.println(Arrays.toString(board[i]));
-		}
 	}
 
 	/**
@@ -326,8 +247,6 @@ public class Game implements Serializable{
 				return true;
 			}
 
-			// TODO this should never happen, since we have already checked the required
-			// conditions
 			System.out.println("Unable to create a new sunflower!");
 		} else if (sun >= 50 && type.equals("peashooter")) {
 			Peashooter plant = new Peashooter(x, y);
@@ -337,7 +256,6 @@ public class Game implements Serializable{
 				return true;
 			}
 
-			// TODO again, this should never happen
 			System.out.println("Unable to create a new Peashooter!");
 		} else if (sun >= 75 && type.equals("advancedPeashooter")) {
 			AdvancedPeashooter plant = new AdvancedPeashooter(x, y);
@@ -346,11 +264,8 @@ public class Game implements Serializable{
 				System.out.println("AdvancedPeashooter placed at (" + x + ", " + y + ")");
 				return true;
 			}
-
-			// TODO again, this should never happen
 			System.out.println("Unable to create a new Peashooter!");
-		}else {
-			// TODO should never happen, since we check the conditions before
+		} else {
 			System.out.println("You do not have enough sun!");
 		}
 		return false;
@@ -387,8 +302,11 @@ public class Game implements Serializable{
 	}
 	
 	/**
-	 * @desc undo to the last step
-	 * */
+	 * Undoes turns until the game is on the first turn.
+	 * Only applicable if there has been at least one turn.
+	 * 
+	 * @return true if there are turns to undo, and false if there are none.
+	 */
 	public boolean undo() {
 		if (index <= 0) {
 			return false;
@@ -405,8 +323,12 @@ public class Game implements Serializable{
 	}
 	
 	/**
-	 * @desc redo to the next step
-	 * */
+	 * Brings the game one turn closer to the most recent turn.
+	 * Only applicable if there has been at least one undo, which implies that there has been
+	 * at least one turn.
+	 * 
+	 * @return true if there are turns to revert, false if there are none
+	 */
 	public boolean redo() {
 		if (index >= size - 1) {
 			return false;
@@ -422,80 +344,47 @@ public class Game implements Serializable{
 		return true;
 	}
 	
-//	/**
-//	 * @desc save an game object into an file
-//	 * @param g the game user like to store
-//	 * @return return true if save to a file, false otherwise
-//	 * */
-//	public boolean saveGame(Game g) {
-//		try {
-//			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("games.ser"));
-//			out.writeObject(g);
-//			out.close();
-//			return true;
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			return false;
-//		}
-//	}
-//	
-//	/**
-//	 * @desc load an game to the current
-//	 * */
-//	public Game loadGame() {
-//		try {
-//			ObjectInputStream in = new ObjectInputStream(new FileInputStream("games.ser"));
-//			Game g = (Game) in.readObject();
-//			in.close();
-//			return g;
-//		} catch (IOException | ClassNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return null;
-//	}
-	
 	/**
-	 * @return The no. of current turn
+	 * @return The current turn number
 	 */
 	public int getTickCount() {
 		return tickCount;
 	}
 
 	/**
-	 * @return The total zombies which idi not killed by plant
+	 * @return The total number of zombies to be spawned on the map throughout the game
 	 */
 	public int getTotalZombies() {
 		return totalZombies;
 	}
 
 	/**
-	 * @return The remaining zombies which no show on map (did not spawn)
+	 * @return The number of zombies yet to spawn
 	 */
 	public int getRemainingZombies() {
 		return remainingZombies;
 	}
 
 	/**
-	 * @return All the plants on the map
+	 * @return All the plants on the map as an ArrayList
 	 */
 	public ArrayList<Plant> getPlants() {
 		return plants;
 	}
 
 	/**
-	 * @return All the zombies on the map
+	 * @return All the zombies on the map as an ArrayList
 	 */
 	public ArrayList<Zombie> getZombies() {
 		return zombies;
 	}
 	
 	/**
-	 * Copy the game
+	 * Creates a deep copy of the given Game instance.
+	 * The resulting copy can be modified without affecting the original instance, and vice versa.
 	 * 
-	 * @param g A game needs copy
-	 * @return The copy game which would not effect by original one
+	 * @param g an instance of Game to be deep copied
+	 * @return A deep copy of the given Game instance
 	 */
 	public Game copy(Game g) {
 		Game temp = null;
@@ -510,10 +399,8 @@ public class Game implements Serializable{
 			ObjectInputStream in = new ObjectInputStream(m2);
 			temp = (Game) in.readObject();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return temp;
