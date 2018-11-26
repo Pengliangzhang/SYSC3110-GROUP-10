@@ -9,18 +9,17 @@ Authors:
 Deliverables:
   * UML diagram: A class diagram, sequence diagram 
   * Documentation: This file introduces the process of creating this project and describes how to play
-  * 18 Java Classes
+  * 19 Java Classes
 
 Change Log:
 
   Pengliang:
   
-      1. Created a class called GUIFrame
-      2. Added mapping panel and selection panel on the frame
-      3. Added buttons on the selection panel.
-      4. Added mapping buttons on the mapping panel.
-      5. Create methods in the game class named getAllZombia and getAllplant
-      6. Created methods in the GUIFrame called printZombieMap and renewMap
+      1. Created Advanced Peashooter and advanced zombie class
+      2. Edited plantAPlant and zombieAction methon in Game class, which allow users to plant advanced peashooter and release advanced zombie
+      3. Added game menu and added redo/undo menu item into the game menu
+      4. Changed all class to implements Serialiable
+      5. Merged all files together
 
   Xinrui:
   
