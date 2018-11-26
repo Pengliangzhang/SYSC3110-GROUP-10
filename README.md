@@ -28,6 +28,9 @@ Change Log:
       2. Create actionPerformed, disableAll, enableAll, and checkWinner methods in GUIFrame
       3. Edit Game, takeTurn, userTurn methods in Game class to fix the GUIFrame
       4. Add newGame method to make the game restartable
+      5. Create new field, lists, index, and size, in Game calss to store history and indicate the current state
+      6. Create copy, undo, redo method in Game class
+      7. Modify taketurn method in Game class to fix undo/redo requirement
       
   Bohua:
 
