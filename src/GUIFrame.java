@@ -302,6 +302,7 @@ public class GUIFrame implements ActionListener {
 						boolean temp = game.userTurn(i + 1, j + 1, plantSelect);
 						if (temp) {
 							status = game.takeTurn();
+//							sunIndication.setText("Your total number of sun is: " + game.getSun());
 							checkWinner();
 							plantSelect = -1;
 						}

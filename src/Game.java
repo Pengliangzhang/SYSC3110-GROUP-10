@@ -388,7 +388,6 @@ public class Game implements Serializable{
 	
 	/**
 	 * @desc undo to the last step
-	 * @return true if undo successful, false otherwise
 	 * */
 	public boolean undo() {
 		if (index <= 0) {
@@ -407,7 +406,6 @@ public class Game implements Serializable{
 	
 	/**
 	 * @desc redo to the next step
-	 * @return true if redo successful, false otherwise
 	 * */
 	public boolean redo() {
 		if (index >= size - 1) {
