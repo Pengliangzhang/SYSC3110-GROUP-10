@@ -42,22 +42,21 @@ Change Log:
 
 Known Issues:
 
-  1. Unable to execute Game.java directly, have to change all methods and ready to use by GUI
-  2. Have to write new method which return all zombies and plants and can access their position
-  3. Do not have use's input from console, all input have to implement by button click
-  4. Number of suns have to changed to a small creating rate, too much suns was created.
+  1. Unable to implements to implement redo/undo features
+  2. Have to write new method to achieve redo/undo fetures
+  3. Unable to save the Game object directly into the arraylist because all objects are the same, have to convert it to different object
 
 
 Road Map:
 
-  1. Pengliang will create a class and wich named the class GUIFrame.java
-  2. 
+  1. Pengliang will create classes AdvancedZombie and AdvancedPeashooter
+  2. Oliver will change the method in Game class to achieve the undo/redo features
 
 
 Work distribution: 
 
-  * Pengliang Zhang: Create GUI frame class, which will creat method to add selection panel, mapping panel and menu bar which will creat a method to update map for each turn
-  * Xinrui Li      : Working with the logic, Update game.java
+  * Pengliang Zhang: Create classes AdvancedZombie and AdvancedPeashooter, add Game menu, and redo/undo menu item
+  * Xinrui Li      : Modify the game class to achieve the undo/redo features
   * Bohua Cao      : Working with the test, test all class using JUnit test
   * Kevin Li       : Working with documentations, UML, check the process of the project and make sure everyone finish all works on time
                    
