@@ -1,7 +1,7 @@
 import java.io.Serializable;
 
 /**
- * Represents the AdvancedPeashooter in the original PvZ, except that it costs 30 sun.
+ * Represents an improved Peashooter plant, with more damage and health.
  * 
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
  * @version Oct 28, 2018

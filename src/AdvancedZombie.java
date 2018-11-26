@@ -1,7 +1,7 @@
 import java.io.Serializable;
 
 /**
- * Represents the most AdvancedZombie.
+ * Represents a tougher zombie than a basic one, with more health and damage.
  * 
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
  * @version Oct 28, 2018

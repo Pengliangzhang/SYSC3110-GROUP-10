@@ -5,11 +5,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 /**
- * This class creates a text-based Plants vs Zombie game
+ * This class represents the model portion of an MVC representation of a Plants vs. Zombies game.
  * 
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
  * @version Oct 28, 2018
@@ -20,6 +19,7 @@ public class Game implements Serializable{
 	private ArrayList<Plant> plants;
 	private ArrayList<Zombie> zombies;
 	
+	// fields for turn undo/redo
 	private ArrayList<Game> lists;
 	private int index, size;
 
@@ -247,8 +247,6 @@ public class Game implements Serializable{
 				return true;
 			}
 
-			// TODO this should never happen, since we have already checked the required
-			// conditions
 			System.out.println("Unable to create a new sunflower!");
 		} else if (sun >= 50 && type.equals("peashooter")) {
 			Peashooter plant = new Peashooter(x, y);
@@ -258,7 +256,6 @@ public class Game implements Serializable{
 				return true;
 			}
 
-			// TODO again, this should never happen
 			System.out.println("Unable to create a new Peashooter!");
 		} else if (sun >= 75 && type.equals("advancedPeashooter")) {
 			AdvancedPeashooter plant = new AdvancedPeashooter(x, y);
@@ -267,11 +264,8 @@ public class Game implements Serializable{
 				System.out.println("AdvancedPeashooter placed at (" + x + ", " + y + ")");
 				return true;
 			}
-
-			// TODO again, this should never happen
 			System.out.println("Unable to create a new Peashooter!");
-		}else {
-			// TODO should never happen, since we check the conditions before
+		} else {
 			System.out.println("You do not have enough sun!");
 		}
 		return false;
