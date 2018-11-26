@@ -47,54 +47,34 @@ public class GameTest {
 		 assertEquals("set sunflower successfully ", 1, game.getAllPlants().size());     
 	}
 
-	
-	@Test
-	public void getCurrTest() {
-		 assertEquals("check if getcurr working properly as defalut", null, game.getCurr());     
-	}
-	
-	@Test
-	public void getCurrTestAfternewGame() {
-		game.newGame();
-		 assertEquals("check if getcurr working properly after new game", 50, game.getCurr().getSun());
-		 assertEquals("check if getcurr working properly after new game", 0, game.getCurr().getAllZombies().size());
-		 assertEquals("check if getcurr working properly after new game", 0, game.getCurr().getAllPlants().size());
-		 assertEquals("check if getcurr working properly after new game", 0, game.getCurr().getTickCount());
-		 assertEquals("check if getcurr working properly after new game", 10, game.getCurr().getTotalZombies());
-		 assertEquals("check if getcurr working properly after new game", 10, game.getCurr().getRemainingZombies());
-	}
-	
+
 	@Test
 	public void undoTestone() {
-		 assertFalse("check if undo works one", game.undo());     
+	    game.newGame();
+		assertFalse("check if undo works one", game.undo());     
 	}
 	
 	@Test
 	public void undoTesttwo() {
 	    game.newGame();
-		game.setPre(game);
+		game.takeTurn();
 		 assertTrue("check if undo works two",  game.undo());     
 	}
 	
 	@Test
 	public void redoTestone() {
-		 assertFalse("check if redo works two",  game.redo());     
+		game.newGame();
+		assertFalse("check if redo works two",  game.redo());     
 	}
 	
 	@Test
 	public void redoTesttwo() {
 	    game.newGame();
-		game.setNext(game);
+	    game.takeTurn();
+	    game.undo();
 		 assertTrue("check if redo works two",  game.redo());     
 	}
 	
-	@Test
-	public void getNextTest() {
-		 assertEquals("check if getnext working properly as defalut", null, game.getNext());     
-	}
 	
-	@Test
-	public void getPreTest() {
-		 assertEquals("check if getpre working properly as defalut", null, game.getPre());     
-	}
+	
 }
