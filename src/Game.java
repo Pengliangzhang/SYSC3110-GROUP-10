@@ -393,16 +393,14 @@ public class Game implements Serializable{
 		if (index <= 0) {
 			return false;
 		}
-		Game temp = lists.get(index - 1);
-		
+		index--;
+		Game temp = copy(lists.get(index));
 		this.tickCount = temp.getTickCount();
 		this.sun = temp.getSun();
 		this.totalZombies = temp.getTotalZombies();
 		this.remainingZombies = temp.getRemainingZombies();
 		this.plants = temp.getPlants();
 		this.zombies = temp.getZombies();
-		
-		index--;
 		return true;
 	}
 	
@@ -413,15 +411,14 @@ public class Game implements Serializable{
 		if (index >= size - 1) {
 			return false;
 		} 
-		Game temp = lists.get(index + 1);
-		
+		index++;
+		Game temp = copy(lists.get(index));
 		this.tickCount = temp.getTickCount();
 		this.sun = temp.getSun();
 		this.totalZombies = temp.getTotalZombies();
 		this.remainingZombies = temp.getRemainingZombies();
 		this.plants = temp.getPlants();
 		this.zombies = temp.getZombies();
-		index++;
 		return true;
 	}
 	
