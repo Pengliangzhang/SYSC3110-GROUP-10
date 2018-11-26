@@ -1,9 +1,14 @@
+import java.io.FileInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
-import java.util.Scanner;
-
-import javax.swing.JFrame;
 
 /**
  * This class creates a text-based Plants vs Zombie game
@@ -11,12 +16,13 @@ import javax.swing.JFrame;
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
  * @version Oct 28, 2018
  */
-public class Game {
-	
+public class Game implements Serializable{
+
 	private int tickCount, sun, totalZombies, remainingZombies;
-	private ArrayList<Plant> plants = new ArrayList<Plant>();
-	private ArrayList<Zombie> zombies = new ArrayList<Zombie>();
-	private JFrame jframe;
+	private ArrayList<Plant> plants;
+	private ArrayList<Zombie> zombies;
+
+	private Game pre, curr, next;
 
 	/**
 	 * Initializes the game.
@@ -24,43 +30,45 @@ public class Game {
 	 * @author BeckZ
 	 */
 	public Game() {
+		plants = new ArrayList<Plant>();
+		zombies = new ArrayList<Zombie>();
+		pre = null;
+		next = null;
+		curr = null;
+
 		// titleScreen();
 	}
-
-	/**
-	 * Title "screen", prompts the user to start a game or exit.
-	 * 
-	 * @author BeckZ, Kevin
-	 */
-	private void titleScreen() {
-		System.out.println("Welcome to SYSC3110 Group 10's PvZ, Console Vers.");
-
-		// TODO closing the Scanner causes errors
-		Scanner console = new Scanner(System.in);
-		boolean goodInput = false;
-		String input = "";
-
-		while (!goodInput) {
-			System.out.println("Enter \"play\" to play, and \"exit\" to quit.");
-			input = console.nextLine();
-			if (input.equals("play")) {
-				// initialize the zombies, and give the player some sun to start off with
-				sun = 50;
-				totalZombies = 10; // may be changed in the future
-				remainingZombies = 10;
-				tickCount = 0;
-
-				// console.close();
-
-				// start Turn 1
-				takeTurn();
-			} else if (input.equals("exit")) {
-				System.out.println("Thanks for playing our game!");
-				System.exit(0);
-			}
-		}
+	
+	public void newGame() {
+		sun = 50;
+		totalZombies = 10; // may be changed in the future
+		remainingZombies = 10;
+		tickCount = 0;
+		plants.clear();
+		zombies.clear();
+		pre = null;
+		next = null;
+		curr = copy(this);
 	}
 
+	/*
+	 * old title screen for console based private void titleScreen() {
+	 * System.out.println("Welcome to SYSC3110 Group 10's PvZ, Console Vers.");
+	 * 
+	 * // TODO closing the Scanner causes errors Scanner console = new
+	 * Scanner(System.in); boolean goodInput = false; String input = "";
+	 * 
+	 * while (!goodInput) {
+	 * System.out.println("Enter \"play\" to play, and \"exit\" to quit."); input =
+	 * console.nextLine(); if (input.equals("play")) { // initialize the zombies,
+	 * and give the player some sun to start off with sun = 50; totalZombies = 10;
+	 * // may be changed in the future remainingZombies = 10; tickCount = 0;
+	 * 
+	 * // console.close();
+	 * 
+	 * // start Turn 1 takeTurn(); } else if (input.equals("exit")) {
+	 * System.out.println("Thanks for playing our game!"); System.exit(0); } } }
+	 */
 	/**
 	 * Take one turn, every turn has following step: 1. increment sun by 25 (natural
 	 * sun generation) 2. print the map 3. prompt user (drop a plant on the map or
@@ -70,15 +78,12 @@ public class Game {
 	 * 
 	 * @author Xinrui Li
 	 */
-	private void takeTurn() {
+	public int takeTurn() {
 		// increase the sun
-		sun += 25;
-
-		// Print the map
-		printMap();
+		// sun += 25;
 
 		// User turn
-		userTurn();
+		// userTurn();
 
 		// Plant turn
 		plantAction();
@@ -87,7 +92,8 @@ public class Game {
 		if (totalZombies == 0) {
 			// Player win
 			System.out.println("All zombies are eliminated.\nYou have won!");
-			System.exit(0);
+			return 1;
+			// System.exit(0);
 		}
 
 		// Zombie turn
@@ -97,11 +103,16 @@ public class Game {
 		if (checkZombieWin()) {
 			// Zombie win
 			System.out.println("The zombies ate your brains!\nGame over.");
-			System.exit(0);
-		} else {
-			tickCount++;
-			takeTurn();
+			// System.exit(0);
+			return -1;
 		}
+		tickCount++;
+		// Print the map
+		//printMap();
+		pre = curr;
+		curr = copy(this);
+		next = null;
+		return 0;
 	}
 
 	/**
@@ -168,51 +179,17 @@ public class Game {
 	 * 
 	 * @author Xinrui Li
 	 */
-	private void userTurn() {
-		// TODO closing the Scanner causes errors
-		Scanner console = new Scanner(System.in);
-		String input = "";
-		boolean goodInput = false;
-
-		while (!goodInput) {
-			System.out.println("\n\nWhat would you like to do? (pass/drop):");
-			input = console.nextLine().trim();
-			if (input.equals("pass")) {
-				// console.close();
-				return;
-			} else if (input.equals("drop")) {
-				goodInput = true;
+	public boolean userTurn(int i, int j, int select) {
+		if (isEmpty(i, j)) {
+			if (select == 0) {
+				return plantAPlant(i, j, "sunflower");
+			} else if (select == 1) {
+				return plantAPlant(i, j, "peashooter");
+			} else if (select == 2) {
+				return plantAPlant(i, j, "advancedPeashooter");
 			}
 		}
-
-		goodInput = false;
-		while (!goodInput) {
-			System.out.println("Which plant do you want to drop? (sunflower/peashooter):");
-			input = console.nextLine().trim();
-
-			if (input.equals("sunflower") || input.equals("peashooter")) {
-				goodInput = true;
-			}
-		}
-
-		goodInput = false;
-		while (!goodInput) {
-			System.out.println("Enter the coordinates at which the plant should be placed. (row column):");
-			String position = console.nextLine();
-			String[] entity = position.split("\\s+");
-			if (entity.length == 2) {
-				int x = Integer.valueOf(entity[0]);
-				int y = Integer.valueOf(entity[1]);
-				if (isEmpty(x, y)) {
-					plantAPlant(x, y, input);
-					goodInput = true;
-					// console.close();
-					return;
-				} else {
-					System.out.println("That spot is already occupied.");
-				}
-			}
-		}
+		return false;
 	}
 
 	/**
@@ -272,11 +249,21 @@ public class Game {
 			Random rand = new Random();
 			int n = rand.nextInt(5) + 1;
 			if (tickCount == 0) {
-				Zombie z = new BasicZombie(n);
+				Zombie z;
+				if((n%2)==0) {
+					z = new BasicZombie(n);
+				}else {
+					z = new AdvancedZombie(n);
+				}				
 				zombies.add(z);
 				remainingZombies--;
 			} else if ((tickCount % 2) == 0) {
-				Zombie z = new BasicZombie(n);
+				Zombie z;
+				if((n%2)==0) {
+					z = new AdvancedZombie(n);					
+				}else {
+					z = new BasicZombie(n);
+				}
 				zombies.add(z);
 				remainingZombies--;
 			}
@@ -330,13 +317,13 @@ public class Game {
 	 * @param x The column number for the plant
 	 * @param y The row number for the plant
 	 */
-	public void plantAPlant(int x, int y, String type) {
+	public boolean plantAPlant(int x, int y, String type) {
 		if (sun >= 25 && type.equals("sunflower")) {
 			Sunflower plant = new Sunflower(x, y);
 			if (plants.add(plant)) {
 				sun = sun - plant.getSun();
 				System.out.println("Sunflower placed at (" + x + ", " + y + ")");
-				return;
+				return true;
 			}
 
 			// TODO this should never happen, since we have already checked the required
@@ -347,38 +334,198 @@ public class Game {
 			if (plants.add(plant)) {
 				sun = sun - plant.getSunCost();
 				System.out.println("Peashooter placed at (" + x + ", " + y + ")");
-				return;
+				return true;
 			}
 
 			// TODO again, this should never happen
 			System.out.println("Unable to create a new Peashooter!");
-		} else {
+		} else if (sun >= 75 && type.equals("advancedPeashooter")) {
+			AdvancedPeashooter plant = new AdvancedPeashooter(x, y);
+			if (plants.add(plant)) {
+				sun = sun - plant.getSunCost();
+				System.out.println("AdvancedPeashooter placed at (" + x + ", " + y + ")");
+				return true;
+			}
+
+			// TODO again, this should never happen
+			System.out.println("Unable to create a new Peashooter!");
+		}else {
 			// TODO should never happen, since we check the conditions before
 			System.out.println("You do not have enough sun!");
-			return;
+		}
+		return false;
+	}
+
+	/**
+	 * @return The ArrayList that contains all the zombies in the game
+	 */
+	public ArrayList<Zombie> getAllZombies() {
+		return zombies;
+	}
+
+	/**
+	 * @return The ArrayList that contains all the plants in the game
+	 */
+	public ArrayList<Plant> getAllPlants() {
+		return plants;
+	}
+
+	/**
+	 * @return The amount of sun currently at the user's disposal
+	 */
+	public int getSun() {
+		return sun;
+	}
+
+	/**
+	 * Updates the sun count with the given amount.
+	 * 
+	 * @param sun The new amount of sun
+	 */
+	public void setSun(int sun) {
+		this.sun = sun;
+	}
+	
+	/**
+	 * @desc undo to the last step
+	 * */
+	public boolean undo() {
+		if (pre == null) {
+			return false;
+		} 
+		System.out.println(pre.plants.toString());
+		this.next = copy(curr);
+		this.tickCount = pre.getTickCount();
+		this.sun = pre.getSun();
+		this.totalZombies = pre.getTotalZombies();
+		this.remainingZombies = pre.getRemainingZombies();
+		this.plants = pre.getPlants();
+		this.zombies = pre.getZombies();
+		this.pre = pre.getPre();
+		this.curr = pre.getCurr();
+		return true;
+	}
+	
+	/**
+	 * @desc redo to the next step
+	 * */
+	public boolean redo() {
+		if (next == null) {
+			return false;
+		} 
+		this.pre = copy(curr);
+		this.tickCount = next.getTickCount();
+		this.sun = next.getSun();
+		this.totalZombies = next.getTotalZombies();
+		this.remainingZombies = next.getRemainingZombies();
+		this.plants = next.getPlants();
+		this.zombies = next.getZombies();
+		this.next = next.getNext();
+		this.curr = next.getCurr();
+		return true;
+	}
+	
+	/**
+	 * @desc save an game object into an file
+	 * @param g the game user like to store
+	 * @return return true if save to a file, false otherwise
+	 * */
+	public boolean saveGame(Game g) {
+		try {
+			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("games.ser"));
+			out.writeObject(g);
+			out.close();
+			return true;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
 		}
 	}
 	
 	/**
-	 * @desc get how many suns in current game
-	 * @return return number of sun
+	 * @desc load an game to the current
 	 * */
-	public int getSun() {
-		return sun;
-	}
-	
-	public void setSun(int sun) {
-		  this.sun = sun;
-	}
-	public int getZombieSize() {
-		return zombies.size();
-	}
-	
-	public int getPlantSize() {
-		return plants.size();
+	public Game loadGame() {
+		try {
+			ObjectInputStream in = new ObjectInputStream(new FileInputStream("games.ser"));
+			Game g = (Game) in.readObject();
+			in.close();
+			return g;
+		} catch (IOException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
-	public static void main(String[] args) {
-		Game game = new Game();
+	/**
+	 * @return the pre
+	 */
+	public Game getPre() {
+		return pre;
+	}
+
+	public void setPre(Game game) {
+		this.pre = game;
+	}
+	/**
+	 * @return the next
+	 */
+	public Game getNext() {
+		return next;
+	}
+	
+	public void setNext(Game game) {
+		this.next = game;
+	}
+	/**
+	 * 
+	 * @return
+	 */
+	public Game getCurr() {
+		return curr;
+	}
+	
+	public int getTickCount() {
+		return tickCount;
+	}
+
+	public int getTotalZombies() {
+		return totalZombies;
+	}
+
+	public int getRemainingZombies() {
+		return remainingZombies;
+	}
+
+	public ArrayList<Plant> getPlants() {
+		return plants;
+	}
+
+	public ArrayList<Zombie> getZombies() {
+		return zombies;
+	}
+	
+	public Game copy(Game g) {
+		Game temp = null;
+		try {
+			ByteArrayOutputStream m1 = new ByteArrayOutputStream();
+			ObjectOutputStream out = new ObjectOutputStream(m1);
+			out.writeObject(g);
+			out.flush();
+			out.close();
+			
+			ByteArrayInputStream m2 = new ByteArrayInputStream(m1.toByteArray());
+			ObjectInputStream in = new ObjectInputStream(m2);
+			temp = (Game) in.readObject();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return temp;
 	}
 }

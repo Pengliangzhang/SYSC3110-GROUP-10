@@ -1,3 +1,5 @@
+import java.io.Serializable;
+
 /**
  * Represents the Sunflower in the original PvZ, except that it costs 25 sun.
  * 
@@ -5,7 +7,7 @@
  * @version Oct 28, 2018
  */
 
-public class Sunflower extends SunPlant
+public class Sunflower extends SunPlant implements Serializable
 {
 	/**
 	 * The parameters for health, sun, etc. are standardized.
@@ -19,7 +21,4 @@ public class Sunflower extends SunPlant
 		super(x, y, 100, 25, 2, 25);
 	}
 	
-	public String toString() {
-		return "SF";
-	}
 }

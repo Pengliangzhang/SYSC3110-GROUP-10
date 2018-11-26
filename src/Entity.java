@@ -1,3 +1,5 @@
+import java.io.Serializable;
+
 /**
  * This class is the superclass for all entities on the board (zombies and plants).
  * Keeps track of their position.
@@ -5,7 +7,7 @@
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
  * @version Oct 28, 2018
  */
-public class Entity
+public class Entity implements Serializable
 {
 	private int x, y;
 	

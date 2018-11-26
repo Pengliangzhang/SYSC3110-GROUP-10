@@ -19,7 +19,7 @@ public class SunPlantTest {
 
 	@Test
 	public void getSunTickTest() {
-		assertEquals("test the getSunTick function in SunPlant", 10,plant.getSunTick());
+		assertEquals("test the getSunTick function in SunPlant", 1,plant.getCurrentTick());
 	}
 
 
@@ -31,14 +31,14 @@ public class SunPlantTest {
 
 	@Test
 	public void setTickTest() {
-		 plant.setTick(5);
+		 plant.setCurrentTick(5);
 		assertEquals("test the getCurrentTick function in SunPlant", 5,plant.getCurrentTick());
 	}
 	
 	@Test
 	public void generateSunTest() {
-		 plant.setTick(10);
-		assertEquals("test the generateSun function in SunPlant", 20,plant.generateSun());
+		 plant.setCurrentTick(10);
+		assertEquals("test the generateSun function in SunPlant", 20,plant.getSun());
 	}
 
 }
