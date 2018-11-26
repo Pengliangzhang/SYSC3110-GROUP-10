@@ -49,10 +49,10 @@ public class GUIFrame implements ActionListener {
 		// Add menuItem to file menu
 		save = new JMenuItem("Save");
 		save.addActionListener(this);
-		fileMenu.add(save);
+		//fileMenu.add(save);
 		load = new JMenuItem("Load");
 		load.addActionListener(this);
-		fileMenu.add(load);
+		//fileMenu.add(load);
 		exit = new JMenuItem("Exit");
 		exit.addActionListener(this);
 		fileMenu.add(exit);
@@ -158,6 +158,8 @@ public class GUIFrame implements ActionListener {
 		peaButton.setEnabled(false);
 		advancedPea.setEnabled(false);
 		passButton.setEnabled(false);
+		undo.setEnabled(false);
+		redo.setEnabled(false);
 	}
 
 	/**
@@ -173,6 +175,8 @@ public class GUIFrame implements ActionListener {
 		peaButton.setEnabled(true);
 		advancedPea.setEnabled(true);
 		passButton.setEnabled(true);
+		undo.setEnabled(true);
+		redo.setEnabled(true);
 	}
 
 	/**
@@ -230,29 +234,29 @@ public class GUIFrame implements ActionListener {
 		sunIndication.setText("Your total number of sun is: " + game.getSun());
 	}
 	
-	/**
-	 * @desc save the game to an file
-	 * */
-	public void save() {
-		boolean status = game.saveGame(game);
-		if(status&&game!=null) {
-			JOptionPane.showMessageDialog(jframe,"You saved the game.");
-		}
-	}
-	
-	/**
-	 * @desc load an old version game to the current round
-	 * */
-	private void load() {
-		// TODO Auto-generated method stub
-		if(game.loadGame()==null) {
-			JOptionPane.showMessageDialog(jframe,"Unable to load the previous game!");
-		}else {
-			game = game.loadGame();
-			refreshMap();
-		}
-		
-	}
+//	/**
+//	 * @desc save the game to an file
+//	 * */
+//	public void save() {
+//		boolean status = game.saveGame(game);
+//		if(status&&game!=null) {
+//			JOptionPane.showMessageDialog(jframe,"You saved the game.");
+//		}
+//	}
+//	
+//	/**
+//	 * @desc load an old version game to the current round
+//	 * */
+//	private void load() {
+//		// TODO Auto-generated method stub
+//		if(game.loadGame()==null) {
+//			JOptionPane.showMessageDialog(jframe,"Unable to load the previous game!");
+//		}else {
+//			game = game.loadGame();
+//			refreshMap();
+//		}
+//		
+//	}
 
 	/**
 	 * Performs various actions based on which component sent the ActionEvent.
@@ -275,9 +279,9 @@ public class GUIFrame implements ActionListener {
 			game.redo();
 			refreshMap();
 		} else if(e.getSource()==save) {
-			save();			
+			//save();			
 		} else if(e.getSource()==save) {
-			load();		
+			//load();		
 		} else if (e.getSource().equals(sunflowerButton)) {
 			plantSelect = 0;
 		} else if (e.getSource().equals(peaButton)) {

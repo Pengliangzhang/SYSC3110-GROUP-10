@@ -20,6 +20,7 @@ Change Log:
       3. Added game menu and added redo/undo menu item into the game menu
       4. Changed all class to implements Serialiable
       5. Merged all files together
+      6. Distrubuted works to team members
 
   Xinrui:
   

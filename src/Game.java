@@ -422,39 +422,39 @@ public class Game implements Serializable{
 		return true;
 	}
 	
-	/**
-	 * @desc save an game object into an file
-	 * @param g the game user like to store
-	 * @return return true if save to a file, false otherwise
-	 * */
-	public boolean saveGame(Game g) {
-		try {
-			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("games.ser"));
-			out.writeObject(g);
-			out.close();
-			return true;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-	}
-	
-	/**
-	 * @desc load an game to the current
-	 * */
-	public Game loadGame() {
-		try {
-			ObjectInputStream in = new ObjectInputStream(new FileInputStream("games.ser"));
-			Game g = (Game) in.readObject();
-			in.close();
-			return g;
-		} catch (IOException | ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
+//	/**
+//	 * @desc save an game object into an file
+//	 * @param g the game user like to store
+//	 * @return return true if save to a file, false otherwise
+//	 * */
+//	public boolean saveGame(Game g) {
+//		try {
+//			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("games.ser"));
+//			out.writeObject(g);
+//			out.close();
+//			return true;
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			return false;
+//		}
+//	}
+//	
+//	/**
+//	 * @desc load an game to the current
+//	 * */
+//	public Game loadGame() {
+//		try {
+//			ObjectInputStream in = new ObjectInputStream(new FileInputStream("games.ser"));
+//			Game g = (Game) in.readObject();
+//			in.close();
+//			return g;
+//		} catch (IOException | ClassNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 	
 	public int getTickCount() {
 		return tickCount;

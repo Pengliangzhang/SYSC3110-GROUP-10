@@ -1,27 +1,27 @@
 Design process
     For our group project 
-        Firstly we talked about the game, and list all necessary function we need to acomplish. So, we think our the Plant VS Zombie should be able 
-        to create new game. During the game process, users have to make decision whether they want to pass the creating plant step or they want to create
-        a plant and put into the game map. Then, the game also need to create Zombies in random x position(x>=1 && x<=5) and from y=1(Y>=1 && Y<=10), so that
-        we create the zombie and plant class, which will make those zombie and plant be object in the game class. then we talked about details about how many 
-        suns are needed to create plants and how many times attacks will a demage plant kill a basic zombie. 
-    
-        Secondly, we dispatch all works to each team members, and everyone has to write there method and at the end, all works will be merged together.
-        
-        
-Milestone 2 Update
+        Firstly, we talked about how to improve our game to the full feature. We thought we need to add more zombie and plants types. We 
+        decided to add an Advanced zombie and an Advanced Peashooter which has more health and damage to each other. Then, according to the 
+        requirements, the game also need to include the unlimeted redo and undo features. So that, we thought we can use the same technique
+        which we used on the lab 9. Finally we dispatch works to each group member.
 
-    The Game.java class originally contained the main method, and all of its methods were otherwise private. Now, some of its methods were
-    made public in order to be used by the GUIFrame.java class, and the main method is removed and put in the GUIFrame.java class as well.
-    Additionally, since the Game.java class holds the data for all the Plants and Zombies, and we need to display their data on the
-    GUIFrame.java class, two new methods that get the ArrayList for the PLants and Zombies were added.
+        Secondly, after all team members finish their work, Beck merged everything together.
+        
+        
+Milestone 3 Update
+    In the Milestone 3, our game created more fectures and let user to have fun. First, we add more type of Peashooter and Zombie
+    in the game, which will be difficult for user to win the game. To achieve the fectures, we added two classes to the projects
+    which allow to create the object of advanced Peashooter and advanced zombie. Then, we added more method in game class to implements 
+    the redo/undo logic. We also update all classes to implements Serialiable which can be usded in game class's method.
         
 User Manual
     1. Run GUIFrame.java
-    2. From menu bar, click Game and then select New Game or Exit (New Game will start a new round)
-    3. Click the button at the buttom of screen(Sunflower, Peashooter or Pass a round)
+    2. From menu bar, click Games and then select New Game (New Game will start a new round)
+    3. User can click File and then select Exit to exit the game at any time they like.
+    3. Click the button at the buttom of screen(Sunflower, Peashooter, Advanced Peashooter or Pass a round)
         Sunflower: select sunflower to place
         Peashooter: select Peashooter to place
+         Advanced Peashooter: select Advanced Peashooter to place(Advanced Peashooter has higher damage to zombie)
         Pass a round: do not place plant
     4. Click place where to put your plant(if you selected sunflower or Peashooter from previous step)
         The last column(column 10) do not allow put anything(is disabled)
