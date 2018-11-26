@@ -36,21 +36,22 @@ Change Log:
 
   Kevin:
   
-     1. Updated UML
+     1. Updated Class Diagrams and Sequence Diagrams
      2. Updated documentation for classes (GUIFrame.java, Game.java)
-     3. Renamed fields and methods for clarity (renewMap -> refreshMap, disableAll -> disableAllButtons, sun -> sunIndicator)
 
 Known Issues:
 
   1. Unable to implements to implement redo/undo features
   2. Have to write new method to achieve redo/undo fetures
   3. Unable to save the Game object directly into the arraylist because all objects are the same, have to convert it to different object
+  4. The Java VM can run out of heap memory since the game saves itself every turn, which includes previous saves of the game, resulting in a compounding effect
 
 
 Road Map:
 
   1. Pengliang will create classes AdvancedZombie and AdvancedPeashooter
   2. Oliver will change the method in Game class to achieve the undo/redo features
+  3. Kevin will update documetation and the diagrams
 
 
 Work distribution: 

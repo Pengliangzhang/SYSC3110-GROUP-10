@@ -12,7 +12,8 @@ Milestone 3 Update
     In the Milestone 3, our game created more fectures and let user to have fun. First, we add more type of Peashooter and Zombie
     in the game, which will be difficult for user to win the game. To achieve the fectures, we added two classes to the projects
     which allow to create the object of advanced Peashooter and advanced zombie. Then, we added more method in game class to implements 
-    the redo/undo logic. We also update all classes to implements Serialiable which can be usded in game class's method.
+    the redo/undo logic. Every turn, the game will save the state of the game and store it in an ArrayList of Game. In order to save
+    the state of all of the game's objects, all objects that need their state saved now implements Serializable.
         
 User Manual
     1. Run GUIFrame.java
@@ -25,4 +26,4 @@ User Manual
         Pass a round: do not place plant
     4. Click place where to put your plant(if you selected sunflower or Peashooter from previous step)
         The last column(column 10) do not allow put anything(is disabled)
-    5. Repeat step 3 untill game over
+    5. Repeat step 3 until game over
