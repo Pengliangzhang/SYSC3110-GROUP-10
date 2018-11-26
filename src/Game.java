@@ -21,8 +21,9 @@ public class Game implements Serializable{
 	private int tickCount, sun, totalZombies, remainingZombies;
 	private ArrayList<Plant> plants;
 	private ArrayList<Zombie> zombies;
-
-	private Game pre, curr, next;
+	
+	private ArrayList<Game> lists;
+	private int index, size;
 
 	/**
 	 * Initializes the game.
@@ -32,9 +33,7 @@ public class Game implements Serializable{
 	public Game() {
 		plants = new ArrayList<Plant>();
 		zombies = new ArrayList<Zombie>();
-		pre = null;
-		next = null;
-		curr = null;
+		lists = new ArrayList<Game>();
 
 		// titleScreen();
 	}
@@ -46,9 +45,10 @@ public class Game implements Serializable{
 		tickCount = 0;
 		plants.clear();
 		zombies.clear();
-		pre = null;
-		next = null;
-		curr = copy(this);
+		lists.clear();
+		index = 0;
+		lists.add(index, copy(this));
+		size = 1;
 	}
 
 	/*
@@ -109,9 +109,9 @@ public class Game implements Serializable{
 		tickCount++;
 		// Print the map
 		//printMap();
-		pre = curr;
-		curr = copy(this);
-		next = null;
+		index++;
+		lists.add(index, copy(this));
+		size = index + 1;
 		return 0;
 	}
 
@@ -390,19 +390,17 @@ public class Game implements Serializable{
 	 * @desc undo to the last step
 	 * */
 	public boolean undo() {
-		if (pre == null) {
+		if (index <= 0) {
 			return false;
-		} 
-		System.out.println(pre.plants.toString());
-		this.next = copy(curr);
-		this.tickCount = pre.getTickCount();
-		this.sun = pre.getSun();
-		this.totalZombies = pre.getTotalZombies();
-		this.remainingZombies = pre.getRemainingZombies();
-		this.plants = pre.getPlants();
-		this.zombies = pre.getZombies();
-		this.pre = pre.getPre();
-		this.curr = pre.getCurr();
+		}
+		index--;
+		Game temp = copy(lists.get(index));
+		this.tickCount = temp.getTickCount();
+		this.sun = temp.getSun();
+		this.totalZombies = temp.getTotalZombies();
+		this.remainingZombies = temp.getRemainingZombies();
+		this.plants = temp.getPlants();
+		this.zombies = temp.getZombies();
 		return true;
 	}
 	
@@ -410,103 +408,95 @@ public class Game implements Serializable{
 	 * @desc redo to the next step
 	 * */
 	public boolean redo() {
-		if (next == null) {
+		if (index >= size - 1) {
 			return false;
 		} 
-		this.pre = copy(curr);
-		this.tickCount = next.getTickCount();
-		this.sun = next.getSun();
-		this.totalZombies = next.getTotalZombies();
-		this.remainingZombies = next.getRemainingZombies();
-		this.plants = next.getPlants();
-		this.zombies = next.getZombies();
-		this.next = next.getNext();
-		this.curr = next.getCurr();
+		index++;
+		Game temp = copy(lists.get(index));
+		this.tickCount = temp.getTickCount();
+		this.sun = temp.getSun();
+		this.totalZombies = temp.getTotalZombies();
+		this.remainingZombies = temp.getRemainingZombies();
+		this.plants = temp.getPlants();
+		this.zombies = temp.getZombies();
 		return true;
 	}
 	
-	/**
-	 * @desc save an game object into an file
-	 * @param g the game user like to store
-	 * @return return true if save to a file, false otherwise
-	 * */
-	public boolean saveGame(Game g) {
-		try {
-			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("games.ser"));
-			out.writeObject(g);
-			out.close();
-			return true;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-	}
+//	/**
+//	 * @desc save an game object into an file
+//	 * @param g the game user like to store
+//	 * @return return true if save to a file, false otherwise
+//	 * */
+//	public boolean saveGame(Game g) {
+//		try {
+//			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("games.ser"));
+//			out.writeObject(g);
+//			out.close();
+//			return true;
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			return false;
+//		}
+//	}
+//	
+//	/**
+//	 * @desc load an game to the current
+//	 * */
+//	public Game loadGame() {
+//		try {
+//			ObjectInputStream in = new ObjectInputStream(new FileInputStream("games.ser"));
+//			Game g = (Game) in.readObject();
+//			in.close();
+//			return g;
+//		} catch (IOException | ClassNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 	
 	/**
-	 * @desc load an game to the current
-	 * */
-	public Game loadGame() {
-		try {
-			ObjectInputStream in = new ObjectInputStream(new FileInputStream("games.ser"));
-			Game g = (Game) in.readObject();
-			in.close();
-			return g;
-		} catch (IOException | ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	/**
-	 * @return the pre
+	 * @return The no. of current turn
 	 */
-	public Game getPre() {
-		return pre;
-	}
-
-	public void setPre(Game game) {
-		this.pre = game;
-	}
-	/**
-	 * @return the next
-	 */
-	public Game getNext() {
-		return next;
-	}
-	
-	public void setNext(Game game) {
-		this.next = game;
-	}
-	/**
-	 * 
-	 * @return
-	 */
-	public Game getCurr() {
-		return curr;
-	}
-	
 	public int getTickCount() {
 		return tickCount;
 	}
 
+	/**
+	 * @return The total zombies which idi not killed by plant
+	 */
 	public int getTotalZombies() {
 		return totalZombies;
 	}
 
+	/**
+	 * @return The remaining zombies which no show on map (did not spawn)
+	 */
 	public int getRemainingZombies() {
 		return remainingZombies;
 	}
 
+	/**
+	 * @return All the plants on the map
+	 */
 	public ArrayList<Plant> getPlants() {
 		return plants;
 	}
 
+	/**
+	 * @return All the zombies on the map
+	 */
 	public ArrayList<Zombie> getZombies() {
 		return zombies;
 	}
 	
+	/**
+	 * Copy the game
+	 * 
+	 * @param g A game needs copy
+	 * @return The copy game which would not effect by original one
+	 */
 	public Game copy(Game g) {
 		Game temp = null;
 		try {
