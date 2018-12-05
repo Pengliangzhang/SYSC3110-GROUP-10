@@ -157,7 +157,6 @@ public class GUIFrame implements ActionListener {
 		undo.setEnabled(false);
 		redo.setEnabled(false);
 		save.setEnabled(false);
-		load.setEnabled(false);
 	}
 
 	/**
@@ -252,8 +251,10 @@ public class GUIFrame implements ActionListener {
 		if(game.loadGame()==null) {
 			JOptionPane.showMessageDialog(jframe,"Unable to load the previous game!");
 		}else {
+			JOptionPane.showMessageDialog(jframe,"Enjoy your game!");
 			game = game.loadGame();
 			refreshMap();
+			enableAllButtons();
 		}
 		
 	}
@@ -281,7 +282,7 @@ public class GUIFrame implements ActionListener {
 			refreshMap();
 		} else if(e.getSource()==save) {
 			save();			
-		} else if(e.getSource()==save) {
+		} else if(e.getSource()==load) {
 			load();		
 		} else if (e.getSource().equals(sunflowerButton)) {
 			plantSelect = 0;
