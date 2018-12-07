@@ -324,7 +324,7 @@ public class GUIFrame implements ActionListener {
 			String[] temp = {"1","2","3"};                  
 			String s = (String) JOptionPane.showInputDialog(null,"Please select a new level","Selecting Level",
 					JOptionPane.DEFAULT_OPTION,null,temp,temp[0]);
-			System.out.println(s);
+			System.out.println("---------------------------");
 			if (s != null) {
 				game.changeLevel(Integer.parseInt(s));
 			}
