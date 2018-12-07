@@ -292,7 +292,7 @@ public class GUIFrame implements ActionListener {
             public void run() {
             	zombieProcess();
             }
-        }, 0, 5000);
+        }, 0, 3000);
 	}
 	
 	
@@ -336,7 +336,6 @@ public class GUIFrame implements ActionListener {
 			plantSelect = 2;
 		} else if (e.getSource().equals(passButton)) {
 			plantSelect = -1;
-//			status = game.takeTurn();
 			sunIndication.setText("Your total number of sun is: " + game.getSun());
 			checkWinner();			
 			refreshMap();
@@ -347,9 +346,6 @@ public class GUIFrame implements ActionListener {
 					if (e.getSource().equals(buttons[i][j]) && plantSelect != -1) {
 						boolean temp = game.userTurn(i + 1, j + 1, plantSelect);
 						if (temp) {
-//							status = game.takeTurn();
-//							sunIndication.setText("Your total number of sun is: " + game.getSun());
-//							checkWinner();
 							plantSelect = -1;
 						}
 						plantSelect = -1;

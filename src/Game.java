@@ -42,7 +42,7 @@ public class Game implements Serializable{
 	public Game() {
 		plants = new ArrayList<Plant>();
 		zombies = new ArrayList<Zombie>();
-		lists = new ArrayList<Game>(100);
+		lists = new ArrayList<Game>(200);
 		level = 1;
 		totalZombies = 10; // may be changed in the future
 
@@ -484,9 +484,9 @@ public class Game implements Serializable{
 		DefaultHandler dh = new DefaultHandler() {
 			boolean i = false, j = false, k = false;
 			
-			int name;
+			Integer name;
 			String type;
-			int num;
+			Integer num;
 			/**
 			 * @desc this method is called every time the parser gets an open tag '<'
 			 * */
@@ -504,28 +504,19 @@ public class Game implements Serializable{
 				}
 			}					
 			
-			public void characters(char[] ch, int start, int length) throws SAXException{
+			public void characters(char[] ch, int start, int length) throws SAXException{				
 				if(i) {
-					
-					name = Integer.parseInt(new String(ch, start, length));
-					System.out.println("-------------------------------");
-					System.out.println(i);
-					System.out.println(j);
-					System.out.println(k);
-					System.out.println(name);
-					if(j && name == level) {
-						type = new String(ch, start, length);
-						System.out.println("+++++++++++++++++++++++++++++++++");
-						System.out.println(level);
-						if(k) {
-							num = Integer.parseInt(new String(ch, start, length));
-							System.out.println(num);
-							setTotalZombie(num);
-						}
-					}
-					i = false;
-					j = false;
-					k = false;
+					name = new Integer(start);
+					i=false;
+				}
+				if(j) {
+					type = new String(ch, start, length);
+					j=false;
+				}
+				if(k) {
+					num = new Integer(start);			
+					setTotalZombie(num);
+					k=false;
 				}
 			}
 			
@@ -536,6 +527,5 @@ public class Game implements Serializable{
 		};
 		
 		s.parse(file, dh);
-	}
-	
+	}	
 }
