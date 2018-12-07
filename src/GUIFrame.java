@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -12,6 +13,8 @@ public class GUIFrame implements ActionListener {
 	private JFrame jframe;
 	private JMenuBar menuBar;
 	private Game game;
+	private ArrayList<Game> history;
+	private int index, size;
 	private JMenu fileMenu, gameMenu;
 	private JMenuItem newGame, exit, redo, undo, save, load, level;
 	private int width, height;
@@ -74,9 +77,13 @@ public class GUIFrame implements ActionListener {
 		selectionPanel();
 		mappingPanel();
 		disableAllButtons();
-		game = new Game();
 		
-
+		game = new Game();
+		history = new ArrayList<Game>();
+		index = 0;
+		size = 0;
+		timer = new Timer();
+		
 		jframe.setVisible(true);
 	}
 
@@ -268,6 +275,9 @@ public class GUIFrame implements ActionListener {
 	 * */
 	public void zombieProcess() {
 		status = game.takeTurn();
+		history.add(index, game.copy());
+		index++;
+		size = index;
 		refreshMap();
 		checkWinner();
 		if(status!=0) {
@@ -286,7 +296,7 @@ public class GUIFrame implements ActionListener {
             public void run() {
             	zombieProcess();
             }
-        }, 0, 3000);
+        }, 3000, 3000);
 	}
 	
 	
@@ -298,6 +308,9 @@ public class GUIFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == newGame) {
 			game.newGame();
+			history.add(index, game);
+			index++;
+			size++;
 			status = 0;
 			enableAllButtons();
 			clearButtonText();
@@ -305,23 +318,35 @@ public class GUIFrame implements ActionListener {
 		} else if (e.getSource() == exit) {
 			System.exit(0);
 		} else if(e.getSource()==undo) {
-			game.undo();
-			refreshMap();
+			if (index > 0) {
+				timer.cancel();
+				index--;
+				game = history.get(index).copy();
+				refreshMap();
+				timer();
+			}
 		} else if(e.getSource()==redo) {
-			game.redo();
-			refreshMap();
+			if (index < size) {
+				timer.cancel();
+				index++;
+				game = history.get(index).copy();
+				refreshMap();
+				timer();
+			}
 		} else if(e.getSource()==save) {
 			save();			
 		} else if(e.getSource()==load) {
 			load();
 		} else if(e.getSource()==level) {
+			timer.cancel();
+			disableAllButtons();
 			String[] temp = {"1","2","3"};                  
 			String s = (String) JOptionPane.showInputDialog(null,"Please select a new level","Selecting Level",
 					JOptionPane.DEFAULT_OPTION,null,temp,temp[0]);
-			System.out.println("---------------------------");
 			if (s != null) {
 				game.changeLevel(Integer.parseInt(s));
 			}
+			game.newGame();
 		} else if (e.getSource().equals(sunflowerButton)) {
 			plantSelect = 0;
 		} else if (e.getSource().equals(peaButton)) {

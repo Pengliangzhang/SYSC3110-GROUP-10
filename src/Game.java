@@ -31,8 +31,8 @@ public class Game implements Serializable{
 	private int level;
 	
 	// fields for turn undo/redo
-	private ArrayList<Game> lists;
-	private int index, size;
+//	private ArrayList<Game> lists;
+//	private int index, size;
 
 	/**
 	 * Initializes the game.
@@ -42,7 +42,7 @@ public class Game implements Serializable{
 	public Game() {
 		plants = new ArrayList<Plant>();
 		zombies = new ArrayList<Zombie>();
-		lists = new ArrayList<Game>(200);
+//		lists = new ArrayList<Game>(100);
 		level = 1;
 		totalZombies = 10; // may be changed in the future
 
@@ -55,10 +55,10 @@ public class Game implements Serializable{
 		tickCount = 0;
 		plants.clear();
 		zombies.clear();
-		lists.clear();
-		index = 0;
-		lists.add(index, copy(this));
-		size = 1;
+//		lists.clear();
+//		index = 0;
+//		lists.add(index, copy());
+//		size = 1;
 	}
 	
 	/**
@@ -110,9 +110,9 @@ public class Game implements Serializable{
 		tickCount++;
 		// Print the map
 		//printMap();
-		index++;
-		lists.add(index, copy(this));
-		size = index + 1;
+//		index++;
+//		lists.add(index, copy());
+//		size = index + 1;
 		return 0;
 	}
 
@@ -330,20 +330,20 @@ public class Game implements Serializable{
 	 * 
 	 * @return true if there are turns to undo, and false if there are none.
 	 */
-	public boolean undo() {
-		if (index <= 0) {
-			return false;
-		}
-		index--;
-		Game temp = copy(lists.get(index));
-		this.tickCount = temp.getTickCount();
-		this.sun = temp.getSun();
-		this.totalZombies = temp.getTotalZombies();
-		this.remainingZombies = temp.getRemainingZombies();
-		this.plants = temp.getPlants();
-		this.zombies = temp.getZombies();
-		return true;
-	}
+//	public boolean undo() {
+//		if (index <= 0) {
+//			return false;
+//		}
+//		index--;
+//		Game temp = copy(lists.get(index));
+//		this.tickCount = temp.getTickCount();
+//		this.sun = temp.getSun();
+//		this.totalZombies = temp.getTotalZombies();
+//		this.remainingZombies = temp.getRemainingZombies();
+//		this.plants = temp.getPlants();
+//		this.zombies = temp.getZombies();
+//		return true;
+//	}
 	
 	/**
 	 * Brings the game one turn closer to the most recent turn.
@@ -352,20 +352,20 @@ public class Game implements Serializable{
 	 * 
 	 * @return true if there are turns to revert, false if there are none
 	 */
-	public boolean redo() {
-		if (index >= size - 1) {
-			return false;
-		} 
-		index++;
-		Game temp = copy(lists.get(index));
-		this.tickCount = temp.getTickCount();
-		this.sun = temp.getSun();
-		this.totalZombies = temp.getTotalZombies();
-		this.remainingZombies = temp.getRemainingZombies();
-		this.plants = temp.getPlants();
-		this.zombies = temp.getZombies();
-		return true;
-	}
+//	public boolean redo() {
+//		if (index >= size - 1) {
+//			return false;
+//		} 
+//		index++;
+//		Game temp = copy(lists.get(index));
+//		this.tickCount = temp.getTickCount();
+//		this.sun = temp.getSun();
+//		this.totalZombies = temp.getTotalZombies();
+//		this.remainingZombies = temp.getRemainingZombies();
+//		this.plants = temp.getPlants();
+//		this.zombies = temp.getZombies();
+//		return true;
+//	}
 	
 	/**
 	 * @return The current turn number
@@ -416,12 +416,12 @@ public class Game implements Serializable{
 	 * @param g an instance of Game to be deep copied
 	 * @return A deep copy of the given Game instance
 	 */
-	public Game copy(Game g) {
+	public Game copy() {
 		Game temp = null;
 		try {
 			ByteArrayOutputStream m1 = new ByteArrayOutputStream();
 			ObjectOutputStream out = new ObjectOutputStream(m1);
-			out.writeObject(g);
+			out.writeObject(this);
 			out.flush();
 			out.close();
 			
