@@ -308,7 +308,10 @@ public class GUIFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == newGame) {
 			game.newGame();
-			history.add(index, game);
+			history.clear();
+			index = 0;
+			size = 0;
+			history.add(index, game.copy());
 			index++;
 			size++;
 			status = 0;
@@ -347,7 +350,10 @@ public class GUIFrame implements ActionListener {
 				game.changeLevel(Integer.parseInt(s));
 			}
 			game.newGame();
-			history.add(index, game);
+			history.clear();
+			index = 0;
+			size = 0;
+			history.add(index, game.copy());
 			index++;
 			size++;
 			status = 0;
