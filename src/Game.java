@@ -20,6 +20,7 @@ public class Game implements Serializable{
 	private int tickCount, sun, totalZombies, remainingZombies;
 	private ArrayList<Plant> plants;
 	private ArrayList<Zombie> zombies;
+	private int level;
 	
 	// fields for turn undo/redo
 	private ArrayList<Game> lists;
@@ -34,6 +35,7 @@ public class Game implements Serializable{
 		plants = new ArrayList<Plant>();
 		zombies = new ArrayList<Zombie>();
 		lists = new ArrayList<Game>(100);
+		level = 1;
 
 		// titleScreen();
 	}
