@@ -347,6 +347,13 @@ public class GUIFrame implements ActionListener {
 				game.changeLevel(Integer.parseInt(s));
 			}
 			game.newGame();
+			history.add(index, game);
+			index++;
+			size++;
+			status = 0;
+			enableAllButtons();
+			clearButtonText();
+			sunIndication.setText("Your total number of sun is: " + game.getSun());
 		} else if (e.getSource().equals(sunflowerButton)) {
 			plantSelect = 0;
 		} else if (e.getSource().equals(peaButton)) {
