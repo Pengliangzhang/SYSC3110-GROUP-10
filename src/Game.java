@@ -33,7 +33,7 @@ public class Game implements Serializable{
 	public Game() {
 		plants = new ArrayList<Plant>();
 		zombies = new ArrayList<Zombie>();
-		lists = new ArrayList<Game>(50);
+		lists = new ArrayList<Game>(100);
 
 		// titleScreen();
 	}

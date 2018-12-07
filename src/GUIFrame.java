@@ -269,10 +269,9 @@ public class GUIFrame implements ActionListener {
 	 * @desc perform zombie action to GUI
 	 * */
 	public void zombieProcess() {
-		game.takeTurn();
+		status = game.takeTurn();
 		refreshMap();
 		checkWinner();
-		status = game.takeTurn();
 		if(status!=0) {
 			timer.cancel();
 			checkWinner();
@@ -339,7 +338,7 @@ public class GUIFrame implements ActionListener {
 						if (temp) {
 //							status = game.takeTurn();
 //							sunIndication.setText("Your total number of sun is: " + game.getSun());
-							checkWinner();
+//							checkWinner();
 							plantSelect = -1;
 						}
 						plantSelect = -1;
