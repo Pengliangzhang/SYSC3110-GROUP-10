@@ -1,5 +1,6 @@
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -8,6 +9,13 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * This class represents the model portion of an MVC representation of a Plants vs. Zombies game.
@@ -36,14 +44,14 @@ public class Game implements Serializable{
 		zombies = new ArrayList<Zombie>();
 		lists = new ArrayList<Game>(100);
 		level = 1;
+		totalZombies = 10; // may be changed in the future
 
 		// titleScreen();
 	}
 	
 	public void newGame() {
 		sun = 50;
-		totalZombies = 10; // may be changed in the future
-		remainingZombies = 10;
+		remainingZombies = totalZombies;
 		tickCount = 0;
 		plants.clear();
 		zombies.clear();
@@ -51,6 +59,15 @@ public class Game implements Serializable{
 		index = 0;
 		lists.add(index, copy(this));
 		size = 1;
+	}
+	
+	/**
+	 * Change the level of this game, if fail, the level would not change.
+	 * 
+	 * @param l The new level in this game
+	 */
+	public void changeLevel(int l) {
+		readLevelFile(l);
 	}
 
 	/**
@@ -170,26 +187,24 @@ public class Game implements Serializable{
 		}
 
 		// Zombies spawn
-		if (remainingZombies > 0) {
-			Random rand = new Random();
-			int n = rand.nextInt(5) + 1;
-			if (tickCount == 0) {
-				Zombie z;
-				if((n%2)==0) {
-					z = new BasicZombie(n);
-				}else {
-					z = new AdvancedZombie(n);
-				}				
-				zombies.add(z);
-				remainingZombies--;
-			} else if ((tickCount % 2) == 0) {
-				Zombie z;
-				if((n%2)==0) {
-					z = new AdvancedZombie(n);					
-				}else {
-					z = new BasicZombie(n);
+		if (tickCount != 0 && (tickCount % 2) == 0) {
+			if (remainingZombies > 0) {
+				Random rand = new Random();
+				int n = rand.nextInt(5) + 1;
+				if (level == 1) {
+					zombies.add(new BasicZombie(n));
+				} else if (level == 2) {
+					zombies.add(new AdvancedZombie(n));
+				} else if (level == 3) {
+					int m = rand.nextInt(2);
+					Zombie z;
+					if ((m % 2) == 0) {
+						z = new BasicZombie(n);
+					} else {
+						z = new AdvancedZombie(n);
+					}				
+					zombies.add(z);
 				}
-				zombies.add(z);
 				remainingZombies--;
 			}
 		}
@@ -361,7 +376,14 @@ public class Game implements Serializable{
 	public int getTotalZombies() {
 		return totalZombies;
 	}
-
+	
+	/**
+	 * @param num The total number of zombies to be spawned on the map throughout the game
+	 */
+	public void setTotalZombie(int num) {
+		totalZombies = num;
+	}
+	
 	/**
 	 * @return The number of zombies yet to spawn
 	 */
@@ -443,4 +465,77 @@ public class Game implements Serializable{
 		}
 		return null;
 	}
+	
+	public void readLevelFile(int level) {
+		File file = new File("level.xml");
+		try {
+			readSAX(file, level);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void readSAX(File file, int level) throws Exception{
+		SAXParserFactory spf = SAXParserFactory.newInstance();
+		SAXParser s = spf.newSAXParser();
+		
+		DefaultHandler dh = new DefaultHandler() {
+			boolean i = false, j = false, k = false;
+			
+			int name;
+			String type;
+			int num;
+			/**
+			 * @desc this method is called every time the parser gets an open tag '<'
+			 * */
+			public void startElement(String u, String localName, String qName, Attributes a) throws SAXException {
+				// System.out.println("START: " + qName);
+				
+				if(qName.equalsIgnoreCase("name")){
+					i = true;
+				}
+				if(qName.equalsIgnoreCase("type")){
+					j = true;
+				}
+				if(qName.equalsIgnoreCase("num")){
+					k = true;
+				}
+			}					
+			
+			public void characters(char[] ch, int start, int length) throws SAXException{
+				if(i) {
+					
+					name = Integer.parseInt(new String(ch, start, length));
+					System.out.println("-------------------------------");
+					System.out.println(i);
+					System.out.println(j);
+					System.out.println(k);
+					System.out.println(name);
+					if(j && name == level) {
+						type = new String(ch, start, length);
+						System.out.println("+++++++++++++++++++++++++++++++++");
+						System.out.println(level);
+						if(k) {
+							num = Integer.parseInt(new String(ch, start, length));
+							System.out.println(num);
+							setTotalZombie(num);
+						}
+					}
+					i = false;
+					j = false;
+					k = false;
+				}
+			}
+			
+			public void endElement(String uri, String localname, String qName) throws SAXException{
+				// System.out.println("END: " + qName);
+			}
+			
+		};
+		
+		s.parse(file, dh);
+	}
+	
 }

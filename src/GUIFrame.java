@@ -13,7 +13,7 @@ public class GUIFrame implements ActionListener {
 	private JMenuBar menuBar;
 	private Game game;
 	private JMenu fileMenu, gameMenu;
-	private JMenuItem newGame, exit, redo, undo, save, load;
+	private JMenuItem newGame, exit, redo, undo, save, load, level;
 	private int width, height;
 	private JButton sunflowerButton, peaButton, passButton, advancedPea;
 	private JTextField sunIndication;
@@ -58,15 +58,18 @@ public class GUIFrame implements ActionListener {
 		exit.addActionListener(this);
 		fileMenu.add(exit);
 		// Add menuItem to Games menu
+		newGame = new JMenuItem("New Game");
+		newGame.addActionListener(this);
+		gameMenu.add(newGame);
+		level = new JMenuItem("Level");
+		level.addActionListener(this);
+		gameMenu.add(level);
 		undo = new JMenuItem("Undo");
 		undo.addActionListener(this);
 		gameMenu.add(undo);
 		redo = new JMenuItem("Redo");
 		redo.addActionListener(this);
 		gameMenu.add(redo);
-		newGame = new JMenuItem("New Game");
-		newGame.addActionListener(this);
-		gameMenu.add(newGame);
 		
 		selectionPanel();
 		mappingPanel();
@@ -316,7 +319,15 @@ public class GUIFrame implements ActionListener {
 		} else if(e.getSource()==save) {
 			save();			
 		} else if(e.getSource()==load) {
-			load();		
+			load();
+		} else if(e.getSource()==level) {
+			String[] temp = {"1","2","3"};                  
+			String s = (String) JOptionPane.showInputDialog(null,"Please select a new level","Selecting Level",
+					JOptionPane.DEFAULT_OPTION,null,temp,temp[0]);
+			System.out.println(s);
+			if (s != null) {
+				game.changeLevel(Integer.parseInt(s));
+			}
 		} else if (e.getSource().equals(sunflowerButton)) {
 			plantSelect = 0;
 		} else if (e.getSource().equals(peaButton)) {
