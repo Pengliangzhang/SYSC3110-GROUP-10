@@ -320,6 +320,10 @@ public class Game implements Serializable{
 		this.sun = sun;
 	}
 	
+	public void setLevel(int l) {
+		level = l;
+	}
+	
 	/**
 	 * Undoes turns until the game is on the first turn.
 	 * Only applicable if there has been at least one turn.
@@ -506,17 +510,19 @@ public class Game implements Serializable{
 			
 			public void characters(char[] ch, int start, int length) throws SAXException{				
 				if(i) {
-					name = new Integer(start);
-					i=false;
+					name = Integer.parseInt(new String(ch, start, length));
+					i = false;
 				}
 				if(j) {
 					type = new String(ch, start, length);
-					j=false;
+					j = false;
 				}
-				if(k) {
-					num = new Integer(start);			
+				if(k && name == level) {
+					num = Integer.parseInt(new String(ch, start, length));
+					System.out.println(num);
+					setLevel(level);
 					setTotalZombie(num);
-					k=false;
+					k = false;
 				}
 			}
 			

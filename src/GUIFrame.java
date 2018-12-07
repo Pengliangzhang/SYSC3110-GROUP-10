@@ -92,17 +92,14 @@ public class GUIFrame implements ActionListener {
 		sunflowerButton = new JButton("Sunflower");
 		peaButton = new JButton("Peashooter");
 		advancedPea = new JButton("Advanced Peashooter");
-		passButton = new JButton("Pass a round");
 		
 		sunflowerButton.addActionListener(this);
 		peaButton.addActionListener(this);
 		advancedPea.addActionListener(this);
-		passButton.addActionListener(this);
 
 		pane.add(sunflowerButton);
 		pane.add(peaButton);
 		pane.add(advancedPea);
-		pane.add(passButton);
 		sunIndication = new JTextField("The game has not yet started");
 		sunIndication.setEditable(false);
 
@@ -161,7 +158,6 @@ public class GUIFrame implements ActionListener {
 		sunflowerButton.setEnabled(false);
 		peaButton.setEnabled(false);
 		advancedPea.setEnabled(false);
-		passButton.setEnabled(false);
 		undo.setEnabled(false);
 		redo.setEnabled(false);
 		save.setEnabled(false);
@@ -179,7 +175,6 @@ public class GUIFrame implements ActionListener {
 		sunflowerButton.setEnabled(true);
 		peaButton.setEnabled(true);
 		advancedPea.setEnabled(true);
-		passButton.setEnabled(true);
 		undo.setEnabled(true);
 		redo.setEnabled(true);
 		save.setEnabled(true);
@@ -277,8 +272,7 @@ public class GUIFrame implements ActionListener {
 		checkWinner();
 		if(status!=0) {
 			timer.cancel();
-			checkWinner();
-		}
+		}		
 	}
 	
 	/**
@@ -324,7 +318,7 @@ public class GUIFrame implements ActionListener {
 			String[] temp = {"1","2","3"};                  
 			String s = (String) JOptionPane.showInputDialog(null,"Please select a new level","Selecting Level",
 					JOptionPane.DEFAULT_OPTION,null,temp,temp[0]);
-			System.out.println(s);
+			System.out.println("---------------------------");
 			if (s != null) {
 				game.changeLevel(Integer.parseInt(s));
 			}
@@ -334,11 +328,6 @@ public class GUIFrame implements ActionListener {
 			plantSelect = 1;
 		} else if (e.getSource().equals(advancedPea)) {
 			plantSelect = 2;
-		} else if (e.getSource().equals(passButton)) {
-			plantSelect = -1;
-			sunIndication.setText("Your total number of sun is: " + game.getSun());
-			checkWinner();			
-			refreshMap();
 		} else {
 			buttons[0][9].setText("");
 			for (int i = 0; i < 5; ++i) {
