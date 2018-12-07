@@ -1,5 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.*;
 
@@ -17,6 +20,7 @@ public class GUIFrame implements ActionListener {
 	private int status;
 	private int plantSelect; // -1 for not select, 0 for sunflower, 1 for peashooter, 2 for advancedPeashooter
 	private JButton[][] buttons;
+	private Timer timer;
 
 	/**
 	 * Constructor for GUIFrame objects. Initializes the JFrame and its JMenuBar.
@@ -68,6 +72,7 @@ public class GUIFrame implements ActionListener {
 		mappingPanel();
 		disableAllButtons();
 		game = new Game();
+		
 
 		jframe.setVisible(true);
 	}
@@ -176,6 +181,7 @@ public class GUIFrame implements ActionListener {
 		redo.setEnabled(true);
 		save.setEnabled(true);
 		load.setEnabled(true);
+		timer();
 	}
 
 	/**
@@ -253,10 +259,38 @@ public class GUIFrame implements ActionListener {
 		}else {
 			JOptionPane.showMessageDialog(jframe,"Enjoy your game!");
 			game = game.loadGame();
-			refreshMap();
 			enableAllButtons();
+			refreshMap();
 		}
 		
+	}
+	
+	/**
+	 * @desc perform zombie action to GUI
+	 * */
+	public void zombieProcess() {
+		game.takeTurn();
+		refreshMap();
+		checkWinner();
+		status = game.takeTurn();
+		if(status!=0) {
+			timer.cancel();
+			checkWinner();
+		}
+	}
+	
+	/**
+	 * @desc create a timer which will make real time game
+	 * 
+	 * */
+	public void timer() {
+		timer = new Timer();
+		timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+            	zombieProcess();
+            }
+        }, 0, 5000);
 	}
 	
 	
@@ -292,7 +326,7 @@ public class GUIFrame implements ActionListener {
 			plantSelect = 2;
 		} else if (e.getSource().equals(passButton)) {
 			plantSelect = -1;
-			status = game.takeTurn();
+//			status = game.takeTurn();
 			sunIndication.setText("Your total number of sun is: " + game.getSun());
 			checkWinner();			
 			refreshMap();
@@ -303,7 +337,7 @@ public class GUIFrame implements ActionListener {
 					if (e.getSource().equals(buttons[i][j]) && plantSelect != -1) {
 						boolean temp = game.userTurn(i + 1, j + 1, plantSelect);
 						if (temp) {
-							status = game.takeTurn();
+//							status = game.takeTurn();
 //							sunIndication.setText("Your total number of sun is: " + game.getSun());
 							checkWinner();
 							plantSelect = -1;
@@ -323,6 +357,6 @@ public class GUIFrame implements ActionListener {
 	 * @param args Required by default
 	 */
 	public static void main(String[] args) {
-		new GUIFrame();
+		new GUIFrame();		
 	}
 }
