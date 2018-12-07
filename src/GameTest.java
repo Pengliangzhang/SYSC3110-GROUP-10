@@ -48,32 +48,32 @@ public class GameTest {
 	}
 
 
-	@Test
-	public void undoTestone() {
-	    game.newGame();
-		assertFalse("check if undo works one", game.undo());     
-	}
-	
-	@Test
-	public void undoTesttwo() {
-	    game.newGame();
-		game.takeTurn();
-		 assertTrue("check if undo works two",  game.undo());     
-	}
-	
-	@Test
-	public void redoTestone() {
-		game.newGame();
-		assertFalse("check if redo works two",  game.redo());     
-	}
-	
-	@Test
-	public void redoTesttwo() {
-	    game.newGame();
-	    game.takeTurn();
-	    game.undo();
-		 assertTrue("check if redo works two",  game.redo());     
-	}
+//	@Test
+//	public void undoTestone() {
+//	    game.newGame();
+//		assertFalse("check if undo works one", game.undo());     
+//	}
+//	
+//	@Test
+//	public void undoTesttwo() {
+//	    game.newGame();
+//		game.takeTurn();
+//		 assertTrue("check if undo works two",  game.undo());     
+//	}
+//	
+//	@Test
+//	public void redoTestone() {
+//		game.newGame();
+//		assertFalse("check if redo works two",  game.redo());     
+//	}
+//	
+//	@Test
+//	public void redoTesttwo() {
+//	    game.newGame();
+//	    game.takeTurn();
+//	    game.undo();
+//		 assertTrue("check if redo works two",  game.redo());     
+//	}
 	
 	
 	
