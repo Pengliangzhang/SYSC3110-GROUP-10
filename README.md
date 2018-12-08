@@ -56,7 +56,7 @@ Known Issues:
   1. Unable to implements to implement redo/undo features
   2. Have to write new method to achieve redo/undo fetures
   3. Unable to save the Game object directly into the arraylist because all objects are the same, have to convert it to different object
-  4. The Java VM can run out of heap memory since the game saves itself every turn, which includes previous saves of the game, resulting in a compounding effect
+  4. The Java VM can run out of heap memory since the game saves itself every turn, which includes previous saves of the game, resulting in a compounding effect (this has since been fixed)
 
   Milestone 4:
   1. Unable to save object into a file except use serilization
@@ -66,16 +66,10 @@ Known Issues:
 
 Road Map:
 
-<<<<<<< HEAD
-  1. Pengliang will create classes AdvancedZombie and AdvancedPeashooter
-  2. Oliver will change the method in Game class to achieve the undo/redo features
-  3. Kevin will update documetation and the diagrams
-=======
   1. Beck works on the save, load fecture, real time, and Origanize works. 
   2. Oliver will change the method in Game class to achieve the level selection feature.
-  3. Bohua testing all class
+  3. Bohua writes tests for all classes
   4. Kevin document all class and check work process is as expected
->>>>>>> Beck
 
 
 Work distribution: 
