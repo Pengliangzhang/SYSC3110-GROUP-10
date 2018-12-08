@@ -1,3 +1,4 @@
+package entities;
 import java.io.Serializable;
 
 /**
@@ -19,7 +20,7 @@ public class Zombie extends Entity implements Serializable
 	 * @param moveSpeed Ticks required to move 1 space forward
 	 * @param attackSpeed Ticks between attacks
 	 */
-	protected Zombie(int x, int y, int damage, int health, int moveSpeed, int attackSpeed)
+	public Zombie(int x, int y, int damage, int health, int moveSpeed, int attackSpeed)
 	{
 		super(x, y);
 		this.damage = damage;

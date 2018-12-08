@@ -35,12 +35,12 @@
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double0"/>
-      <double>1410.0</double>
+      <double>1550.0</double>
      </void>
     </void>
     <void method="setLocation">
      <double>1120.0</double>
-     <double>1410.0</double>
+     <double>1550.0</double>
     </void>
    </object>
   </void>
@@ -79,12 +79,12 @@
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double1"/>
-      <double>1210.0</double>
+      <double>1350.0</double>
      </void>
     </void>
     <void method="setLocation">
      <double>970.0</double>
-     <double>1210.0</double>
+     <double>1350.0</double>
     </void>
    </object>
   </void>
@@ -113,12 +113,12 @@
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double2"/>
-      <double>1010.0</double>
+      <double>1150.0</double>
      </void>
     </void>
     <void method="setLocation">
      <double>1040.0</double>
-     <double>1010.0</double>
+     <double>1150.0</double>
     </void>
    </object>
   </void>
@@ -157,12 +157,12 @@
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double3"/>
-      <double>1410.0</double>
+      <double>1550.0</double>
      </void>
     </void>
     <void method="setLocation">
      <double>600.0</double>
-     <double>1410.0</double>
+     <double>1550.0</double>
     </void>
    </object>
   </void>
@@ -191,12 +191,12 @@
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double4"/>
-      <double>1250.0</double>
+      <double>1390.0</double>
      </void>
     </void>
     <void method="setLocation">
      <double>720.0</double>
-     <double>1250.0</double>
+     <double>1390.0</double>
     </void>
    </object>
   </void>
@@ -238,12 +238,12 @@
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double5"/>
-      <double>1530.0</double>
+      <double>1670.0</double>
      </void>
     </void>
     <void method="setLocation">
      <double>100.0</double>
-     <double>1530.0</double>
+     <double>1670.0</double>
     </void>
    </object>
   </void>
@@ -272,12 +272,12 @@
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double6"/>
-      <double>1040.0</double>
+      <double>1180.0</double>
      </void>
     </void>
     <void method="setLocation">
      <double>360.0</double>
-     <double>1040.0</double>
+     <double>1180.0</double>
     </void>
    </object>
   </void>
@@ -289,28 +289,34 @@
 - sun: int
 - totalZombies: int
 - remainingZombies: int
-- index: int
-- size: int
-- plants: ArrayList&lt;Plant&gt;
+- plants:ArrayList&lt;Plant&gt;
 - zombies: ArrayList&lt;Zombie&gt;
-- lists: ArrayList&lt;Game&gt;</string>
+</string>
      </void>
     </void>
     <void property="methods">
      <void property="text">
       <string>+ Game()
 + newGame()
++ changeLevel(): int
 + takeTurn()
 + userTurn(i: int; j: int; select: int): boolean
 + plantAPlant(x: int; y: int; type: String): boolean
 + getAllZombies(): ArrayList&lt;Zombie&gt;
 + getAllPlants(): ArrayList&lt;Plant&gt;
-+ getTickCount(): int
 + getSun(): int
 + setSun(sun: int)
-+ undo(): boolean
-+ redo(): boolean
++ setLevel(l: int)
++ getLevel(): int
++ getTickCount(): int
++ getTotalZombies(): int
++ setTotalZombies(num: int)
++ getRemainingZombies(): int
 + copy(): Game
++ saveGame(g: Game): boolean
++ loadGame(): Game
++ readLevelFile(level: int)
++ readSAX(file: File; level: int)
 - printMap()
 - plantAction()
 - zombieAction()
@@ -336,12 +342,12 @@
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double7"/>
-      <double>700.0</double>
+      <double>800.0</double>
      </void>
     </void>
     <void method="setLocation">
      <double>660.0</double>
-     <double>700.0</double>
+     <double>800.0</double>
     </void>
    </object>
   </void>
@@ -380,12 +386,12 @@
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double8"/>
-      <double>1570.0</double>
+      <double>1710.0</double>
      </void>
     </void>
     <void method="setLocation">
      <double>1190.0</double>
-     <double>1570.0</double>
+     <double>1710.0</double>
     </void>
    </object>
   </void>
@@ -398,6 +404,7 @@
 - jframe: JFrame
 - menuBar: JMenuBar
 - game: Game
+- ArrayList&lt;Game&gt;: history
 - fileMenu: JMenu
 - newGame: JMenuItem
 - redo: JMenuItem
@@ -405,6 +412,9 @@
 - save: JMenuItem
 - load: JMenuItem
 - exit: JMenuItem
+- level: JMenuItem
+- index: int
+- size: int
 - width: int
 - height: int
 - status: int
@@ -413,7 +423,8 @@
 - peaButton: JButton
 - passButton: JButton
 - buttons: JButton[][]
-- sunIndicator: JTextField</string>
+- sunIndication: JTextField
+- timer: Timer</string>
      </void>
     </void>
     <void property="methods">
@@ -421,11 +432,17 @@
       <string>+ GUIFrame()
 + selectionPanel()
 + mappingPanel()
++ setStatus(a: int)
 + checkWinner()
 + disableAllButtons()
 + enableAllButtons()
++ clearButtonText()
 + printZombieMap(i: int; j: int)
 + refreshMap()
++ save()
+- load()
++ zombieProcess()
++ timer()
 + actionPerformed(e: ActionEvent)
 + main(args: String[])</string>
      </void>
@@ -444,16 +461,9 @@
       <double>690.0</double>
      </void>
     </void>
-    <void class="java.awt.geom.Point2D$Double" method="getField">
-     <string>y</string>
-     <void method="set">
-      <object idref="Point2D$Double9"/>
-      <double>90.0</double>
-     </void>
-    </void>
     <void method="setLocation">
      <double>690.0</double>
-     <double>90.0</double>
+     <double>0.0</double>
     </void>
    </object>
   </void>
@@ -482,12 +492,12 @@
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double10"/>
-      <double>890.0</double>
+      <double>1030.0</double>
      </void>
     </void>
     <void method="setLocation">
      <double>250.0</double>
-     <double>890.0</double>
+     <double>1030.0</double>
     </void>
    </object>
   </void>
@@ -516,12 +526,12 @@
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double11"/>
-      <double>890.0</double>
+      <double>1030.0</double>
      </void>
     </void>
     <void method="setLocation">
      <double>1120.0</double>
-     <double>890.0</double>
+     <double>1030.0</double>
     </void>
    </object>
   </void>

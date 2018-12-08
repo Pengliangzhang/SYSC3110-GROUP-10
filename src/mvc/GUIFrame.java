@@ -1,3 +1,4 @@
+package mvc;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -5,6 +6,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.*;
+
+import entities.AdvancedPeashooter;
+import entities.AdvancedZombie;
+import entities.BasicZombie;
+import entities.Peashooter;
+import entities.Plant;
+import entities.Sunflower;
+import entities.Zombie;
 
 /**
  * The view part of the MVC implementation of PvZ. Contains a grid that represents the yard,

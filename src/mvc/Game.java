@@ -1,3 +1,4 @@
+package mvc;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -16,6 +17,16 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
+import entities.AdvancedPeashooter;
+import entities.AdvancedZombie;
+import entities.BasicZombie;
+import entities.DamagePlant;
+import entities.Peashooter;
+import entities.Plant;
+import entities.SunPlant;
+import entities.Sunflower;
+import entities.Zombie;
 
 /**
  * This class represents the model portion of an MVC representation of a Plants vs. Zombies game.
@@ -323,9 +334,13 @@ public class Game implements Serializable{
 		level = l;
 	}
 	
+	/**
+	 * @return the current level
+	 */
 	public int getlevel() {
 		return level;
 	}
+	
 	/**
 	 * @return The current turn number
 	 */
@@ -352,20 +367,6 @@ public class Game implements Serializable{
 	 */
 	public int getRemainingZombies() {
 		return remainingZombies;
-	}
-
-	/**
-	 * @return All the plants on the map as an ArrayList
-	 */
-	public ArrayList<Plant> getPlants() {
-		return plants;
-	}
-
-	/**
-	 * @return All the zombies on the map as an ArrayList
-	 */
-	public ArrayList<Zombie> getZombies() {
-		return zombies;
 	}
 	
 	/**

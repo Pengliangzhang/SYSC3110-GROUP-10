@@ -1,3 +1,4 @@
+package entities;
 import java.io.Serializable;
 
 /**
@@ -17,7 +18,7 @@ public class Entity implements Serializable
 	 * @param x Column number
 	 * @param y Row number
 	 */
-	protected Entity(int x, int y)
+	public Entity(int x, int y)
 	{
 		this.x = x;
 		this.y = y;

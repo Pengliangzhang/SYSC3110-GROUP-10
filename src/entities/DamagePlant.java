@@ -1,3 +1,4 @@
+package entities;
 import java.io.Serializable;
 
 /**
@@ -21,7 +22,7 @@ public class DamagePlant extends Plant implements Serializable {
 	 * @param damageTick How many ticks that this plant must wait between attacks
 	 * @param sunCost    The sun required to plant this plant
 	 */
-	protected DamagePlant(int x, int y, int health, int range, int damage, int damageTick, int sunCost) {
+	public DamagePlant(int x, int y, int health, int range, int damage, int damageTick, int sunCost) {
 		super(x, y, health, sunCost);
 		this.range = range;
 		this.damage = damage;

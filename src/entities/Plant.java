@@ -1,3 +1,4 @@
+package entities;
 import java.io.Serializable;
 
 /**
@@ -19,7 +20,7 @@ public class Plant extends Entity implements Serializable
 	 * @param health The plant's health
 	 * @param sunCost How much sun this plant requires in order to be planted
 	 */
-	protected Plant(int x, int y, int health, int sunCost)
+	public Plant(int x, int y, int health, int sunCost)
 	{
 		super (x, y);
 		this.health = health;

@@ -1,3 +1,4 @@
+package entities;
 import java.io.Serializable;
 
 /**
@@ -20,7 +21,7 @@ public class SunPlant extends Plant implements Serializable
 	 * @param sun How much sun this SunPlant generates
 	 * @param sunTick How many ticks between sun generation
 	 */
-	protected SunPlant(int x, int y, int health, int sun, int sunTick, int sunCost)
+	public SunPlant(int x, int y, int health, int sun, int sunTick, int sunCost)
 	{
 		super(x, y, health, sunCost);
 		this.sun = sun;
