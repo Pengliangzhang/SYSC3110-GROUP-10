@@ -323,6 +323,9 @@ public class Game implements Serializable{
 		level = l;
 	}
 	
+	public int getlevel() {
+		return level;
+	}
 	/**
 	 * @return The current turn number
 	 */
