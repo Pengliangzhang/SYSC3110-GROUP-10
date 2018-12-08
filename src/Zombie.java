@@ -5,7 +5,7 @@ import java.io.Serializable;
  * Has health, damage, attack speed, and movement speed.
  * 
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
- * @version Oct 28, 2018
+ * @version December 7, 2018
  */
 public class Zombie extends Entity implements Serializable
 {

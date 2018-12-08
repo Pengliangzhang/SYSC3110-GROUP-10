@@ -4,7 +4,7 @@ import java.io.Serializable;
  * Represents an improved Peashooter plant, with more damage and health.
  * 
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
- * @version Oct 28, 2018
+ * @version December 7, 2018
  */
 public class AdvancedPeashooter extends DamagePlant implements Serializable
 {

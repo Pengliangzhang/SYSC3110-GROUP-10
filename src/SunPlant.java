@@ -5,7 +5,7 @@ import java.io.Serializable;
  * Extends the plant class, and adds sun generated amount, and how often the sun is generated.
  * 
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
- * @version Oct 28, 2018
+ * @version December 7, 2018
  */
 public class SunPlant extends Plant implements Serializable
 {

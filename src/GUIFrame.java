@@ -1,12 +1,19 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.*;
 
+/**
+ * The view part of the MVC implementation of PvZ. Contains a grid that represents the yard,
+ * buttons that allow for plants to be planted in the yard, and a menu bar for saving/loading
+ * the game.
+ * 
+ * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
+ * @version December 7, 2018
+ */
 public class GUIFrame implements ActionListener {
 	private JPanel pane; // top panel
 	private JPanel jlistPanel;
@@ -18,7 +25,7 @@ public class GUIFrame implements ActionListener {
 	private JMenu fileMenu, gameMenu;
 	private JMenuItem newGame, exit, redo, undo, save, load, level;
 	private int width, height;
-	private JButton sunflowerButton, peaButton, passButton, advancedPea;
+	private JButton sunflowerButton, peaButton, advancedPea;
 	private JTextField sunIndication;
 	private int status;
 	private int plantSelect; // -1 for not select, 0 for sunflower, 1 for peashooter, 2 for advancedPeashooter
@@ -245,8 +252,8 @@ public class GUIFrame implements ActionListener {
 	}
 	
 	/**
-	 * @desc save the game to an file
-	 * */
+	 * Saves the current Game object to a file.
+	 */
 	public void save() {
 		boolean status = game.saveGame(game);
 		if(status&&game!=null) {
@@ -255,10 +262,9 @@ public class GUIFrame implements ActionListener {
 	}
 	
 	/**
-	 * @desc load an old version game to the current round
-	 * */
+	 * Load another Game object if possible, and refresh the GUI to reflect this.
+	 */
 	private void load() {
-		// TODO Auto-generated method stub
 		if(game.loadGame()==null) {
 			JOptionPane.showMessageDialog(jframe,"Unable to load the previous game!");
 		}else {
@@ -271,8 +277,8 @@ public class GUIFrame implements ActionListener {
 	}
 	
 	/**
-	 * @desc perform zombie action to GUI
-	 * */
+	 * Applies zombie actions and their effects on the GUI.
+	 */
 	public void zombieProcess() {
 		status = game.takeTurn();
 		history.add(index, game.copy());
@@ -286,9 +292,8 @@ public class GUIFrame implements ActionListener {
 	}
 	
 	/**
-	 * @desc create a timer which will make real time game
-	 * 
-	 * */
+	 * Creates a timer, which will allow the game to become real-time rather than tick-based (as it was before).
+	 */
 	public void timer() {
 		timer = new Timer();
 		timer.schedule(new TimerTask() {
@@ -298,7 +303,6 @@ public class GUIFrame implements ActionListener {
             }
         }, 3000, 3000);
 	}
-	
 	
 	/**
 	 * Performs various actions based on which component sent the ActionEvent.

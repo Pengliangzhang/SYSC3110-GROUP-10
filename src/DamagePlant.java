@@ -5,7 +5,7 @@ import java.io.Serializable;
  * range, damage, and attack speed.
  * 
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
- * @version Oct 28, 2018
+ * @version December 7, 2018
  */
 public class DamagePlant extends Plant implements Serializable {
 	private int range, damage, damageTick;

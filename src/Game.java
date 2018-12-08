@@ -21,7 +21,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * This class represents the model portion of an MVC representation of a Plants vs. Zombies game.
  * 
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
- * @version Oct 28, 2018
+ * @version December 7, 2018
  */
 public class Game implements Serializable{
 
@@ -29,10 +29,6 @@ public class Game implements Serializable{
 	private ArrayList<Plant> plants;
 	private ArrayList<Zombie> zombies;
 	private int level;
-	
-	// fields for turn undo/redo
-//	private ArrayList<Game> lists;
-//	private int index, size;
 
 	/**
 	 * Initializes the game.
@@ -320,52 +316,12 @@ public class Game implements Serializable{
 		this.sun = sun;
 	}
 	
+	/**
+	 * The default level in a new game is 1, and this method will set that value to be 1.
+	 */
 	public void setLevel(int l) {
 		level = l;
 	}
-	
-	/**
-	 * Undoes turns until the game is on the first turn.
-	 * Only applicable if there has been at least one turn.
-	 * 
-	 * @return true if there are turns to undo, and false if there are none.
-	 */
-//	public boolean undo() {
-//		if (index <= 0) {
-//			return false;
-//		}
-//		index--;
-//		Game temp = copy(lists.get(index));
-//		this.tickCount = temp.getTickCount();
-//		this.sun = temp.getSun();
-//		this.totalZombies = temp.getTotalZombies();
-//		this.remainingZombies = temp.getRemainingZombies();
-//		this.plants = temp.getPlants();
-//		this.zombies = temp.getZombies();
-//		return true;
-//	}
-	
-	/**
-	 * Brings the game one turn closer to the most recent turn.
-	 * Only applicable if there has been at least one undo, which implies that there has been
-	 * at least one turn.
-	 * 
-	 * @return true if there are turns to revert, false if there are none
-	 */
-//	public boolean redo() {
-//		if (index >= size - 1) {
-//			return false;
-//		} 
-//		index++;
-//		Game temp = copy(lists.get(index));
-//		this.tickCount = temp.getTickCount();
-//		this.sun = temp.getSun();
-//		this.totalZombies = temp.getTotalZombies();
-//		this.remainingZombies = temp.getRemainingZombies();
-//		this.plants = temp.getPlants();
-//		this.zombies = temp.getZombies();
-//		return true;
-//	}
 	
 	/**
 	 * @return The current turn number
@@ -437,8 +393,9 @@ public class Game implements Serializable{
 	}
 	
 	/**
-	 * @desc save an game object into an file
-	 * @param g the game user like to store
+	 * This will save the given Game object into a file, which is saved in the file system.
+	 * 
+	 * @param g The Game object that the user would like to store
 	 * @return return true if save to a file, false otherwise
 	 * */
 	public boolean saveGame(Game g) {
@@ -448,15 +405,16 @@ public class Game implements Serializable{
 			out.close();
 			return true;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
 	}
 	
 	/**
-	 * @desc load an game to the current
-	 * */
+	 * Load in a previous save of the game, and set the frame to be as the game was then.
+	 * 
+	 * @return returns a previously saved Game to be loaded in
+	 */
 	public Game loadGame() {
 		try {
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream("games.ser"));
@@ -464,23 +422,34 @@ public class Game implements Serializable{
 			in.close();
 			return g;
 		} catch (IOException | ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
 	}
 	
+	/**
+	 * Will initialize the given level, of which there are 3, stored in an XML file.
+	 * 
+	 * @param level used to describe the level to be loaded in
+	 */
 	public void readLevelFile(int level) {
 		File file = new File("level.xml");
 		try {
 			readSAX(file, level);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 	}
 	
+	/**
+	 * Parses the given file (which contains level information) in order to fetch the contents of the given level from the file.
+	 * The given file is in XML, thus this method uses SAX (Simple API for XML) to parse it.
+	 * 
+	 * @param file The given XML file, which contains level information
+	 * @param level The level that should be retrieved from the file
+	 * @throws Exception
+	 */
 	public void readSAX(File file, int level) throws Exception{
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		SAXParser s = spf.newSAXParser();
@@ -492,8 +461,8 @@ public class Game implements Serializable{
 			String type;
 			Integer num;
 			/**
-			 * @desc this method is called every time the parser gets an open tag '<'
-			 * */
+			 * This method is called every time the parser hits an open tag '<'
+			 */
 			public void startElement(String u, String localName, String qName, Attributes a) throws SAXException {
 				// System.out.println("START: " + qName);
 				

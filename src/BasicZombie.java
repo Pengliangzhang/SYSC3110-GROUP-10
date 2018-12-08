@@ -4,7 +4,7 @@ import java.io.Serializable;
  * Represents the most basic zombie.
  * 
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
- * @version Oct 28, 2018
+ * @version December 7, 2018
  */
 
 public class BasicZombie extends Zombie implements Serializable

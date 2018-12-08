@@ -5,7 +5,7 @@ import java.io.Serializable;
  * Keeps track of their position.
  * 
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
- * @version Oct 28, 2018
+ * @version December 7, 2018
  */
 public class Entity implements Serializable
 {

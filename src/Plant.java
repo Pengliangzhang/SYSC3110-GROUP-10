@@ -5,7 +5,7 @@ import java.io.Serializable;
  * It keeps track of its own health and how much it costs to plant.
  * 
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
- * @version Oct 28, 2018
+ * @version December 7, 2018
  */
 public class Plant extends Entity implements Serializable
 {

@@ -4,7 +4,7 @@ import java.io.Serializable;
  * Represents the Sunflower in the original PvZ, except that it costs 25 sun.
  * 
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
- * @version Oct 28, 2018
+ * @version December 7, 2018
  */
 
 public class Sunflower extends SunPlant implements Serializable
