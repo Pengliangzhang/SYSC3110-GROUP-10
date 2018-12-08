@@ -1,5 +1,7 @@
 import static org.junit.Assert.*;
 
+import java.io.File;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,6 +14,17 @@ public class GameTest {
 		game = new Game();
 	}
 
+	@Test
+	public void levelTest() {
+		assertEquals("test if getlevel function works",1, game.getlevel());
+	}
+	
+	@Test
+	public void setlevelTest() {
+		game.setLevel(2);
+		assertEquals("test if setlevel function works", 2,game.getlevel());
+	}
+	
 	@Test
 	public void initialZombieTest() {
 		 assertEquals("test if the zombie number start at 0", 0, game.getAllZombies().size());
@@ -46,7 +59,32 @@ public class GameTest {
 		 game.plantAPlant(3,3,"peashooter");
 		 assertEquals("set sunflower successfully ", 1, game.getAllPlants().size());     
 	}
-
+	
+	@Test
+	public void loadAndSave() {
+		game.newGame();
+		game.saveGame(game);
+		Game agame = game.loadGame();
+		assertEquals("data test", game.getSun(),agame.getSun());
+		assertEquals("data test", game.getlevel(),agame.getlevel());
+		assertEquals("data test", game.getAllZombies(),agame.getAllZombies());
+		assertEquals("data test", game.getTickCount(),agame.getTickCount());
+		assertEquals("data test", game.getAllPlants(), agame.getAllPlants());
+	}
+	
+	
+	@Test
+	public void readLevelFileTestLevel2() {
+		game.readLevelFile(2);
+		assertEquals("test is the function reading the level", 2, game.getlevel());
+	}
+	
+	@Test
+	public void readSAXTestLevel3() throws Exception {
+		File file = new File("level.xml");
+		game.readSAX(file, 3);
+		assertEquals("test is the function readSAX works", 3 , game.getlevel());
+	}
 
 //	@Test
 //	public void undoTestone() {
