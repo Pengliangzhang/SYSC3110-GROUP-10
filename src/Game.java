@@ -1,17 +1,24 @@
-import java.io.FileInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
 /**
- * This class creates a text-based Plants vs Zombie game
+ * This class represents the model portion of an MVC representation of a Plants vs. Zombies game.
  * 
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
  * @version Oct 28, 2018
@@ -21,9 +28,11 @@ public class Game implements Serializable{
 	private int tickCount, sun, totalZombies, remainingZombies;
 	private ArrayList<Plant> plants;
 	private ArrayList<Zombie> zombies;
+	private int level;
 	
-	private ArrayList<Game> lists;
-	private int index, size;
+	// fields for turn undo/redo
+//	private ArrayList<Game> lists;
+//	private int index, size;
 
 	/**
 	 * Initializes the game.
@@ -33,42 +42,34 @@ public class Game implements Serializable{
 	public Game() {
 		plants = new ArrayList<Plant>();
 		zombies = new ArrayList<Zombie>();
-		lists = new ArrayList<Game>();
+//		lists = new ArrayList<Game>(100);
+		level = 1;
+		totalZombies = 10; // may be changed in the future
 
 		// titleScreen();
 	}
 	
 	public void newGame() {
 		sun = 50;
-		totalZombies = 10; // may be changed in the future
-		remainingZombies = 10;
+		remainingZombies = totalZombies;
 		tickCount = 0;
 		plants.clear();
 		zombies.clear();
-		lists.clear();
-		index = 0;
-		lists.add(index, copy(this));
-		size = 1;
+//		lists.clear();
+//		index = 0;
+//		lists.add(index, copy());
+//		size = 1;
+	}
+	
+	/**
+	 * Change the level of this game, if fail, the level would not change.
+	 * 
+	 * @param l The new level in this game
+	 */
+	public void changeLevel(int l) {
+		readLevelFile(l);
 	}
 
-	/*
-	 * old title screen for console based private void titleScreen() {
-	 * System.out.println("Welcome to SYSC3110 Group 10's PvZ, Console Vers.");
-	 * 
-	 * // TODO closing the Scanner causes errors Scanner console = new
-	 * Scanner(System.in); boolean goodInput = false; String input = "";
-	 * 
-	 * while (!goodInput) {
-	 * System.out.println("Enter \"play\" to play, and \"exit\" to quit."); input =
-	 * console.nextLine(); if (input.equals("play")) { // initialize the zombies,
-	 * and give the player some sun to start off with sun = 50; totalZombies = 10;
-	 * // may be changed in the future remainingZombies = 10; tickCount = 0;
-	 * 
-	 * // console.close();
-	 * 
-	 * // start Turn 1 takeTurn(); } else if (input.equals("exit")) {
-	 * System.out.println("Thanks for playing our game!"); System.exit(0); } } }
-	 */
 	/**
 	 * Take one turn, every turn has following step: 1. increment sun by 25 (natural
 	 * sun generation) 2. print the map 3. prompt user (drop a plant on the map or
@@ -109,69 +110,10 @@ public class Game implements Serializable{
 		tickCount++;
 		// Print the map
 		//printMap();
-		index++;
-		lists.add(index, copy(this));
-		size = index + 1;
+//		index++;
+//		lists.add(index, copy());
+//		size = index + 1;
 		return 0;
-	}
-
-	/**
-	 * Print the map to the user to show the position of all zombies and plants
-	 * 
-	 * @author Xinrui Li
-	 */
-	private void printMap() {
-		// current amount of sun at the player's disposal
-		System.out.println("Available Sun: " + sun);
-
-		// plants that can be planted
-		String s = "Available plants: ";
-		if (sun >= 25) {
-			s += "Sunflower ";
-		}
-		if (sun >= 30) {
-			s += "Peashooter ";
-		}
-		System.out.println(s.trim());
-
-		// text based representation of the board
-		String[][] board = new String[5][10];
-		for (int i = 0; i < 5; i++) {
-			Arrays.fill(board[i], " ");
-		}
-
-		// print out the plants
-		if (plants != null) {
-			for (Plant plant : plants) {
-				if (plant instanceof Sunflower) {
-					board[plant.getX() - 1][plant.getY() - 1] = "s";
-				} else if (plant instanceof Peashooter) {
-					board[plant.getX() - 1][plant.getY() - 1] = "p";
-				}
-			}
-		} else {
-			System.out.println("You didn't place any plants.");
-		}
-
-		// print out the zombies
-		if (zombies != null) {
-			for (Zombie zombie : zombies) {
-				if (zombie instanceof BasicZombie) {
-					if (board[zombie.getX() - 1][zombie.getY() - 1] == " ") {
-						board[zombie.getX() - 1][zombie.getY() - 1] = "z";
-					} else {
-						board[zombie.getX() - 1][zombie.getY() - 1] = board[zombie.getX() - 1][zombie.getY() - 1]
-								+ "/z";
-					}
-				}
-			}
-		} else {
-			System.out.println("There are no zombies on the map.");
-		}
-
-		for (int i = 0; i < 5; i++) {
-			System.out.println(Arrays.toString(board[i]));
-		}
 	}
 
 	/**
@@ -245,26 +187,24 @@ public class Game implements Serializable{
 		}
 
 		// Zombies spawn
-		if (remainingZombies > 0) {
-			Random rand = new Random();
-			int n = rand.nextInt(5) + 1;
-			if (tickCount == 0) {
-				Zombie z;
-				if((n%2)==0) {
-					z = new BasicZombie(n);
-				}else {
-					z = new AdvancedZombie(n);
-				}				
-				zombies.add(z);
-				remainingZombies--;
-			} else if ((tickCount % 2) == 0) {
-				Zombie z;
-				if((n%2)==0) {
-					z = new AdvancedZombie(n);					
-				}else {
-					z = new BasicZombie(n);
+		if (tickCount != 0 && (tickCount % 2) == 0) {
+			if (remainingZombies > 0) {
+				Random rand = new Random();
+				int n = rand.nextInt(5) + 1;
+				if (level == 1) {
+					zombies.add(new BasicZombie(n));
+				} else if (level == 2) {
+					zombies.add(new AdvancedZombie(n));
+				} else if (level == 3) {
+					int m = rand.nextInt(2);
+					Zombie z;
+					if ((m % 2) == 0) {
+						z = new BasicZombie(n);
+					} else {
+						z = new AdvancedZombie(n);
+					}				
+					zombies.add(z);
 				}
-				zombies.add(z);
 				remainingZombies--;
 			}
 		}
@@ -326,8 +266,6 @@ public class Game implements Serializable{
 				return true;
 			}
 
-			// TODO this should never happen, since we have already checked the required
-			// conditions
 			System.out.println("Unable to create a new sunflower!");
 		} else if (sun >= 50 && type.equals("peashooter")) {
 			Peashooter plant = new Peashooter(x, y);
@@ -337,7 +275,6 @@ public class Game implements Serializable{
 				return true;
 			}
 
-			// TODO again, this should never happen
 			System.out.println("Unable to create a new Peashooter!");
 		} else if (sun >= 75 && type.equals("advancedPeashooter")) {
 			AdvancedPeashooter plant = new AdvancedPeashooter(x, y);
@@ -346,11 +283,8 @@ public class Game implements Serializable{
 				System.out.println("AdvancedPeashooter placed at (" + x + ", " + y + ")");
 				return true;
 			}
-
-			// TODO again, this should never happen
 			System.out.println("Unable to create a new Peashooter!");
-		}else {
-			// TODO should never happen, since we check the conditions before
+		} else {
 			System.out.println("You do not have enough sun!");
 		}
 		return false;
@@ -386,123 +320,111 @@ public class Game implements Serializable{
 		this.sun = sun;
 	}
 	
-	/**
-	 * @desc undo to the last step
-	 * */
-	public boolean undo() {
-		if (index <= 0) {
-			return false;
-		}
-		index--;
-		Game temp = copy(lists.get(index));
-		this.tickCount = temp.getTickCount();
-		this.sun = temp.getSun();
-		this.totalZombies = temp.getTotalZombies();
-		this.remainingZombies = temp.getRemainingZombies();
-		this.plants = temp.getPlants();
-		this.zombies = temp.getZombies();
-		return true;
+	public void setLevel(int l) {
+		level = l;
 	}
 	
-	/**
-	 * @desc redo to the next step
-	 * */
-	public boolean redo() {
-		if (index >= size - 1) {
-			return false;
-		} 
-		index++;
-		Game temp = copy(lists.get(index));
-		this.tickCount = temp.getTickCount();
-		this.sun = temp.getSun();
-		this.totalZombies = temp.getTotalZombies();
-		this.remainingZombies = temp.getRemainingZombies();
-		this.plants = temp.getPlants();
-		this.zombies = temp.getZombies();
-		return true;
+	public int getlevel() {
+		return level;
 	}
-	
-//	/**
-//	 * @desc save an game object into an file
-//	 * @param g the game user like to store
-//	 * @return return true if save to a file, false otherwise
-//	 * */
-//	public boolean saveGame(Game g) {
-//		try {
-//			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("games.ser"));
-//			out.writeObject(g);
-//			out.close();
-//			return true;
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
+	/**
+	 * Undoes turns until the game is on the first turn.
+	 * Only applicable if there has been at least one turn.
+	 * 
+	 * @return true if there are turns to undo, and false if there are none.
+	 */
+//	public boolean undo() {
+//		if (index <= 0) {
 //			return false;
 //		}
-//	}
-//	
-//	/**
-//	 * @desc load an game to the current
-//	 * */
-//	public Game loadGame() {
-//		try {
-//			ObjectInputStream in = new ObjectInputStream(new FileInputStream("games.ser"));
-//			Game g = (Game) in.readObject();
-//			in.close();
-//			return g;
-//		} catch (IOException | ClassNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return null;
+//		index--;
+//		Game temp = copy(lists.get(index));
+//		this.tickCount = temp.getTickCount();
+//		this.sun = temp.getSun();
+//		this.totalZombies = temp.getTotalZombies();
+//		this.remainingZombies = temp.getRemainingZombies();
+//		this.plants = temp.getPlants();
+//		this.zombies = temp.getZombies();
+//		return true;
 //	}
 	
 	/**
-	 * @return The no. of current turn
+	 * Brings the game one turn closer to the most recent turn.
+	 * Only applicable if there has been at least one undo, which implies that there has been
+	 * at least one turn.
+	 * 
+	 * @return true if there are turns to revert, false if there are none
+	 */
+//	public boolean redo() {
+//		if (index >= size - 1) {
+//			return false;
+//		} 
+//		index++;
+//		Game temp = copy(lists.get(index));
+//		this.tickCount = temp.getTickCount();
+//		this.sun = temp.getSun();
+//		this.totalZombies = temp.getTotalZombies();
+//		this.remainingZombies = temp.getRemainingZombies();
+//		this.plants = temp.getPlants();
+//		this.zombies = temp.getZombies();
+//		return true;
+//	}
+	
+	/**
+	 * @return The current turn number
 	 */
 	public int getTickCount() {
 		return tickCount;
 	}
 
 	/**
-	 * @return The total zombies which idi not killed by plant
+	 * @return The total number of zombies to be spawned on the map throughout the game
 	 */
 	public int getTotalZombies() {
 		return totalZombies;
 	}
-
+	
 	/**
-	 * @return The remaining zombies which no show on map (did not spawn)
+	 * @param num The total number of zombies to be spawned on the map throughout the game
+	 */
+	public void setTotalZombie(int num) {
+		totalZombies = num;
+	}
+	
+	/**
+	 * @return The number of zombies yet to spawn
 	 */
 	public int getRemainingZombies() {
 		return remainingZombies;
 	}
 
 	/**
-	 * @return All the plants on the map
+	 * @return All the plants on the map as an ArrayList
 	 */
 	public ArrayList<Plant> getPlants() {
 		return plants;
 	}
 
 	/**
-	 * @return All the zombies on the map
+	 * @return All the zombies on the map as an ArrayList
 	 */
 	public ArrayList<Zombie> getZombies() {
 		return zombies;
 	}
 	
 	/**
-	 * Copy the game
+	 * Creates a deep copy of the given Game instance.
+	 * The resulting copy can be modified without affecting the original instance, and vice versa.
 	 * 
-	 * @param g A game needs copy
-	 * @return The copy game which would not effect by original one
+	 * @param g an instance of Game to be deep copied
+	 * @return A deep copy of the given Game instance
 	 */
-	public Game copy(Game g) {
+	public Game copy() {
 		Game temp = null;
 		try {
 			ByteArrayOutputStream m1 = new ByteArrayOutputStream();
 			ObjectOutputStream out = new ObjectOutputStream(m1);
-			out.writeObject(g);
+			out.writeObject(this);
 			out.flush();
 			out.close();
 			
@@ -510,12 +432,109 @@ public class Game implements Serializable{
 			ObjectInputStream in = new ObjectInputStream(m2);
 			temp = (Game) in.readObject();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return temp;
 	}
+	
+	/**
+	 * @desc save an game object into an file
+	 * @param g the game user like to store
+	 * @return return true if save to a file, false otherwise
+	 * */
+	public boolean saveGame(Game g) {
+		try {
+			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("games.ser"));
+			out.writeObject(g);
+			out.close();
+			return true;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	/**
+	 * @desc load an game to the current
+	 * */
+	public Game loadGame() {
+		try {
+			ObjectInputStream in = new ObjectInputStream(new FileInputStream("games.ser"));
+			Game g = (Game) in.readObject();
+			in.close();
+			return g;
+		} catch (IOException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public void readLevelFile(int level) {
+		File file = new File("level.xml");
+		try {
+			readSAX(file, level);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void readSAX(File file, int level) throws Exception{
+		SAXParserFactory spf = SAXParserFactory.newInstance();
+		SAXParser s = spf.newSAXParser();
+		
+		DefaultHandler dh = new DefaultHandler() {
+			boolean i = false, j = false, k = false;
+			
+			Integer name;
+			String type;
+			Integer num;
+			/**
+			 * @desc this method is called every time the parser gets an open tag '<'
+			 * */
+			public void startElement(String u, String localName, String qName, Attributes a) throws SAXException {
+				// System.out.println("START: " + qName);
+				
+				if(qName.equalsIgnoreCase("name")){
+					i = true;
+				}
+				if(qName.equalsIgnoreCase("type")){
+					j = true;
+				}
+				if(qName.equalsIgnoreCase("num")){
+					k = true;
+				}
+			}					
+			
+			public void characters(char[] ch, int start, int length) throws SAXException{				
+				if(i) {
+					name = Integer.parseInt(new String(ch, start, length));
+					i = false;
+				}
+				if(j) {
+					type = new String(ch, start, length);
+					j = false;
+				}
+				if(k && name == level) {
+					num = Integer.parseInt(new String(ch, start, length));
+					System.out.println(num);
+					setLevel(level);
+					setTotalZombie(num);
+					k = false;
+				}
+			}
+			
+			public void endElement(String uri, String localname, String qName) throws SAXException{
+				// System.out.println("END: " + qName);
+			}
+			
+		};
+		
+		s.parse(file, dh);
+	}	
 }

@@ -1,6 +1,9 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.*;
 
@@ -9,17 +12,18 @@ public class GUIFrame implements ActionListener {
 	private JPanel jlistPanel;
 	private JFrame jframe;
 	private JMenuBar menuBar;
-	private Game game=null;
+	private Game game;
+	private ArrayList<Game> history;
+	private int index, size;
 	private JMenu fileMenu, gameMenu;
-	private JMenuItem newGame, exit, redo, undo, save, load;
+	private JMenuItem newGame, exit, redo, undo, save, load, level;
 	private int width, height;
 	private JButton sunflowerButton, peaButton, passButton, advancedPea;
 	private JTextField sunIndication;
 	private int status;
 	private int plantSelect; // -1 for not select, 0 for sunflower, 1 for peashooter, 2 for advancedPeashooter
 	private JButton[][] buttons;
-	
-	private ArrayList<Game> gameList;
+	private Timer timer;
 
 	/**
 	 * Constructor for GUIFrame objects. Initializes the JFrame and its JMenuBar.
@@ -49,30 +53,37 @@ public class GUIFrame implements ActionListener {
 		// Add menuItem to file menu
 		save = new JMenuItem("Save");
 		save.addActionListener(this);
-		//fileMenu.add(save);
+		fileMenu.add(save);
 		load = new JMenuItem("Load");
 		load.addActionListener(this);
-		//fileMenu.add(load);
+		fileMenu.add(load);
 		exit = new JMenuItem("Exit");
 		exit.addActionListener(this);
 		fileMenu.add(exit);
 		// Add menuItem to Games menu
+		newGame = new JMenuItem("New Game");
+		newGame.addActionListener(this);
+		gameMenu.add(newGame);
+		level = new JMenuItem("Level");
+		level.addActionListener(this);
+		gameMenu.add(level);
 		undo = new JMenuItem("Undo");
 		undo.addActionListener(this);
 		gameMenu.add(undo);
 		redo = new JMenuItem("Redo");
 		redo.addActionListener(this);
 		gameMenu.add(redo);
-		newGame = new JMenuItem("New Game");
-		newGame.addActionListener(this);
-		gameMenu.add(newGame);
 		
 		selectionPanel();
 		mappingPanel();
 		disableAllButtons();
+		
 		game = new Game();
-		gameList = new ArrayList<Game>();
-
+		history = new ArrayList<Game>();
+		index = 0;
+		size = 0;
+		timer = new Timer();
+		
 		jframe.setVisible(true);
 	}
 
@@ -88,17 +99,14 @@ public class GUIFrame implements ActionListener {
 		sunflowerButton = new JButton("Sunflower");
 		peaButton = new JButton("Peashooter");
 		advancedPea = new JButton("Advanced Peashooter");
-		passButton = new JButton("Pass a round");
 		
 		sunflowerButton.addActionListener(this);
 		peaButton.addActionListener(this);
 		advancedPea.addActionListener(this);
-		passButton.addActionListener(this);
 
 		pane.add(sunflowerButton);
 		pane.add(peaButton);
 		pane.add(advancedPea);
-		pane.add(passButton);
 		sunIndication = new JTextField("The game has not yet started");
 		sunIndication.setEditable(false);
 
@@ -125,6 +133,10 @@ public class GUIFrame implements ActionListener {
 				}
 			}
 		}
+	}
+	
+	public void setStatus(int a) {
+		this.status = a;
 	}
 
 	/**
@@ -157,9 +169,9 @@ public class GUIFrame implements ActionListener {
 		sunflowerButton.setEnabled(false);
 		peaButton.setEnabled(false);
 		advancedPea.setEnabled(false);
-		passButton.setEnabled(false);
 		undo.setEnabled(false);
 		redo.setEnabled(false);
+		save.setEnabled(false);
 	}
 
 	/**
@@ -174,9 +186,11 @@ public class GUIFrame implements ActionListener {
 		sunflowerButton.setEnabled(true);
 		peaButton.setEnabled(true);
 		advancedPea.setEnabled(true);
-		passButton.setEnabled(true);
 		undo.setEnabled(true);
 		redo.setEnabled(true);
+		save.setEnabled(true);
+		load.setEnabled(true);
+		timer();
 	}
 
 	/**
@@ -234,30 +248,62 @@ public class GUIFrame implements ActionListener {
 		sunIndication.setText("Your total number of sun is: " + game.getSun());
 	}
 	
-//	/**
-//	 * @desc save the game to an file
-//	 * */
-//	public void save() {
-//		boolean status = game.saveGame(game);
-//		if(status&&game!=null) {
-//			JOptionPane.showMessageDialog(jframe,"You saved the game.");
-//		}
-//	}
-//	
-//	/**
-//	 * @desc load an old version game to the current round
-//	 * */
-//	private void load() {
-//		// TODO Auto-generated method stub
-//		if(game.loadGame()==null) {
-//			JOptionPane.showMessageDialog(jframe,"Unable to load the previous game!");
-//		}else {
-//			game = game.loadGame();
-//			refreshMap();
-//		}
-//		
-//	}
-
+	/**
+	 * @desc save the game to an file
+	 * */
+	public void save() {
+		boolean status = game.saveGame(game);
+		if(status&&game!=null) {
+			JOptionPane.showMessageDialog(jframe,"You saved the game.");
+		}
+	}
+	
+	/**
+	 * @desc load an old version game to the current round
+	 * */
+	private void load() {
+		// TODO Auto-generated method stub
+		if(game.loadGame()==null) {
+			JOptionPane.showMessageDialog(jframe,"Unable to load the previous game!");
+		}else {
+			JOptionPane.showMessageDialog(jframe,"Enjoy your game!");
+			game = game.loadGame();
+			enableAllButtons();
+			refreshMap();
+		}
+		
+	}
+	
+	/**
+	 * @desc perform zombie action to GUI
+	 * */
+	public void zombieProcess() {
+		status = game.takeTurn();
+		history.add(index, game.copy());
+		index++;
+		size = index;
+		refreshMap();
+		checkWinner();
+		if(status!=0) {
+			timer.cancel();
+		}		
+	}
+	
+	/**
+	 * @desc create a timer which will make real time game
+	 * 
+	 * */
+	public void timer() {
+		timer = new Timer();
+		timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+            	zombieProcess();
+            }
+        }, 3000, 3000);
+	}
+	
+	
 	/**
 	 * Performs various actions based on which component sent the ActionEvent.
 	 * 
@@ -266,6 +312,12 @@ public class GUIFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == newGame) {
 			game.newGame();
+			history.clear();
+			index = 0;
+			size = 0;
+			history.add(index, game.copy());
+			index++;
+			size++;
 			status = 0;
 			enableAllButtons();
 			clearButtonText();
@@ -273,27 +325,51 @@ public class GUIFrame implements ActionListener {
 		} else if (e.getSource() == exit) {
 			System.exit(0);
 		} else if(e.getSource()==undo) {
-			game.undo();
-			refreshMap();
+			if (index > 0) {
+				timer.cancel();
+				index--;
+				game = history.get(index).copy();
+				refreshMap();
+				timer();
+			}
 		} else if(e.getSource()==redo) {
-			game.redo();
-			refreshMap();
+			if (index < size) {
+				timer.cancel();
+				index++;
+				game = history.get(index).copy();
+				refreshMap();
+				timer();
+			}
 		} else if(e.getSource()==save) {
-			//save();			
-		} else if(e.getSource()==save) {
-			//load();		
+			save();			
+		} else if(e.getSource()==load) {
+			load();
+		} else if(e.getSource()==level) {
+			timer.cancel();
+			disableAllButtons();
+			String[] temp = {"1","2","3"};                  
+			String s = (String) JOptionPane.showInputDialog(null,"Please select a new level","Selecting Level",
+					JOptionPane.DEFAULT_OPTION,null,temp,temp[0]);
+			if (s != null) {
+				game.changeLevel(Integer.parseInt(s));
+			}
+			game.newGame();
+			history.clear();
+			index = 0;
+			size = 0;
+			history.add(index, game.copy());
+			index++;
+			size++;
+			status = 0;
+			enableAllButtons();
+			clearButtonText();
+			sunIndication.setText("Your total number of sun is: " + game.getSun());
 		} else if (e.getSource().equals(sunflowerButton)) {
 			plantSelect = 0;
 		} else if (e.getSource().equals(peaButton)) {
 			plantSelect = 1;
 		} else if (e.getSource().equals(advancedPea)) {
 			plantSelect = 2;
-		} else if (e.getSource().equals(passButton)) {
-			plantSelect = -1;
-			status = game.takeTurn();
-			sunIndication.setText("Your total number of sun is: " + game.getSun());
-			checkWinner();			
-			refreshMap();
 		} else {
 			buttons[0][9].setText("");
 			for (int i = 0; i < 5; ++i) {
@@ -301,9 +377,6 @@ public class GUIFrame implements ActionListener {
 					if (e.getSource().equals(buttons[i][j]) && plantSelect != -1) {
 						boolean temp = game.userTurn(i + 1, j + 1, plantSelect);
 						if (temp) {
-							status = game.takeTurn();
-//							sunIndication.setText("Your total number of sun is: " + game.getSun());
-							checkWinner();
 							plantSelect = -1;
 						}
 						plantSelect = -1;
@@ -321,6 +394,6 @@ public class GUIFrame implements ActionListener {
 	 * @param args Required by default
 	 */
 	public static void main(String[] args) {
-		new GUIFrame();
+		new GUIFrame();		
 	}
 }

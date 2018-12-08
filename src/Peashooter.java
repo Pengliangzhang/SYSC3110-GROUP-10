@@ -1,7 +1,7 @@
 import java.io.Serializable;
 
 /**
- * Represents the Peashooter in the original PvZ, except that it costs 30 sun.
+ * Represents the Peashooter in the original PvZ, except that it costs 50 sun.
  * 
  * @author BeckZ, Kevin, Xinrui Li, Bohua Cao
  * @version Oct 28, 2018
