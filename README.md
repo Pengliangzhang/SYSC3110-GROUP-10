@@ -31,6 +31,8 @@ Change Log:
       5. Create new field, lists, index, and size, in Game calss to store history and indicate the current state
       6. Create copy, undo, redo method in Game class
       7. Modify taketurn method in Game class to fix undo/redo requirement
+      8. Create readLevelFile, readSAX methods to read xml file
+      9. Add a changeLevel method in Game class and modify actionPeform method
       
   Bohua:
 
