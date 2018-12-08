@@ -134,6 +134,10 @@ public class GUIFrame implements ActionListener {
 			}
 		}
 	}
+	
+	public void setStatus(int a) {
+		this.status = a;
+	}
 
 	/**
 	 * Determine the winner of the current game, initiated when there are no more

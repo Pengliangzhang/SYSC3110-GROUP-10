@@ -324,6 +324,9 @@ public class Game implements Serializable{
 		level = l;
 	}
 	
+	public int getlevel() {
+		return level;
+	}
 	/**
 	 * Undoes turns until the game is on the first turn.
 	 * Only applicable if there has been at least one turn.
