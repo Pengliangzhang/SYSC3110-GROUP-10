@@ -9,18 +9,28 @@ Authors:
 Deliverables:
   * UML diagram: A class diagram, sequence diagram 
   * Documentation: This file introduces the process of creating this project and describes how to play
-  * 19 Java Classes
+  * 22 Java Classes
 
 Change Log:
 
   Pengliang:
-  
+
+      Milestone 3:
       1. Created Advanced Peashooter and advanced zombie class
       2. Edited plantAPlant and zombieAction methon in Game class, which allow users to plant advanced peashooter and release advanced zombie
       3. Added game menu and added redo/undo menu item into the game menu
       4. Changed all class to implements Serialiable
       5. Merged all files together
       6. Distrubuted works to team members
+      
+      Milestone 4:
+      1. Changed code in Game.java which added Save and Load method to achieved save/load features.
+      2. Changed button layout in GUIGame.java which added new menu item and deleted button which won't be used in current version
+      3. Added an timer to implements real time feature.
+      4. Changed all class to implements Serialiable
+      5. Organized works and merged all updates together.
+      6. Check working processes and make sure everyone update works on time.
+
 
   Xinrui:
   
@@ -46,17 +56,24 @@ Known Issues:
   2. Have to write new method to achieve redo/undo fetures
   3. Unable to save the Game object directly into the arraylist because all objects are the same, have to convert it to different object
 
+  Milestone 4:
+  1. Unable to save object into a file except use serilization
+  2. Implementing level selector should read from xml file
+  3. Real time feature is difficult because of the time period to release zombie 
+
 
 Road Map:
 
-  1. Pengliang will create classes AdvancedZombie and AdvancedPeashooter
-  2. Oliver will change the method in Game class to achieve the undo/redo features
+  1. Beck works on the save, load fecture, real time, and Origanize works. 
+  2. Oliver will change the method in Game class to achieve the level selection feature.
+  3. Bohua testing all class
+  4. Kevin document all class and check work process is as expected
 
 
 Work distribution: 
 
-  * Pengliang Zhang: Create classes AdvancedZombie and AdvancedPeashooter, add Game menu, and redo/undo menu item
-  * Xinrui Li      : Modify the game class to achieve the undo/redo features
+  * Pengliang Zhang: Achieved save/load, real time fecture
+  * Xinrui Li      : Modify the game class to achieve the level selection features, and makek change for the GUI as well.
   * Bohua Cao      : Working with the test, test all class using JUnit test
   * Kevin Li       : Working with documentations, UML, check the process of the project and make sure everyone finish all works on time
                    

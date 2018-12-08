@@ -1,28 +1,28 @@
 Design process
     For our group project 
-        Firstly, we talked about how to improve our game to the full feature. We thought we need to add more zombie and plants types. We 
-        decided to add an Advanced zombie and an Advanced Peashooter which has more health and damage to each other. Then, according to the 
-        requirements, the game also need to include the unlimeted redo and undo features. So that, we thought we can use the same technique
-        which we used on the lab 9. Finally we dispatch works to each group member.
+        Firstly, to achieve the goal of the project. All team members has to think and talk how to implement the features which includes save, load, level of difficuities,
+        and real time feature. So that, after we talk about it. We dicided that Beck and Oliver will code the logic and make changes for each class. Kevin will doing the QA and make sure
+        all features can work as we expected. Bohua will doing the testing part which will exam there have not error in each class.
 
         Secondly, after all team members finish their work, Beck merged everything together.
         
         
-Milestone 3 Update
-    In the Milestone 3, our game created more fectures and let user to have fun. First, we add more type of Peashooter and Zombie
-    in the game, which will be difficult for user to win the game. To achieve the fectures, we added two classes to the projects
-    which allow to create the object of advanced Peashooter and advanced zombie. Then, we added more method in game class to implements 
-    the redo/undo logic. We also update all classes to implements Serialiable which can be usded in game class's method.
+Milestone 4 Update
+    In the Milestone 4, we added many features to improve user's experience when they play game. First of all, the game can implement save and load
+    method which allow user to save current game or load a previous game round. In the current game version, user can also select different level of difficulties.
+    The game has three levels. Finally, the current version is also implement as real time. Therefore, user can enjoy the game and have more fun.
         
 User Manual
     1. Run GUIFrame.java
     2. From menu bar, click Games and then select New Game (New Game will start a new round)
-    3. User can click File and then select Exit to exit the game at any time they like.
-    3. Click the button at the buttom of screen(Sunflower, Peashooter, Advanced Peashooter or Pass a round)
+    3. If user want to select different level, click level to select level 1, 2 or 3
+        (level 1: 6 basic zombies; level 2: 8 AdvancedZombies; level 3: 10 basic or AdvancedZombies)
+    4. User can click File and then select Exit to exit the game at any time they like.
+    5. Click the button at the buttom of screen(Sunflower, Peashooter or Advanced Peashooter)
         Sunflower: select sunflower to place
         Peashooter: select Peashooter to place
         Advanced Peashooter: select Advanced Peashooter to place(Advanced Peashooter has higher damage to zombie)
-        Pass a round: do not place plant
     4. Click place where to put your plant(if you selected sunflower or Peashooter from previous step)
         The last column(column 10) do not allow put anything(is disabled)
     5. Repeat step 3 untill game over
+    6. User can select save or load from File menu, to save current game or load the previous game round
